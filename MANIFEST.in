@@ -1,0 +1,28 @@
+# Sdist inclusion / exclusion manifest.
+#
+# Hatch is the build backend; it consumes the [tool.hatch.build.targets.sdist]
+# table in pyproject.toml as the source of truth. This MANIFEST.in is kept
+# for parity with the historical convention so anyone shipping AsyncViz
+# through a non-Hatch flow (e.g. a downstream distro tooling that calls
+# python -m build via the PEP 517 fallback) sees the same intent.
+
+include README.md
+include LICENSE
+include pyproject.toml
+
+# Embedded frontend bundle. ``asyncviz/dashboard/static/`` is generated
+# by ``scripts/frontend/build-prod.sh`` before packaging; the literal
+# globs below ensure no leaf file is dropped.
+recursive-include asyncviz/dashboard/static *
+
+# Type marker.
+include asyncviz/py.typed
+
+# Always include the entire Python source tree.
+recursive-include asyncviz *.py
+
+# Standard exclusions — these are excluded by Hatch as well; listed here
+# for parity.
+global-exclude __pycache__
+global-exclude *.py[cod]
+global-exclude .DS_Store

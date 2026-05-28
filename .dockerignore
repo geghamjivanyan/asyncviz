@@ -1,0 +1,53 @@
+# Caches
+**/__pycache__
+**/.pytest_cache
+**/.ruff_cache
+**/.mypy_cache
+**/.cache
+**/.pyre
+
+# Virtual environments
+**/.venv
+**/venv
+**/env
+
+# Node
+**/node_modules
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+**/.pnpm-store
+
+# Build outputs
+**/build
+**/dist
+**/.vite
+**/*.egg-info
+**/htmlcov
+**/.coverage
+**/.coverage.*
+**/coverage.xml
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+
+# Git / CI metadata
+.git
+.gitignore
+.github
+
+# IDE / OS
+.idea
+.vscode
+.DS_Store
+Thumbs.db
+
+# Containers / docs
+docker-compose.override.yml
+*.md
+!README.md
