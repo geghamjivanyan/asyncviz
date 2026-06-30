@@ -57,7 +57,7 @@ describe("Routing", () => {
 
   it("renders the MetricsPage when navigating to /metrics", () => {
     renderWithProviders(<TestRoutes initialPath={ROUTES.metrics} />);
-    expect(screen.getByText(/Aggregate runtime metrics/i)).toBeInTheDocument();
+    expect(screen.getByText(/Runtime summary/i)).toBeInTheDocument();
   });
 
   it("renders the WarningsPage when navigating to /warnings", () => {
@@ -69,6 +69,6 @@ describe("Routing", () => {
 
   it("renders the ReplayPage when navigating to /replay", () => {
     renderWithProviders(<TestRoutes initialPath={ROUTES.replay} />);
-    expect(screen.getByText(/Replay buffer inspection/i)).toBeInTheDocument();
+    expect(screen.getByText(/No replay recording loaded/i)).toBeInTheDocument();
   });
 });

@@ -44,7 +44,7 @@ function TaskInspectorOverviewImpl({ inspection, className }: TaskInspectorOverv
         <Row label="Created" value={formatWallTime(task.created_at)} />
         <Row label="Updated" value={formatWallTime(task.updated_at)} />
         <Row label="Duration" value={formatDuration(inspection.lifecycle.durationSeconds)} />
-        <Row label="Segments" value={inspection.timeline.segmentCount} />
+        <Row label="Segments" value={formatSegmentsValue(inspection)} />
         <Row label="Run ratio" value={formatPercent(inspection.metrics.runRatio)} />
         <Row label="Wait ratio" value={formatPercent(inspection.metrics.waitRatio)} />
         <Row
@@ -71,6 +71,25 @@ function Row({ label, value }: { label: string; value: React.ReactNode }) {
       <dt className="text-[10px] uppercase tracking-widest text-subtle">{label}</dt>
       <dd className="tabular-nums text-text">{value}</dd>
     </>
+  );
+}
+
+/** Surface a "no segment data" annotation when a terminal task with a
+ *  non-zero duration has no closed or active segments — without it the
+ *  raw "0" reads as "task did nothing" instead of "we never saw a
+ *  segment". */
+function formatSegmentsValue(inspection: TaskInspection): React.ReactNode {
+  const count = inspection.timeline.segmentCount;
+  if (count > 0) return count;
+  const duration = inspection.lifecycle.durationSeconds;
+  const segmentless =
+    inspection.lifecycle.terminal && duration !== null && duration > 0;
+  if (!segmentless) return count;
+  return (
+    <span className="inline-flex items-baseline gap-2">
+      <span>{count}</span>
+      <span className="text-[10px] uppercase tracking-widest text-muted">no segment data</span>
+    </span>
   );
 }
 

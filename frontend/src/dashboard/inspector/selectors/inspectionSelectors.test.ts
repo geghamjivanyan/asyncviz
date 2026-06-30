@@ -131,10 +131,111 @@ describe("inspectionSelectors", () => {
       },
     });
     expect(inspection.task?.task_name).toBe("Worker");
-    expect(inspection.timeline.segmentCount).toBe(1);
+    // Inspector reports the same segments the renderer would draw: one
+    // closed run + one open active = 2.
+    expect(inspection.timeline.segmentCount).toBe(2);
     expect(inspection.timeline.activeSegment).not.toBeNull();
     expect(inspection.warnings.count).toBe(1);
     expect(inspection.relationships.childTaskIds).toEqual(["t2", "t3"]);
     expect(inspection.replay.windowHit).toBe(true);
+  });
+
+  it("Inspector counts the active segment for a running task with no closed segments", () => {
+    // Regression: previously a still-running task with only an active
+    // segment reported "Segments: 0" / "Duration: -" while the timeline
+    // canvas was drawing its live bar. The Inspector should reflect
+    // what the renderer shows.
+    const task = makeTask("t1", {
+      state: "running",
+      created_at: 1000,
+      updated_at: 1004,
+      duration_seconds: null,
+    });
+    const inspection = buildTaskInspection({
+      task,
+      segments: [],
+      activeSegment: makeActiveSegment("t1", 1_500_000_000, {
+        segment_type: "run",
+        wall_start: 1001,
+      }),
+    });
+    expect(inspection.timeline.segmentCount).toBe(1);
+    expect(inspection.timeline.runSegmentCount).toBe(1);
+    // Active segment elapsed = updated_at (1004) − wall_start (1001) = 3s.
+    expect(inspection.timeline.totalRunSeconds).toBeCloseTo(3);
+    // Live lifecycle duration = updated_at − created_at = 4s.
+    expect(inspection.lifecycle.durationSeconds).toBeCloseTo(4);
+    expect(inspection.metrics.runRatio).not.toBeNull();
+    expect(inspection.metrics.runRatio).toBeGreaterThan(0);
+  });
+
+  it("Inspector reports null ratios for a completed task with no segments", () => {
+    // Regression: a completed task with a finalized duration but no
+    // closed segments (e.g. the task transitioned CREATED → COMPLETED
+    // before the timeline engine ever opened a segment) used to report
+    // "Run ratio: 0%" / "Wait ratio: 0%" — a fabricated answer. With
+    // no segment data the truthful answer is unknown (null → "—").
+    const task = makeTask("t1", {
+      state: "completed",
+      created_at: 1000,
+      updated_at: 1000.2127,
+      completed_at: 1000.2127,
+      duration_seconds: 0.2127,
+    });
+    const inspection = buildTaskInspection({
+      task,
+      segments: [],
+      activeSegment: null,
+    });
+    expect(inspection.timeline.segmentCount).toBe(0);
+    expect(inspection.lifecycle.durationSeconds).toBeCloseTo(0.2127);
+    expect(inspection.metrics.runRatio).toBeNull();
+    expect(inspection.metrics.waitRatio).toBeNull();
+  });
+
+  it("Inspector still computes a wait-only ratio when only wait segments exist", () => {
+    // Counter-regression: the null-ratio fix must not blank ratios for
+    // tasks whose segments are real but happen to be all wait (or all
+    // run) — the renderer would draw bars and the Inspector must
+    // reflect "0% run / 100% wait".
+    const task = makeTask("t1", {
+      state: "completed",
+      created_at: 0,
+      updated_at: 1,
+      completed_at: 1,
+      duration_seconds: 1,
+    });
+    const inspection = buildTaskInspection({
+      task,
+      segments: [
+        makeSegment("s1", "t1", 0, 1_000_000_000, { segment_type: "wait" }),
+      ],
+      activeSegment: null,
+    });
+    expect(inspection.timeline.segmentCount).toBe(1);
+    expect(inspection.metrics.runRatio).toBeCloseTo(0);
+    expect(inspection.metrics.waitRatio).toBeCloseTo(1);
+  });
+
+  it("Inspector accumulates an active wait segment into wait totals", () => {
+    const task = makeTask("t1", {
+      state: "waiting",
+      created_at: 2000,
+      updated_at: 2005,
+    });
+    const inspection = buildTaskInspection({
+      task,
+      segments: [],
+      activeSegment: makeActiveSegment("t1", 0, {
+        segment_type: "wait",
+        wall_start: 2002,
+        state: "waiting",
+      }),
+    });
+    expect(inspection.timeline.segmentCount).toBe(1);
+    expect(inspection.timeline.waitSegmentCount).toBe(1);
+    expect(inspection.timeline.totalWaitSeconds).toBeCloseTo(3);
+    expect(inspection.timeline.totalRunSeconds).toBe(0);
+    expect(inspection.metrics.waitRatio).toBeGreaterThan(0);
   });
 });

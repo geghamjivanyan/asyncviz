@@ -23,13 +23,18 @@ function ReplayStatusCardImpl({ replay }: ReplayStatusCardProps) {
     : replay.isReplaying
       ? "Replaying"
       : "In window";
-  const detail = `${formatSequence(replay.oldestRetainedSequence)} → ${formatSequence(replay.newestRetainedSequence)}`;
+  const oldest = formatSequence(replay.oldestRetainedSequence);
+  const newest = formatSequence(replay.newestRetainedSequence);
+  const hasRange = replay.oldestRetainedSequence !== null && replay.newestRetainedSequence !== null;
+  const detail = hasRange
+    ? `Buffered events #${oldest}–#${newest}`
+    : "No events buffered yet";
   return (
     <MetricsCard
       id="replay-status"
-      label="Replay"
+      label="Replay buffer"
       intent={intent}
-      value={`${formatSequence(replay.lastSequence)} · ${formatPercent(replay.cursorProgress)}`}
+      value={`Event #${formatSequence(replay.lastSequence)} · ${formatPercent(replay.cursorProgress)}`}
       trailing={
         <MetricsBadge
           intent={intent}

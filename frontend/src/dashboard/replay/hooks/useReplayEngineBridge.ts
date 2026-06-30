@@ -36,6 +36,13 @@ export function useReplayEngineBridge({
 
     const unsubPlayback = bridge.subscribePlayback((snapshot) => {
       setPlayback(snapshot);
+      // The bridge updates its session window synchronously BEFORE
+      // firing playback listeners (see ``WebSocketReplayEngineBridge``).
+      // Pull the freshest window into the store on the same tick — the
+      // bridge contract has no separate window subscription, and
+      // without this the store's window stays at its empty seed and
+      // the SPA renders "No replay recording loaded." forever.
+      setWindow(bridge.getSessionWindow());
       recordReplayTimelineTrace(
         "playback-state-change",
         `${snapshot.state}@${snapshot.lastSequence}`,

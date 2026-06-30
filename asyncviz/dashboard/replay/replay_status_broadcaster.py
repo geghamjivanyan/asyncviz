@@ -92,11 +92,13 @@ class ReplayStatusBroadcaster:
     """
 
     __slots__ = (
+        "_bookmarks",
         "_dashboard_loop",
         "_engine",
         "_interval_seconds",
         "_last_payload_signature",
         "_manager",
+        "_markers",
         "_metadata",
         "_started",
         "_stop_event",
@@ -111,6 +113,8 @@ class ReplayStatusBroadcaster:
         manager: ConnectionManager,
         dashboard_loop: asyncio.AbstractEventLoop,
         interval_seconds: float = 0.5,
+        markers: list[dict[str, Any]] | None = None,
+        bookmarks: list[dict[str, Any]] | None = None,
     ) -> None:
         self._engine = engine
         self._metadata = metadata
@@ -121,6 +125,12 @@ class ReplayStatusBroadcaster:
         self._task: asyncio.Task[None] | None = None
         self._started = False
         self._last_payload_signature: tuple | None = None
+        # Markers + bookmarks are static for the lifetime of a replay
+        # session — derived once at bundle load. Storing them here lets
+        # us include them in every emission cheaply so a late-connecting
+        # client doesn't miss them.
+        self._markers: list[dict[str, Any]] = list(markers or ())
+        self._bookmarks: list[dict[str, Any]] = list(bookmarks or ())
 
     # ── lifecycle ────────────────────────────────────────────────────
     async def start(self) -> None:
@@ -232,6 +242,12 @@ class ReplayStatusBroadcaster:
                 "error_detail": snapshot.error_detail or "",
             },
             "window": window,
+            # Static for the recording — derived once at bundle open. We
+            # ship them with every status emission so late-connecting
+            # clients pick them up without needing a dedicated envelope
+            # type. The frontend bridge de-duplicates by id on apply.
+            "markers": self._markers,
+            "bookmarks": self._bookmarks,
         }
 
     def _derive_window(self, snapshot: Any) -> dict[str, int]:

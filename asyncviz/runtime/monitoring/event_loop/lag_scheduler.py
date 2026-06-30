@@ -146,7 +146,7 @@ class LagScheduler:
                     name="asyncviz-lag-scheduler",
                 )
                 ready.set_result(None)
-            except BaseException as exc:  # noqa: BLE001 — propagate to caller
+            except BaseException as exc:
                 ready.set_exception(exc)
 
         target_loop.call_soon_threadsafe(_create_on_target_loop)

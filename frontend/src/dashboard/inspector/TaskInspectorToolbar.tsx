@@ -59,15 +59,22 @@ function TaskInspectorToolbarImpl({
             data-inspector-tab={kind}
             onClick={() => onSelect(kind)}
             className={cn(
-              "rounded border px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest",
+              "relative rounded border px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-widest transition-colors",
               isActive
-                ? "border-accent text-accent"
-                : "border-transparent text-muted hover:border-line hover:text-text",
+                ? "border-accent bg-accent/15 text-accent"
+                : "border-transparent font-normal text-muted hover:border-line hover:bg-elevated hover:text-text",
             )}
           >
             {PANEL_LABELS[kind]}
             {badge !== undefined && badge > 0 ? (
-              <span className="ml-1 text-warning">{badge}</span>
+              <span
+                className={cn(
+                  "ml-1 rounded px-1 text-[10px]",
+                  isActive ? "bg-warning/20 text-warning" : "text-warning",
+                )}
+              >
+                {badge}
+              </span>
             ) : null}
           </button>
         );

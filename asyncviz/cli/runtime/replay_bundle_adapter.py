@@ -47,6 +47,9 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from asyncviz.dashboard.replay.replay_marker_derivation import (
+    derive_markers_and_bookmarks,
+)
 from asyncviz.replay.format import ReplayFrame
 from asyncviz.replay.loading.replay_snapshot_index import ReplaySnapshotIndex
 from asyncviz.runtime.replay.artifacts.replay_bundle import (
@@ -155,6 +158,19 @@ class RecorderBundleAdapter:
             last_sequence=manifest.last_sequence,
             finalized=manifest.finalized,
         )
+
+    # ── timeline metadata (markers + bookmarks) ──────────────────────
+    def derive_timeline_metadata(self) -> tuple[
+        list[dict[str, Any]],
+        list[dict[str, Any]],
+    ]:
+        """Scan the recording once and return wire-shape markers + bookmarks.
+
+        The scan is single-pass and pure, so it's safe to call once at
+        launcher startup. Cost is proportional to event count; for the
+        typical few-thousand-event recording it's a few ms.
+        """
+        return derive_markers_and_bookmarks(self._bundle.iter_frames())
 
 
 # ── per-line coercion ────────────────────────────────────────────────

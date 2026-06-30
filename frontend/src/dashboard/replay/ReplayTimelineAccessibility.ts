@@ -63,7 +63,9 @@ export function describeBookmarkForAccessibility(
 /** Stable help text for keyboard interaction — appended to the
  *  scrubber's ``aria-describedby`` element. */
 export const REPLAY_KEYBOARD_HELP =
-  "Space to play or pause. Arrow keys to step. Shift plus arrow keys to jump by 5%. " +
+  "Space to play or pause. Arrow keys to step one event. " +
+  "Shift plus arrow keys to jump to the previous or next marker. " +
+  "Control or Command plus arrow keys to jump to the previous or next bookmark. " +
   "Home and End to jump to start or end. M to drop a bookmark. Period to step one frame.";
 
 /** Announce a scrub-end / seek-completed event via an aria-live

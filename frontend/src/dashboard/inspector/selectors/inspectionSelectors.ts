@@ -65,6 +65,23 @@ export function buildLifecycleSummary(
   if (task === null) {
     return EMPTY_TASK_INSPECTION.lifecycle;
   }
+  const terminal = isTerminal(task.state);
+  const finalizedDuration =
+    task.duration_seconds !== null && Number.isFinite(task.duration_seconds)
+      ? task.duration_seconds
+      : null;
+  // Non-terminal tasks never get ``duration_seconds`` from the backend —
+  // it's finalized only on completion. Derive a live duration from the
+  // wall-clock window the task has been alive (created_at → updated_at).
+  // ``updated_at`` advances on every event for the task, so this stays
+  // current as long as the runtime keeps streaming activity.
+  const liveDuration =
+    !terminal &&
+    Number.isFinite(task.created_at) &&
+    Number.isFinite(task.updated_at) &&
+    task.updated_at > task.created_at
+      ? task.updated_at - task.created_at
+      : null;
   return {
     state: normalizeState(task.state),
     createdAtSeconds: Number.isFinite(task.created_at) ? task.created_at : null,
@@ -72,22 +89,31 @@ export function buildLifecycleSummary(
       task.completed_at !== null && Number.isFinite(task.completed_at)
         ? task.completed_at
         : null,
-    durationSeconds:
-      task.duration_seconds !== null && Number.isFinite(task.duration_seconds)
-        ? task.duration_seconds
-        : null,
-    terminal: isTerminal(task.state),
+    durationSeconds: finalizedDuration ?? liveDuration,
+    terminal,
     active,
     transitions,
   };
 }
 
-/** Pure: build the timeline slice. */
+/** Pure: build the timeline slice.
+ *
+ * The summary counts both closed and active segments — anything the
+ * renderer would draw for the task. An open active segment contributes
+ * its live elapsed seconds (sampled against ``nowWallSeconds``, usually
+ * the task's latest ``updated_at``) to the run / wait totals so the
+ * Inspector never reports "Segments: 0" for a task that visibly owns a
+ * bar on the canvas.
+ */
 export function buildTimelineSummary(args: {
   segments: readonly TimelineSegment[];
   activeSegment: ActiveTimelineSegment | null;
+  /** Wall-second reference used to compute the live duration of an
+   *  open active segment. Defaults to no live accumulation. */
+  nowWallSeconds?: number | null;
 }): InspectorTimelineSummary {
   const { segments, activeSegment } = args;
+  const nowWallSeconds = args.nowWallSeconds ?? null;
   let runSegmentCount = 0;
   let waitSegmentCount = 0;
   let totalRunNs = 0;
@@ -105,9 +131,32 @@ export function buildTimelineSummary(args: {
     if (segment.monotonic_start_ns < firstStartNs) firstStartNs = segment.monotonic_start_ns;
     if (segment.monotonic_end_ns > lastEndNs) lastEndNs = segment.monotonic_end_ns;
   }
+  let activeElapsedSeconds = 0;
+  if (activeSegment !== null) {
+    if (
+      nowWallSeconds !== null &&
+      Number.isFinite(nowWallSeconds) &&
+      Number.isFinite(activeSegment.wall_start) &&
+      nowWallSeconds > activeSegment.wall_start
+    ) {
+      activeElapsedSeconds = nowWallSeconds - activeSegment.wall_start;
+    }
+    if (activeSegment.segment_type === "run") {
+      runSegmentCount += 1;
+      totalRunNs += activeElapsedSeconds * 1e9;
+    } else if (activeSegment.segment_type === "wait") {
+      waitSegmentCount += 1;
+      totalWaitNs += activeElapsedSeconds * 1e9;
+    }
+    if (activeSegment.monotonic_start_ns < firstStartNs) {
+      firstStartNs = activeSegment.monotonic_start_ns;
+    }
+    const activeEndNs = activeSegment.monotonic_start_ns + activeElapsedSeconds * 1e9;
+    if (activeEndNs > lastEndNs) lastEndNs = activeEndNs;
+  }
   const recent = segments.slice(-RECENT_SEGMENT_LIMIT);
   return {
-    segmentCount: segments.length,
+    segmentCount: segments.length + (activeSegment !== null ? 1 : 0),
     runSegmentCount,
     waitSegmentCount,
     totalRunSeconds: nsToSeconds(totalRunNs),
@@ -176,10 +225,20 @@ export function buildMetricsSummary(args: {
       : observed > 0
         ? observed
         : null;
+  // Without any closed or active segments we have no signal about how
+  // the task split its lifetime between run and wait. The earlier code
+  // computed ``0 / duration = 0`` and surfaced "Run ratio: 0%" — a
+  // fabricated answer that contradicted the renderer (which simply
+  // drew nothing for the task). Truthful answer: unknown → null.
+  const hasSegmentSignal = timeline.segmentCount > 0;
   const runRatio =
-    denominator !== null && denominator > 0 ? timeline.totalRunSeconds / denominator : null;
+    hasSegmentSignal && denominator !== null && denominator > 0
+      ? timeline.totalRunSeconds / denominator
+      : null;
   const waitRatio =
-    denominator !== null && denominator > 0 ? timeline.totalWaitSeconds / denominator : null;
+    hasSegmentSignal && denominator !== null && denominator > 0
+      ? timeline.totalWaitSeconds / denominator
+      : null;
   let maxDurationNs = 0;
   for (const segment of timeline.recentSegments) {
     if (segment.duration_ns > maxDurationNs) maxDurationNs = segment.duration_ns;
@@ -244,9 +303,18 @@ export function buildTaskInspection(args: BuildInspectionArgs): TaskInspection {
     args.transitions ?? [],
     activeSegment !== null,
   );
+  // Use the task's latest ``updated_at`` as the wall-time anchor for
+  // computing the active segment's live elapsed duration. The store
+  // refreshes ``updated_at`` on every event applied to the task, so it
+  // tracks the live cursor without dragging a clock into the projection.
+  const nowWallSeconds =
+    Number.isFinite(args.task.updated_at) && args.task.updated_at > 0
+      ? args.task.updated_at
+      : null;
   const timeline = buildTimelineSummary({
     segments: args.segments ?? [],
     activeSegment,
+    nowWallSeconds,
   });
   const relationships = buildRelationships(
     args.task,

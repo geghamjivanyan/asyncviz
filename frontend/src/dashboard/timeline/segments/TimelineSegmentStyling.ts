@@ -74,7 +74,9 @@ export function resolveSegmentStyle(args: SegmentStyleArgs): SegmentStyle {
   const style: SegmentStyle = {
     fill,
     stroke: entry.isActive ? segmentActiveStroke(palette) : null,
-    strokeWidth: entry.isActive ? 1 : 0,
+    // Active segments wear a 1.5px halo so the live edge of the
+    // timeline stays glanceable against grid + segment fills.
+    strokeWidth: entry.isActive ? 1.5 : 0,
     texture,
     textureColor: segmentHatchStroke(palette),
     warningStroke: entry.warningSeverity

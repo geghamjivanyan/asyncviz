@@ -147,6 +147,33 @@ describe("filterRows", () => {
     expect(filterRows(rows, { ...DEFAULT_FILTERS, search: "beta_fn" })).toHaveLength(1);
     expect(filterRows(rows, { ...DEFAULT_FILTERS, search: "nope" })).toHaveLength(0);
   });
+
+  it("hides framework tasks under the default filter", () => {
+    const rows = [
+      makeRow({ task_id: "user", coroutine_name: "heartbeat" }),
+      makeRow({
+        task_id: "framework",
+        task_name:
+          "starlette.middleware.base.BaseHTTPMiddleware.__call__.<locals>.call_next.<locals>.coro",
+        coroutine_name: "BaseHTTPMiddleware.__call__.<locals>.call_next.<locals>.coro",
+      }),
+    ];
+    const out = filterRows(rows, DEFAULT_FILTERS);
+    expect(out.map((r) => r.taskId)).toEqual(["user"]);
+  });
+
+  it("includes framework tasks when hideFramework is off", () => {
+    const rows = [
+      makeRow({ task_id: "user", coroutine_name: "heartbeat" }),
+      makeRow({
+        task_id: "framework",
+        task_name:
+          "starlette.middleware.base.BaseHTTPMiddleware.__call__.<locals>.call_next.<locals>.coro",
+      }),
+    ];
+    const out = filterRows(rows, { ...DEFAULT_FILTERS, hideFramework: false });
+    expect(out.map((r) => r.taskId).sort()).toEqual(["framework", "user"]);
+  });
 });
 
 describe("sortRows", () => {

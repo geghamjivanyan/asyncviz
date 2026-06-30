@@ -27,7 +27,15 @@ USER node
 EXPOSE 5173
 HEALTHCHECK --interval=10s --timeout=3s --start-period=15s --retries=5 \
     CMD wget -q --spider http://127.0.0.1:5173/ || exit 1
-CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "5173"]
+# Reconcile node_modules against the live package.json on every start.
+# The compose service mounts a *persistent* named volume on
+# ``/app/node_modules`` (so deps survive container restarts without
+# stomping over the host bind mount). When ``package.json`` adds a new
+# dependency, that named volume becomes stale and Vite fails to resolve
+# the import. ``npm install`` is a fast no-op when the lock file already
+# matches; when it doesn't, it pulls the missing packages into the
+# volume so subsequent dev sessions just work.
+CMD ["sh", "-c", "npm install --no-audit --no-fund --prefer-offline && exec npm run dev -- --host 0.0.0.0 --port 5173"]
 
 # ──────────────────────────────────────────────────────────────────────────────
 FROM node:${NODE_VERSION}-alpine AS builder

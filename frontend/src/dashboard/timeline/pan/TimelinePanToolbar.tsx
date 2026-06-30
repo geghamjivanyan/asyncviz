@@ -23,21 +23,26 @@ function PanButton({
   onClick,
   disabled,
   ariaLabel,
+  description,
   shortcut,
 }: {
   label: string;
   onClick: () => void;
   disabled?: boolean;
   ariaLabel: string;
+  /** Verbose, action-first tooltip body. Prepended before the shortcut. */
+  description?: string;
   shortcut?: string;
 }) {
+  const tooltipBody = description ?? ariaLabel;
+  const title = shortcut ? `${tooltipBody} (${shortcut})` : tooltipBody;
   return (
     <button
       type="button"
       onClick={onClick}
       disabled={disabled}
       aria-label={ariaLabel}
-      title={shortcut ? `${ariaLabel} (${shortcut})` : ariaLabel}
+      title={title}
       className={cn(
         "rounded border border-line bg-canvas px-2 py-1 font-mono text-xs text-text",
         "hover:border-accent hover:text-accent",
@@ -96,6 +101,7 @@ function TimelinePanToolbarImpl({
           label="⏮"
           onClick={onHome}
           ariaLabel="Pan to start"
+          description="Jump to the earliest recorded event"
           shortcut={shortcuts["pan-home"]}
           disabled={state.atMinTime}
         />
@@ -104,6 +110,7 @@ function TimelinePanToolbarImpl({
         label="◀"
         onClick={() => controller.panLeft()}
         ariaLabel="Pan left"
+        description="Pan left — show earlier events"
         shortcut={shortcuts["pan-left"]}
         disabled={state.atMinTime}
       />
@@ -111,6 +118,7 @@ function TimelinePanToolbarImpl({
         label="▶"
         onClick={() => controller.panRight()}
         ariaLabel="Pan right"
+        description="Pan right — show later events"
         shortcut={shortcuts["pan-right"]}
         disabled={state.atMaxTime}
       />
@@ -119,6 +127,7 @@ function TimelinePanToolbarImpl({
           label="⏭"
           onClick={onEnd}
           ariaLabel="Pan to end"
+          description="Jump to the latest recorded event"
           shortcut={shortcuts["pan-end"]}
           disabled={state.atMaxTime}
         />

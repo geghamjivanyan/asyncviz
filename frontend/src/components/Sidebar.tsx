@@ -22,6 +22,28 @@ const STATE_LABEL: Record<TaskLifecycleState, string> = {
   failed: "text-danger",
 };
 
+// Left-edge accent rail per state. Drawn as a border-l-2; using a
+// matching shadow color keeps the row outline glanceable without
+// shifting the row geometry.
+const STATE_RAIL: Record<TaskLifecycleState, string> = {
+  created: "border-line",
+  running: "border-success",
+  waiting: "border-accent",
+  completed: "border-transparent",
+  cancelled: "border-warning",
+  failed: "border-danger",
+};
+
+// Body-label weight per state. Active work pops; terminal work recedes.
+const STATE_LABEL_WEIGHT: Record<TaskLifecycleState, string> = {
+  created: "text-muted",
+  running: "font-semibold text-text",
+  waiting: "text-text",
+  completed: "text-subtle",
+  cancelled: "text-warning",
+  failed: "text-danger",
+};
+
 const TERMINAL_STATES: ReadonlySet<TaskLifecycleState> = new Set([
   "completed",
   "cancelled",
@@ -111,6 +133,7 @@ function TaskRow({
 }) {
   const label = task.task_name || task.coroutine_name || task.task_id.slice(0, 12);
   const isTerminal = TERMINAL_STATES.has(task.state);
+  const isRunning = task.state === "running";
   const duration = task.duration_seconds != null ? formatDuration(task.duration_seconds) : null;
   // 8px per depth level — enough to be readable at any depth without pushing
   // the label off the right edge.
@@ -122,14 +145,20 @@ function TaskRow({
         onClick={onSelect}
         style={{ paddingLeft: `${8 + indentPx}px` }}
         className={cn(
-          "flex w-full items-center gap-2 rounded py-1 pr-2 text-left text-xs",
+          "flex w-full items-center gap-2 rounded border-l-2 py-1 pr-2 text-left text-xs",
+          STATE_RAIL[task.state],
           "hover:bg-elevated",
-          selected && "bg-elevated text-text",
-          !selected && (isTerminal ? "text-subtle" : "text-muted"),
+          selected ? "bg-elevated" : isTerminal ? "opacity-70" : "",
         )}
       >
-        <span className={cn("h-1.5 w-1.5 shrink-0 rounded-full", STATE_DOT[task.state])} />
-        <span className="truncate font-mono">{label}</span>
+        <span
+          className={cn(
+            "shrink-0 rounded-full",
+            isRunning ? "h-2 w-2 animate-pulse" : "h-1.5 w-1.5",
+            STATE_DOT[task.state],
+          )}
+        />
+        <span className={cn("truncate font-mono", STATE_LABEL_WEIGHT[task.state])}>{label}</span>
         {task.child_count > 0 && (
           <span className="shrink-0 font-mono text-[10px] text-subtle">[{task.child_count}]</span>
         )}

@@ -82,18 +82,18 @@ export const TASK_COLUMNS: readonly TaskColumnDefinition[] = [
   },
   {
     id: "children",
-    label: "Kids",
+    label: "Children",
     ariaLabel: "Child count",
     sortable: true,
     align: "right",
-    width: "3.5rem",
+    width: "5.5rem",
   },
   {
     id: "timeline",
     label: "Timeline",
     sortable: false,
     align: "left",
-    width: "4rem",
+    width: "5.5rem",
   },
   {
     id: "warnings",

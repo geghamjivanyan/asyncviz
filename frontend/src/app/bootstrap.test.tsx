@@ -31,8 +31,12 @@ describe("bootstrapApplication", () => {
       ),
     });
     render(<>{tree}</>);
-    // The diagnostics page renders the env-bound websocket URL.
-    expect(screen.getByText(/ws:\/\//i)).toBeInTheDocument();
+    // The diagnostics page renders the "Runtime Diagnostics" section
+    // heading on every mount. (The websocket URL still appears on the
+    // page but lives inside the collapsed Developer Diagnostics
+    // section, so we anchor the smoke test on the always-visible top
+    // section instead.)
+    expect(screen.getByText(/Runtime Diagnostics/i)).toBeInTheDocument();
   });
 
   it("flows the provided config through every consumer", () => {

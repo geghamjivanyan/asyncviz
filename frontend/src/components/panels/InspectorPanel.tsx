@@ -22,12 +22,26 @@ export function InspectorPanel() {
       {task ? (
         <TaskDetails task={task} />
       ) : (
-        <div className="grid h-full place-items-center">
-          <p className="font-mono text-xs text-subtle">
-            {selectedTaskId
-              ? `Task ${selectedTaskId.slice(0, 8)}… is no longer tracked.`
-              : "Select a task to inspect."}
-          </p>
+        <div className="flex h-full flex-col items-center justify-center gap-2 px-6 text-center">
+          {selectedTaskId ? (
+            <>
+              <p className="text-[10px] uppercase tracking-widest text-muted">
+                Task no longer tracked
+              </p>
+              <p className="font-mono text-xs text-subtle">
+                Task {selectedTaskId.slice(0, 8)}… is no longer in the runtime snapshot. Pick
+                another task from the sidebar or the live table.
+              </p>
+            </>
+          ) : (
+            <>
+              <p className="text-[10px] uppercase tracking-widest text-muted">No task selected</p>
+              <p className="font-mono text-xs leading-relaxed text-subtle">
+                Pick a task from the sidebar, the live table, or the timeline to see its lifecycle,
+                timing, parent/child relationships, and any warnings it raised.
+              </p>
+            </>
+          )}
         </div>
       )}
     </PanelShell>

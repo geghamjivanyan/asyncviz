@@ -206,6 +206,7 @@ describe("rowSignature", () => {
       durationSeconds: null,
       isTerminal: false,
       isReplay: false,
+      isFramework: false,
       exceptionType: null,
       exceptionMessage: null,
       cancellationOrigin: null,

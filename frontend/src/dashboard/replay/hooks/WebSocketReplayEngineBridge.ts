@@ -21,6 +21,8 @@ import type { RuntimeEnvelope } from "@/types/runtime";
 import type {
   ReplayBookmark,
   ReplayControlIntent,
+  ReplayMarkerKind,
+  ReplayMarkerSeverity,
   ReplayPlaybackSnapshot,
   ReplayPlaybackState,
   ReplaySessionWindow,
@@ -62,6 +64,40 @@ const KNOWN_STATES: ReadonlySet<ReplayPlaybackState> = new Set<ReplayPlaybackSta
   "failed",
 ]);
 
+const KNOWN_MARKER_KINDS: ReadonlySet<ReplayMarkerKind> = new Set<ReplayMarkerKind>([
+  "warning",
+  "saturation",
+  "blocking",
+  "checkpoint",
+  "bookmark",
+  "annotation",
+]);
+
+const KNOWN_SEVERITIES: ReadonlySet<ReplayMarkerSeverity> = new Set<ReplayMarkerSeverity>([
+  "info",
+  "warning",
+  "critical",
+]);
+
+interface WireMarker {
+  id?: unknown;
+  kind?: unknown;
+  severity?: unknown;
+  sequence?: unknown;
+  monotonic_ns?: unknown;
+  label?: unknown;
+  description?: unknown;
+}
+
+interface WireBookmark {
+  id?: unknown;
+  label?: unknown;
+  sequence?: unknown;
+  monotonic_ns?: unknown;
+  note?: unknown;
+  created_at_ms?: unknown;
+}
+
 interface ReplayStatusPayload {
   recording?: {
     bundle_id?: unknown;
@@ -89,6 +125,8 @@ interface ReplayStatusPayload {
     paused?: unknown;
     error_detail?: unknown;
   };
+  markers?: unknown;
+  bookmarks?: unknown;
 }
 
 export interface WebSocketReplayEngineBridgeOptions {
@@ -107,6 +145,14 @@ export class WebSocketReplayEngineBridge implements ReplayEngineBridge {
   private readonly _bookmarkListeners = new Set<
     (bookmarks: readonly ReplayBookmark[]) => void
   >();
+  /** Marker ids already pushed to listeners — the broadcaster ships
+   *  the full marker array on every replay_status envelope (~2 Hz) so
+   *  consumers don't miss anything after a websocket reconnect, but
+   *  the store action ``appendMarker`` doesn't dedup; we filter here. */
+  private readonly _knownMarkerIds = new Set<string>();
+  /** Snapshot of the last bookmark batch we emitted — used to skip
+   *  fan-out when nothing actually changed across status pings. */
+  private _lastBookmarksSignature = "";
   /** Public so debug tooling can confirm intent-dispatch wired. */
   readonly intents: ReplayControlIntent[] = [];
   private readonly _subscription: { unsubscribe: () => void };
@@ -167,6 +213,8 @@ export class WebSocketReplayEngineBridge implements ReplayEngineBridge {
     this._playbackListeners.clear();
     this._markerListeners.clear();
     this._bookmarkListeners.clear();
+    this._knownMarkerIds.clear();
+    this._lastBookmarksSignature = "";
   }
 
   // ── envelope handler ───────────────────────────────────────────
@@ -194,6 +242,105 @@ export class WebSocketReplayEngineBridge implements ReplayEngineBridge {
         }
       }
     }
+
+    this._applyMarkers(payload.markers);
+    this._applyBookmarks(payload.bookmarks);
+  }
+
+  private _applyMarkers(raw: unknown): void {
+    if (!Array.isArray(raw) || raw.length === 0) return;
+    for (const entry of raw as WireMarker[]) {
+      const marker = this._coerceMarker(entry);
+      if (marker === null) continue;
+      if (this._knownMarkerIds.has(marker.id)) continue;
+      this._knownMarkerIds.add(marker.id);
+      for (const listener of this._markerListeners) {
+        try {
+          listener(marker);
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.error("replay marker listener threw", err);
+        }
+      }
+    }
+  }
+
+  private _applyBookmarks(raw: unknown): void {
+    if (!Array.isArray(raw)) return;
+    const coerced: ReplayBookmark[] = [];
+    for (const entry of raw as WireBookmark[]) {
+      const bookmark = this._coerceBookmark(entry);
+      if (bookmark !== null) coerced.push(bookmark);
+    }
+    // Cheap content-equality check — ids are stable so a sorted-id
+    // concat is enough to skip no-op fan-outs on every status ping.
+    const signature = coerced
+      .map((b) => b.id)
+      .sort()
+      .join("");
+    if (signature === this._lastBookmarksSignature) return;
+    this._lastBookmarksSignature = signature;
+    for (const listener of this._bookmarkListeners) {
+      try {
+        listener(coerced);
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error("replay bookmark listener threw", err);
+      }
+    }
+  }
+
+  private _coerceMarker(raw: WireMarker | null | undefined): ReplayTimelineMarker | null {
+    if (raw === null || typeof raw !== "object") return null;
+    const id = typeof raw.id === "string" ? raw.id : null;
+    const kind = typeof raw.kind === "string" && KNOWN_MARKER_KINDS.has(raw.kind as ReplayMarkerKind)
+      ? (raw.kind as ReplayMarkerKind)
+      : null;
+    const severity = typeof raw.severity === "string"
+      && KNOWN_SEVERITIES.has(raw.severity as ReplayMarkerSeverity)
+      ? (raw.severity as ReplayMarkerSeverity)
+      : null;
+    const sequence = typeof raw.sequence === "number" && Number.isFinite(raw.sequence)
+      ? Math.trunc(raw.sequence)
+      : null;
+    const monotonicNs = typeof raw.monotonic_ns === "number" && Number.isFinite(raw.monotonic_ns)
+      ? Math.trunc(raw.monotonic_ns)
+      : null;
+    const label = typeof raw.label === "string" ? raw.label : null;
+    if (
+      id === null
+      || kind === null
+      || severity === null
+      || sequence === null
+      || monotonicNs === null
+      || label === null
+    ) {
+      return null;
+    }
+    const description = typeof raw.description === "string" && raw.description !== ""
+      ? raw.description
+      : undefined;
+    return { id, kind, severity, sequence, monotonicNs, label, description };
+  }
+
+  private _coerceBookmark(raw: WireBookmark | null | undefined): ReplayBookmark | null {
+    if (raw === null || typeof raw !== "object") return null;
+    const id = typeof raw.id === "string" ? raw.id : null;
+    const label = typeof raw.label === "string" ? raw.label : null;
+    const sequence = typeof raw.sequence === "number" && Number.isFinite(raw.sequence)
+      ? Math.trunc(raw.sequence)
+      : null;
+    const monotonicNs = typeof raw.monotonic_ns === "number" && Number.isFinite(raw.monotonic_ns)
+      ? Math.trunc(raw.monotonic_ns)
+      : null;
+    if (id === null || label === null || sequence === null || monotonicNs === null) {
+      return null;
+    }
+    const createdAtMs = typeof raw.created_at_ms === "number" && Number.isFinite(raw.created_at_ms)
+      ? Math.trunc(raw.created_at_ms)
+      : 0;
+    const note = typeof raw.note === "string" && raw.note !== "" ? raw.note : undefined;
+    return { id, label, sequence, monotonicNs, note, createdAtMs };
   }
 
   private _coerceWindow(

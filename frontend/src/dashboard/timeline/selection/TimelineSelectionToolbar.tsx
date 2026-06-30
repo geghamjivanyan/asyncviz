@@ -20,21 +20,26 @@ function SelectionButton({
   onClick,
   disabled,
   ariaLabel,
+  description,
   shortcut,
 }: {
   label: string;
   onClick: () => void;
   disabled?: boolean;
   ariaLabel: string;
+  /** Verbose, action-first tooltip body. Prepended before the shortcut. */
+  description?: string;
   shortcut?: string;
 }) {
+  const tooltipBody = description ?? ariaLabel;
+  const title = shortcut ? `${tooltipBody} (${shortcut})` : tooltipBody;
   return (
     <button
       type="button"
       onClick={onClick}
       disabled={disabled}
       aria-label={ariaLabel}
-      title={shortcut ? `${ariaLabel} (${shortcut})` : ariaLabel}
+      title={title}
       className={cn(
         "rounded border border-line bg-canvas px-2 py-1 font-mono text-xs text-text",
         "hover:border-accent hover:text-accent",
@@ -83,6 +88,7 @@ function TimelineSelectionToolbarImpl({
         label="↑"
         onClick={() => controller.selectPrevious()}
         ariaLabel="Select previous row"
+        description="Select the previous task row"
         shortcut={shortcuts["select-previous"]}
         disabled={state.rowCount === 0 || (hasSelection && state.atFirst)}
       />
@@ -90,6 +96,7 @@ function TimelineSelectionToolbarImpl({
         label="↓"
         onClick={() => controller.selectNext()}
         ariaLabel="Select next row"
+        description="Select the next task row"
         shortcut={shortcuts["select-next"]}
         disabled={state.rowCount === 0 || (hasSelection && state.atLast)}
       />
@@ -97,6 +104,7 @@ function TimelineSelectionToolbarImpl({
         label="⌂"
         onClick={() => controller.centerOnSelection()}
         ariaLabel="Center on selection"
+        description="Center the timeline on the selected task"
         shortcut={shortcuts["center-selection"]}
         disabled={!hasSelection}
       />
@@ -104,6 +112,7 @@ function TimelineSelectionToolbarImpl({
         label="✕"
         onClick={() => controller.clearSelection("programmatic")}
         ariaLabel="Clear selection"
+        description="Clear the current task selection"
         shortcut={shortcuts["clear-selection"]}
         disabled={!hasSelection}
       />

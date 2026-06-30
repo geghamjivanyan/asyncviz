@@ -5,19 +5,21 @@ build-backend = "hatchling.build"
 [project]
 name = "asyncviz"
 version = "0.1.0"
-description = "Real-time runtime visualization and debugging platform for Python asyncio applications."
+description = "Real-time visualization and diagnostics for Python asyncio applications."
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.12"
-authors = [{ name = "AsyncViz" }]
-maintainers = [{ name = "AsyncViz" }]
+authors = [{ name = "Gegham Jivanyan" }]
+maintainers = [{ name = "Gegham Jivanyan" }]
 keywords = [
     "asyncio",
+    "async",
     "visualization",
     "debugging",
-    "observability",
-    "profiler",
     "diagnostics",
+    "observability",
+    "concurrency",
+    "runtime",
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -31,8 +33,6 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: System :: Monitoring",
     "Typing :: Typed",
-    "Framework :: FastAPI",
-    "Framework :: AsyncIO",
 ]
 
 dependencies = [
@@ -67,11 +67,11 @@ all = [
 asyncviz = "asyncviz.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/asyncviz/asyncviz"
-Documentation = "https://github.com/asyncviz/asyncviz"
-Issues = "https://github.com/asyncviz/asyncviz/issues"
-Source = "https://github.com/asyncviz/asyncviz"
-Changelog = "https://github.com/asyncviz/asyncviz/releases"
+Homepage = "https://github.com/geghamjivanyan/asyncviz"
+Documentation = "https://github.com/geghamjivanyan/asyncviz#readme"
+Issues = "https://github.com/geghamjivanyan/asyncviz/issues"
+Repository = "https://github.com/geghamjivanyan/asyncviz"
+Changelog = "https://github.com/geghamjivanyan/asyncviz/releases"
 
 # ── Hatch build configuration ─────────────────────────────────────────────
 

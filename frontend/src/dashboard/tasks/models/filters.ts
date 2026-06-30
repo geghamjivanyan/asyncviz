@@ -31,6 +31,11 @@ export interface TaskFilterState {
   warningsOnly: boolean;
   /** ``true`` to keep only rows with an open timeline segment. */
   activeOnly: boolean;
+  /** ``true`` to hide tasks that come from framework infrastructure
+   *  (Starlette/Uvicorn/FastAPI middleware, AsyncViz internals, …).
+   *  Defaults to ``true`` so a fresh dashboard surfaces the operator's
+   *  own tasks first; flip it off to inspect the full instrumentation. */
+  hideFramework: boolean;
 }
 
 export const DEFAULT_FILTERS: TaskFilterState = {
@@ -39,6 +44,7 @@ export const DEFAULT_FILTERS: TaskFilterState = {
   hideTerminal: false,
   warningsOnly: false,
   activeOnly: false,
+  hideFramework: true,
 };
 
 /** Pure: ``true`` when the filter state matches every default — used to
@@ -49,6 +55,7 @@ export function isDefaultFilterState(filters: TaskFilterState): boolean {
     filters.search === "" &&
     !filters.hideTerminal &&
     !filters.warningsOnly &&
-    !filters.activeOnly
+    !filters.activeOnly &&
+    filters.hideFramework
   );
 }

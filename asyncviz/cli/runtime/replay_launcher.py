@@ -41,6 +41,9 @@ from asyncviz.cli.output import error, info, log, ok
 from asyncviz.cli.runtime.diagnostics import record_lifecycle_event
 from asyncviz.cli.runtime.replay_bundle_adapter import RecorderBundleAdapter
 from asyncviz.dashboard.replay import DashboardReplaySink
+from asyncviz.dashboard.replay.replay_marker_derivation import (
+    derive_markers_and_bookmarks,
+)
 from asyncviz.dashboard.replay.replay_status_broadcaster import (
     ReplayRecordingMetadata,
     ReplayStatusBroadcaster,
@@ -136,11 +139,18 @@ async def _run_async(
     config: ReplayCliConfig,
 ) -> ReplayLauncherOutcome:
     record_lifecycle_event("replay-open", str(bundle))
-    loader, summary_text, metadata = _open_bundle(bundle, config)
+    loader, summary_text, metadata, markers, bookmarks = _open_bundle(
+        bundle,
+        config,
+    )
     if not config.quiet:
         info(f"recording    {summary_text}")
         info(f"bundle_id    {metadata.bundle_id}")
         info(f"runtime_id   {metadata.runtime_id or '<unknown>'}")
+        info(
+            f"timeline     {len(markers)} markers, "
+            f"{len(bookmarks)} bookmarks",
+        )
 
     # Spin the dashboard. Instrumentation OFF — replay sources its
     # events from the loader, never from a live workload. The browser
@@ -196,6 +206,8 @@ async def _run_async(
             metadata=metadata,
             manager=runtime.services.websocket_manager,
             dashboard_loop=dashboard_loop,
+            markers=markers,
+            bookmarks=bookmarks,
         )
         await broadcaster.start()
 
@@ -253,7 +265,13 @@ async def _run_async(
 def _open_bundle(
     bundle: Path,
     config: ReplayCliConfig,
-) -> tuple[object, str, ReplayRecordingMetadata]:
+) -> tuple[
+    object,
+    str,
+    ReplayRecordingMetadata,
+    list[dict[str, object]],
+    list[dict[str, object]],
+]:
     """Open ``bundle`` through the most compatible reader available.
 
     Prefers :class:`ReplayEventLoader` (the canonical reader for the
@@ -264,9 +282,12 @@ def _open_bundle(
     frames to the dashboard. The fallback is logged at INFO so the
     drift is visible.
 
-    Returns ``(loader_like, summary_text, metadata)``. The metadata
-    travels to the :class:`ReplayStatusBroadcaster` so the SPA can
-    render bundle identity + the session-window bounds.
+    Returns ``(loader_like, summary_text, metadata, markers, bookmarks)``.
+    The metadata + markers + bookmarks travel to
+    :class:`ReplayStatusBroadcaster` so the SPA can render bundle
+    identity, session-window bounds, and timeline annotations without
+    requiring a separate envelope or a record-time mutation of the
+    bundle format.
     """
     loader_config = ReplayLoaderConfig(
         session_dir=bundle,
@@ -289,6 +310,7 @@ def _open_bundle(
             finalized=summary.finalized,
             source_label=str(bundle),
         )
+        markers, bookmarks = _derive_canonical_metadata(canonical)
         return (
             canonical,
             (
@@ -297,6 +319,8 @@ def _open_bundle(
                 f"({summary.snapshot_count} snapshot frames)"
             ),
             metadata,
+            markers,
+            bookmarks,
         )
     except Exception as exc:
         logger.info(
@@ -316,6 +340,7 @@ def _open_bundle(
             finalized=summary.finalized,
             source_label=str(bundle),
         )
+        markers, bookmarks = adapter.derive_timeline_metadata()
         return (
             adapter,
             (
@@ -325,7 +350,31 @@ def _open_bundle(
                 f"[recorder-format bundle]"
             ),
             metadata,
+            markers,
+            bookmarks,
         )
+
+
+def _derive_canonical_metadata(
+    canonical: ReplayEventLoader,
+) -> tuple[list[dict[str, object]], list[dict[str, object]]]:
+    """Project canonical-loader frames into the dict shape the
+    derivation module expects.
+
+    Only ``runtime_event`` frames carry classify-able event types — we
+    skip ``snapshot`` / ``cursor`` frames silently.
+    """
+    projected = (
+        {
+            "sequence": frame.sequence,
+            "monotonic_ns": frame.monotonic_ns,
+            "event_type": frame.payload_type,
+            "payload": frame.payload,
+        }
+        for frame in canonical.iter_frames()
+        if frame.frame_type == "runtime_event"
+    )
+    return derive_markers_and_bookmarks(projected)
 
 
 async def _await_dashboard_loop(

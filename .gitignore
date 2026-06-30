@@ -266,3 +266,5 @@ reports/
 # macOS
 .AppleDouble
 .LSOverride
+
+.claude/*.lock

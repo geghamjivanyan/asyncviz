@@ -19,14 +19,22 @@ import {
 } from "@/dashboard/tasks/models/filters";
 
 export function filterRows(rows: readonly TaskRow[], filters: TaskFilterState): TaskRow[] {
+  // The "default" filter state still hides framework rows — when it
+  // applies, we can skip every other predicate and just run the
+  // framework partition in one pass.
   if (isDefaultFilterState(filters)) {
-    return rows.slice();
+    const out: TaskRow[] = [];
+    for (const row of rows) {
+      if (!row.isFramework) out.push(row);
+    }
+    return out;
   }
   const needle = filters.search.trim().toLowerCase();
   const statuses = filters.statuses;
   const statusSet = statuses === null ? null : new Set(statuses);
   const out: TaskRow[] = [];
   for (const row of rows) {
+    if (filters.hideFramework && row.isFramework) continue;
     if (statusSet !== null && !statusSet.has(row.status)) continue;
     if (filters.hideTerminal && row.isTerminal) continue;
     if (filters.warningsOnly && row.warnings.count === 0) continue;

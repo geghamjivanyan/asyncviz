@@ -403,6 +403,61 @@ def test_engine_timeline_payload_includes_segment_kind(_fresh_clock: RuntimeCloc
     assert TimelineDeltaKind.SPAN_FINALIZED.value in kinds
 
 
+def test_engine_assigns_unique_wire_sequence_per_timeline_envelope(
+    _fresh_clock: RuntimeClock,
+) -> None:
+    """Regression: paired close+open emissions from one transition must reach the
+    wire with distinct sequences. Otherwise the frontend's ``SequenceTracker``
+    drops the second envelope as a duplicate and live activity stops rendering.
+    """
+
+    async def scenario() -> list[Envelope]:
+        loop = asyncio.get_running_loop()
+        engine, manager, _, _, timeline = _build_engine(loop, _fresh_clock)
+        captured: list[Envelope] = []
+
+        async def fake_broadcast(env: Envelope) -> int:
+            captured.append(env)
+            return 1
+
+        manager.broadcast = fake_broadcast  # type: ignore[assignment]
+        engine.start(loop=loop)
+        try:
+            # CREATED → RUNNING → COMPLETED produces one OPEN, then a
+            # close+open pair (run→completed close + finalize), then a
+            # SPAN_FINALIZED — all driven from transitions that share a
+            # causal sequence inside the timeline engine.
+            for seq, target in (
+                (1, TaskState.CREATED),
+                (2, TaskState.RUNNING),
+                (3, TaskState.COMPLETED),
+            ):
+                timeline.apply_transition(
+                    task_id="t1",
+                    target=target,
+                    sequence=seq,
+                    monotonic_ns=seq * 100,
+                    wall_seconds=seq * 0.1,
+                )
+            await asyncio.sleep(0)
+            await asyncio.sleep(0)
+        finally:
+            engine.stop()
+        return captured
+
+    captured = asyncio.run(scenario())
+    timeline_envs = [env for env in captured if env.type == "timeline_delta"]
+    assert timeline_envs, "expected timeline_delta envelopes"
+    sequences = [env.sequence for env in timeline_envs]
+    assert all(seq is not None for seq in sequences), (
+        "every wire envelope must carry a sequence"
+    )
+    assert len(set(sequences)) == len(sequences), (
+        f"duplicate wire sequences would be dropped by the frontend "
+        f"SequenceTracker; got {sequences}"
+    )
+
+
 # ── Engine.emit (manual broadcast path) ───────────────────────────────────
 
 

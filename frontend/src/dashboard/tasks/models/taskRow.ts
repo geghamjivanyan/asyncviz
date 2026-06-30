@@ -22,6 +22,7 @@ import type {
   TaskSnapshot,
   WarningSeverity,
 } from "@/types/runtime";
+import { isFrameworkTask } from "@/dashboard/tasks/models/frameworkTasks";
 
 /**
  * Canonical surface state for the table — wider than
@@ -109,6 +110,10 @@ export interface TaskRow {
   isTerminal: boolean;
   /** Replay hydrated this row but no delta has confirmed it yet. */
   isReplay: boolean;
+  /** ``true`` when this row was created by framework infrastructure
+   *  (Starlette/Uvicorn/FastAPI/AsyncViz internals) rather than the
+   *  operator's own code. Hidden from the default Tasks view. */
+  isFramework: boolean;
   /** Exception type / message — only set on failed rows. */
   exceptionType: string | null;
   exceptionMessage: string | null;
@@ -214,6 +219,7 @@ export function rowSignature(row: Omit<TaskRow, "signature">): string {
     row.isTerminal ? "1" : "0",
     row.isReplay ? "1" : "0",
     row.isOrphaned ? "1" : "0",
+    row.isFramework ? "1" : "0",
     row.exceptionType ?? "",
     row.cancellationOrigin ?? "",
     String(row.warnings.count),
@@ -263,6 +269,10 @@ export function buildTaskRow(inputs: BuildRowInputs): TaskRow {
     durationSeconds: task.duration_seconds,
     isTerminal: TERMINAL_STATES.has(task.state),
     isReplay: inputs.isReplay,
+    isFramework: isFrameworkTask({
+      coroutineName: task.coroutine_name,
+      taskName: task.task_name,
+    }),
     exceptionType: task.exception_type,
     exceptionMessage: task.exception_message,
     cancellationOrigin: task.cancellation_origin,

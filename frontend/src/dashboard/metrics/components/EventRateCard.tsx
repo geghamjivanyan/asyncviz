@@ -20,16 +20,16 @@ export interface EventRateCardProps {
 function EventRateCardImpl({ eventRate }: EventRateCardProps) {
   const intent: Intent =
     eventRate.protocolErrors > 0 ? "danger" : eventRate.staleDropped > 0 ? "warning" : "default";
-  const detail = `applied ${formatCount(eventRate.envelopesApplied)} · stale ${formatCount(
+  const detail = `Applied ${formatCount(eventRate.envelopesApplied)} · Stale ${formatCount(
     eventRate.staleDropped,
-  )} · dup ${formatCount(eventRate.duplicatesDropped)}`;
+  )} · Duplicate ${formatCount(eventRate.duplicatesDropped)}`;
   return (
     <MetricsCard
       id="event-rate"
-      label="Envelopes"
+      label="Runtime events"
       intent={intent}
       value={formatRate(eventRate.envelopesPerSecond)}
-      trailing={<MetricsBadge intent={intent}>frames/s</MetricsBadge>}
+      trailing={<MetricsBadge intent={intent}>events/sec</MetricsBadge>}
       detail={detail}
     />
   );

@@ -22,6 +22,7 @@ import type {
 } from "@/dashboard/timeline/rendering/TimelineLayer";
 import type { TimelineRenderer } from "@/dashboard/timeline/rendering/TimelineRenderer";
 import { useTimelineLiveEngine } from "@/dashboard/timeline/live/hooks/useTimelineLiveEngine";
+import { useActiveSegmentCount } from "@/dashboard/timeline/live/selectors/storeLiveSelectors";
 import { useTimelineVirtualization } from "@/dashboard/timeline/virtualization/hooks/useTimelineVirtualization";
 import { useTimelineScaleEngine } from "@/dashboard/timeline/scaling/hooks/useTimelineScaleEngine";
 import {
@@ -136,12 +137,32 @@ export function TimelineContainer({
   // controller back into the camera so the renderer redraws. The
   // scale engine no-ops on identical keys, so the feedback loop
   // converges immediately.
+  //
+  // The engine emits for both user gestures (zoom / pan / preset) and
+  // our own echoes — every camera-state push flows back into the
+  // engine via setTimeWindow, which re-emits. We track the latest
+  // camera window in a ref so we can recognize the echo and skip
+  // disabling autoFit; otherwise autoFit would flip off the first time
+  // live data lands in the camera, freezing the live-follow behavior.
+  const cameraWindowRef = useRef({
+    start: camera.camera.timeStart,
+    end: camera.camera.timeEnd,
+  });
+  cameraWindowRef.current = {
+    start: camera.camera.timeStart,
+    end: camera.camera.timeEnd,
+  };
   useEffect(() => {
     if (scaleEngine === null) return;
     const unsubscribe = scaleEngine.subscribe(() => {
       const s = scaleEngine.currentScale();
+      const cur = cameraWindowRef.current;
+      const epsilon = Math.max(1e-6, Math.abs(cur.end - cur.start) * 1e-6);
+      const isCameraEcho =
+        Math.abs(s.timeStart - cur.start) <= epsilon &&
+        Math.abs(s.timeEnd - cur.end) <= epsilon;
       camera.fitTo(s.timeStart, s.timeEnd);
-      camera.disableAutoFit();
+      if (!isCameraEcho) camera.disableAutoFit();
     });
     return unsubscribe;
   }, [scaleEngine, camera]);
@@ -293,6 +314,9 @@ export function TimelineContainer({
     timeAt,
   });
 
+  const isEmpty = projection.rows.length === 0;
+  const activeSegmentCount = useActiveSegmentCount();
+
   return (
     <div
       data-timeline-container="true"
@@ -313,23 +337,65 @@ export function TimelineContainer({
         controller={selectionController}
         state={selectionState}
       />
-      <TimelineCanvas
-        camera={camera.camera}
-        dataset={dataset}
-        selectedTaskId={selectedTaskId}
-        cursorTimeSeconds={cursorSeconds}
-        onPointerMove={onPointerMove}
-        onPointerLeave={onPointerLeave}
-        onPointerDown={onPointerDown}
-        onRendererMount={setRenderer}
-        onCanvasMount={onCanvasMount}
-      />
+      <div className="relative flex min-h-0 flex-1">
+        <TimelineLiveBadge activeSegmentCount={activeSegmentCount} />
+        <TimelineCanvas
+          camera={camera.camera}
+          dataset={dataset}
+          selectedTaskId={selectedTaskId}
+          cursorTimeSeconds={cursorSeconds}
+          onPointerMove={onPointerMove}
+          onPointerLeave={onPointerLeave}
+          onPointerDown={onPointerDown}
+          onRendererMount={setRenderer}
+          onCanvasMount={onCanvasMount}
+        />
+        {isEmpty && (
+          <div
+            data-timeline-empty="true"
+            className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-1 px-6 text-center"
+          >
+            <p className="text-[10px] uppercase tracking-widest text-muted">No task activity yet</p>
+            <p className="font-mono text-xs leading-relaxed text-subtle">
+              Task lifecycles will appear here as your asyncio runtime emits events. Each row is a
+              task; each bar is a span of its lifecycle.
+            </p>
+          </div>
+        )}
+      </div>
       <TimelineAccessibleSummary
         projection={projection}
         selectedTaskId={selectedTaskId}
         visibleWindow={virtualization.currentWindow()}
         timeScale={timeScale}
       />
+    </div>
+  );
+}
+
+function TimelineLiveBadge({ activeSegmentCount }: { activeSegmentCount: number }) {
+  const isLive = activeSegmentCount > 0;
+  return (
+    <div
+      data-timeline-live-badge="true"
+      data-live={isLive ? "true" : "false"}
+      role="status"
+      aria-live="polite"
+      className={cn(
+        "pointer-events-none absolute right-3 top-3 z-10",
+        "flex items-center gap-1.5 rounded-full border bg-canvas/85 px-2 py-0.5",
+        "font-mono text-[10px] uppercase tracking-widest backdrop-blur-sm",
+        isLive ? "border-success/60 text-success" : "border-line text-muted",
+      )}
+    >
+      <span
+        aria-hidden="true"
+        className={cn(
+          "h-1.5 w-1.5 rounded-full",
+          isLive ? "animate-pulse bg-success" : "bg-muted",
+        )}
+      />
+      {isLive ? `Live · ${activeSegmentCount} active` : "Idle"}
     </div>
   );
 }

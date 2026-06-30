@@ -31,21 +31,26 @@ function ZoomButton({
   onClick,
   disabled,
   ariaLabel,
+  description,
   shortcut,
 }: {
   label: string;
   onClick: () => void;
   disabled?: boolean;
   ariaLabel: string;
+  /** Verbose, action-first tooltip body. Prepended before the shortcut. */
+  description?: string;
   shortcut?: string;
 }) {
+  const tooltipBody = description ?? ariaLabel;
+  const title = shortcut ? `${tooltipBody} (${shortcut})` : tooltipBody;
   return (
     <button
       type="button"
       onClick={onClick}
       disabled={disabled}
       aria-label={ariaLabel}
-      title={shortcut ? `${ariaLabel} (${shortcut})` : ariaLabel}
+      title={title}
       className={cn(
         "rounded border border-line bg-canvas px-2 py-1 font-mono text-xs text-text",
         "hover:border-accent hover:text-accent",
@@ -99,6 +104,7 @@ function TimelineZoomToolbarImpl({
         onClick={() => controller.zoomOut()}
         disabled={state.atMax}
         ariaLabel="Zoom out"
+        description="Zoom out — show a wider time range"
         shortcut={shortcuts["zoom-out"]}
       />
       <ZoomButton
@@ -106,6 +112,7 @@ function TimelineZoomToolbarImpl({
         onClick={() => controller.zoomIn()}
         disabled={state.atMin}
         ariaLabel="Zoom in"
+        description="Zoom in — focus on a narrower time range"
         shortcut={shortcuts["zoom-in"]}
       />
       {fitAll ? (
@@ -113,6 +120,7 @@ function TimelineZoomToolbarImpl({
           label="Fit"
           onClick={() => controller.zoomToRange(fitAll.startSeconds, fitAll.endSeconds, "fit-all")}
           ariaLabel="Fit timeline to data"
+          description="Fit the visible window to all recorded task activity"
           shortcut={shortcuts["fit-all"]}
         />
       ) : null}
@@ -121,6 +129,7 @@ function TimelineZoomToolbarImpl({
           label="Reset"
           onClick={() => controller.zoomToRange(fitAll.startSeconds, fitAll.endSeconds, "fit-default")}
           ariaLabel="Reset zoom"
+          description="Reset the zoom level to the default view"
           shortcut={shortcuts["zoom-reset"]}
         />
       ) : null}
@@ -132,6 +141,7 @@ function TimelineZoomToolbarImpl({
               label={preset.label ?? preset.kind}
               onClick={() => controller.activatePreset(preset)}
               ariaLabel={`Preset ${preset.kind}`}
+              description={`Apply zoom preset: ${preset.label ?? preset.kind}`}
             />
           ))}
         </div>

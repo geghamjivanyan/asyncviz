@@ -49,16 +49,25 @@ export function TaskToolbar({
         active={filters.activeOnly}
         onClick={() => onFiltersChange({ activeOnly: !filters.activeOnly })}
         label="Active"
+        title="Show only tasks with an open lifecycle segment"
       />
       <ToggleButton
         active={filters.warningsOnly}
         onClick={() => onFiltersChange({ warningsOnly: !filters.warningsOnly })}
         label="Warnings"
+        title="Show only tasks with active warnings"
       />
       <ToggleButton
         active={filters.hideTerminal}
         onClick={() => onFiltersChange({ hideTerminal: !filters.hideTerminal })}
-        label="Hide terminal"
+        label="Hide finished"
+        title="Hide completed, cancelled, and failed tasks"
+      />
+      <ToggleButton
+        active={!filters.hideFramework}
+        onClick={() => onFiltersChange({ hideFramework: !filters.hideFramework })}
+        label="Framework"
+        title="Include framework infrastructure tasks (Starlette / Uvicorn / FastAPI / AsyncViz internals). Hidden by default."
       />
       <button
         type="button"
@@ -78,16 +87,19 @@ function ToggleButton({
   active,
   onClick,
   label,
+  title,
 }: {
   active: boolean;
   onClick: () => void;
   label: string;
+  title?: string;
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
       aria-pressed={active}
+      title={title}
       className={cn(
         "rounded border px-2 py-0.5 font-mono text-xs uppercase tracking-widest",
         active

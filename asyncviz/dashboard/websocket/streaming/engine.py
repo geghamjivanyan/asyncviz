@@ -155,7 +155,17 @@ class RuntimeStreamingEngine:
             logger.warning("timeline delta serialization failed: %s", exc)
             self._metrics.record_subscription_dispatch(failed=True)
             return
-        envelope = timeline_delta_envelope(payload, sequence=delta.sequence)
+        # ``delta.sequence`` is the *causal* sequence of the state-store
+        # change that produced the delta. A single transition fans out
+        # into several ``TimelineDelta`` notifications (close, open,
+        # span_finalized) all sharing that sequence — fine for the
+        # engine's internal cursor, but each wire envelope needs its
+        # OWN sequence because the frontend's ``SequenceTracker`` drops
+        # any envelope whose sequence equals the last accepted one.
+        # Allocate a fresh, globally-monotonic wire sequence per
+        # envelope so paired emissions survive the trip.
+        wire_sequence = self._clock.next_sequence()
+        envelope = timeline_delta_envelope(payload, sequence=wire_sequence)
         self._schedule_broadcast(envelope, kind="timeline")
 
     # ── helpers ─────────────────────────────────────────────────────────

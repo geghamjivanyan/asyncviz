@@ -29,16 +29,20 @@ export const DEFAULT_TIMELINE_PALETTE: TimelineColorPalette = {
   background: "#0b0d10",
   canvas: "#12151b",
   line: "#1f2430",
-  gridMinor: "#181c24",
-  gridMajor: "#1f2430",
+  // Grid sits a tick above the canvas so it suggests rows without
+  // competing with segment fills. Minor ≈ 4% lift, major ≈ 8%.
+  gridMinor: "#15181f",
+  gridMajor: "#1a1f29",
   text: "#d6d9e0",
-  muted: "#7d828c",
-  subtle: "#4f545e",
+  muted: "#5f6470",
+  subtle: "#3f444e",
   accent: "#60a5fa",
-  success: "#4ade80",
+  // Running segments need to pop — bump green saturation; completed
+  // segments collapse onto ``muted`` so they recede behind live work.
+  success: "#22d36b",
   warning: "#facc15",
-  danger: "#f87171",
-  selectionFill: "rgba(96,165,250,0.18)",
+  danger: "#fb6a6a",
+  selectionFill: "rgba(96,165,250,0.22)",
   selectionStroke: "#60a5fa",
   overlayCursor: "rgba(214,217,224,0.32)",
 };

@@ -18,16 +18,16 @@ export interface ThroughputCardProps {
 function ThroughputCardImpl({ throughput }: ThroughputCardProps) {
   const detail =
     throughput.windowSeconds > 0
-      ? `comp ${formatRate(throughput.completionsPerSecond)} · fail ${formatRate(
+      ? `Completed ${formatRate(throughput.completionsPerSecond)} · Failed ${formatRate(
           throughput.failuresPerSecond,
         )}`
       : "Waiting for samples";
   return (
     <MetricsCard
       id="throughput"
-      label="Throughput"
-      value={formatRate(throughput.tasksPerSecond)}
-      trailing={<MetricsBadge intent="accent">tasks/s</MetricsBadge>}
+      label="Task throughput"
+      value={`${formatRate(throughput.tasksPerSecond)}`}
+      trailing={<MetricsBadge intent="accent">tasks/sec</MetricsBadge>}
       detail={detail}
     />
   );
