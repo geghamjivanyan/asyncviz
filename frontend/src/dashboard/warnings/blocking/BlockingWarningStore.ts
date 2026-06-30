@@ -147,9 +147,9 @@ export function reduceEvent(
   }
   const existing = prev.groupsById[payload.group_id];
   if (
-    existing !== undefined
-    && existing.state === payload.state
-    && existing.last_seen_ns === payload.last_seen_ns
+    existing !== undefined &&
+    existing.state === payload.state &&
+    existing.last_seen_ns === payload.last_seen_ns
   ) {
     return {
       kind: "duplicate",
@@ -328,10 +328,11 @@ export function countActiveBySeverity(
  * websocket bridge. Used by the live-update hook so the wire list
  * stays a single source of truth.
  */
-export const BLOCKING_WARNING_EVENT_TYPES: ReadonlyArray<`runtime.warnings.blocking.${BlockingWarningTransition}`> = [
-  "runtime.warnings.blocking.opened",
-  "runtime.warnings.blocking.escalated",
-  "runtime.warnings.blocking.active",
-  "runtime.warnings.blocking.recovered",
-  "runtime.warnings.blocking.expired",
-];
+export const BLOCKING_WARNING_EVENT_TYPES: ReadonlyArray<`runtime.warnings.blocking.${BlockingWarningTransition}`> =
+  [
+    "runtime.warnings.blocking.opened",
+    "runtime.warnings.blocking.escalated",
+    "runtime.warnings.blocking.active",
+    "runtime.warnings.blocking.recovered",
+    "runtime.warnings.blocking.expired",
+  ];

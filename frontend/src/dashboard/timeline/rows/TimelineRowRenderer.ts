@@ -23,14 +23,8 @@
  * fields populated by :func:`projectTimeline`.
  */
 
-import type {
-  RenderContext,
-  TimelineLayer,
-} from "@/dashboard/timeline/rendering/TimelineLayer";
-import {
-  rowBackgroundFill,
-  rowSeparatorStroke,
-} from "@/dashboard/timeline/rows/TimelineRowColors";
+import type { RenderContext, TimelineLayer } from "@/dashboard/timeline/rendering/TimelineLayer";
+import { rowBackgroundFill, rowSeparatorStroke } from "@/dashboard/timeline/rows/TimelineRowColors";
 import {
   TimelineRowLayout,
   type TimelineRowLayoutOptions,
@@ -166,8 +160,7 @@ export class TimelineRowRenderer {
     const { ctx, coords, palette, scene } = context;
     if (scene.rows.length === 0) return;
 
-    const frameStart =
-      typeof performance !== "undefined" ? performance.now() : Date.now();
+    const frameStart = typeof performance !== "undefined" ? performance.now() : Date.now();
     const layoutSnapshot = this.layout.resolve(coords);
     const viewportWidth = coords.viewport.cssWidth;
     const rowStart = coords.camera.rowStart;
@@ -178,7 +171,14 @@ export class TimelineRowRenderer {
     for (const raw of scene.rows) {
       const row = normalizeRow(raw);
       const rowTopY = (row.rowIndex - rowStart) * rowHeight;
-      this.paintRowBackground({ ctx, palette, layout: layoutSnapshot, row, rowTopY, viewportWidth });
+      this.paintRowBackground({
+        ctx,
+        palette,
+        layout: layoutSnapshot,
+        row,
+        rowTopY,
+        viewportWidth,
+      });
       this.decorators.render({ ctx, palette, layout: layoutSnapshot, rowTopY, viewportWidth, row });
       renderRowWarnings({
         ctx,
@@ -194,8 +194,7 @@ export class TimelineRowRenderer {
       visibleRowCount += 1;
     }
 
-    const frameEnd =
-      typeof performance !== "undefined" ? performance.now() : Date.now();
+    const frameEnd = typeof performance !== "undefined" ? performance.now() : Date.now();
     this.metrics.recordFrame({
       durationMs: frameEnd - frameStart,
       visibleRows: visibleRowCount,

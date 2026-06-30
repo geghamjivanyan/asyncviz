@@ -44,7 +44,8 @@ export function useTimelineRowProjection(
     const inputs: TimelineRowProjectionInputs = {
       tasksById,
       activeWarnings,
-      replay: focusedReplayTaskId === null ? null : { sequence, focusedTaskId: focusedReplayTaskId },
+      replay:
+        focusedReplayTaskId === null ? null : { sequence, focusedTaskId: focusedReplayTaskId },
       sequence,
     };
     const start = typeof performance !== "undefined" ? performance.now() : Date.now();

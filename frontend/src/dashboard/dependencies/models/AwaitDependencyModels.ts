@@ -20,17 +20,9 @@
 
 export type AwaitNodeKind = "task" | "gather";
 
-export type AwaitNodeState =
-  | "pending"
-  | "running"
-  | "completed"
-  | "cancelled"
-  | "failed";
+export type AwaitNodeState = "pending" | "running" | "completed" | "cancelled" | "failed";
 
-export type AwaitEdgeKind =
-  | "awaits"
-  | "fanout"
-  | "cancellation";
+export type AwaitEdgeKind = "awaits" | "fanout" | "cancellation";
 
 // ── wire-shape: gather event payloads ───────────────────────────────────
 

@@ -25,18 +25,12 @@ export function useSemaphoreRecords(): ReadonlyArray<SemaphoreRecord> {
 
 export function useSemaphoreContentionViews(): ReadonlyArray<SemaphoreContentionView> {
   const records = useSemaphoreRecords();
-  return useMemo(
-    () => projectSemaphoreContention({ records }).views,
-    [records],
-  );
+  return useMemo(() => projectSemaphoreContention({ records }).views, [records]);
 }
 
 export function useSemaphoreContentionViewsBySeverity(): ReadonlyArray<SemaphoreContentionView> {
   const records = useSemaphoreRecords();
-  return useMemo(
-    () => projectSemaphoreContention({ records }).bySeverityDescending,
-    [records],
-  );
+  return useMemo(() => projectSemaphoreContention({ records }).bySeverityDescending, [records]);
 }
 
 export function useSelectedSemaphoreView(): SemaphoreContentionView | null {

@@ -26,7 +26,11 @@ function BlockingWarningReplayBadgeImpl({
   const phase = useConnectionPhase();
   if (status === "error") {
     return (
-      <Badge intent="danger" aria-label={`Hydration error: ${errorMessage ?? "unknown"}`} className={className}>
+      <Badge
+        intent="danger"
+        aria-label={`Hydration error: ${errorMessage ?? "unknown"}`}
+        className={className}
+      >
         Error
       </Badge>
     );

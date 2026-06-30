@@ -27,12 +27,10 @@ function AwaitDependencyDiagnosticsImpl({
   className,
 }: AwaitDependencyDiagnosticsProps): JSX.Element {
   const stats = useAwaitDependencyStats();
-  const [panelSnap, setPanelSnap] = useState<AwaitDependencyMetricsSnapshot>(
-    () => getAwaitDependencyPanelMetrics().snapshot(),
+  const [panelSnap, setPanelSnap] = useState<AwaitDependencyMetricsSnapshot>(() =>
+    getAwaitDependencyPanelMetrics().snapshot(),
   );
-  const [tracingEnabled, setTracingEnabled] = useState(
-    isAwaitDependencyTraceEnabled(),
-  );
+  const [tracingEnabled, setTracingEnabled] = useState(isAwaitDependencyTraceEnabled());
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -90,12 +88,8 @@ function AwaitDependencyDiagnosticsImpl({
           <ul>
             {trace.slice(-32).map((entry, idx) => (
               <li key={`${entry.at}-${idx}`}>
-                <span className="await-dependency-diagnostics__trace-kind">
-                  {entry.kind}
-                </span>
-                <span className="await-dependency-diagnostics__trace-detail">
-                  {entry.detail}
-                </span>
+                <span className="await-dependency-diagnostics__trace-kind">{entry.kind}</span>
+                <span className="await-dependency-diagnostics__trace-detail">{entry.detail}</span>
               </li>
             ))}
           </ul>

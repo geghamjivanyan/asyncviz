@@ -8,7 +8,10 @@
  * :func:`makePreset`.
  */
 
-import type { ZoomPreset, ZoomPresetKind } from "@/dashboard/timeline/zoom/models/TimelineZoomModels";
+import type {
+  ZoomPreset,
+  ZoomPresetKind,
+} from "@/dashboard/timeline/zoom/models/TimelineZoomModels";
 
 export interface PresetSourceContext {
   /** Range covered by every dataset segment + task. */
@@ -45,7 +48,14 @@ export function makePreset(
 export function resolvePresets(context: PresetSourceContext): ZoomPreset[] {
   const out: ZoomPreset[] = [];
   if (context.dataRange) {
-    out.push(makePreset("fit-all", context.dataRange.startSeconds, context.dataRange.endSeconds, "Fit all"));
+    out.push(
+      makePreset(
+        "fit-all",
+        context.dataRange.startSeconds,
+        context.dataRange.endSeconds,
+        "Fit all",
+      ),
+    );
   }
   if (context.selectionRange) {
     out.push(
@@ -91,6 +101,9 @@ export function resolvePresets(context: PresetSourceContext): ZoomPreset[] {
 }
 
 /** Pure: find a preset by kind. */
-export function findPreset(presets: readonly ZoomPreset[], kind: ZoomPresetKind): ZoomPreset | null {
+export function findPreset(
+  presets: readonly ZoomPreset[],
+  kind: ZoomPresetKind,
+): ZoomPreset | null {
   return presets.find((preset) => preset.kind === kind) ?? null;
 }

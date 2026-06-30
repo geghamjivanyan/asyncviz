@@ -12,10 +12,7 @@
  * the active scale.
  */
 
-import {
-  formatTickLabel,
-  pickTickInterval,
-} from "@/dashboard/timeline/utils/ticks";
+import { formatTickLabel, pickTickInterval } from "@/dashboard/timeline/utils/ticks";
 import type { TimelineTimeScale } from "@/dashboard/timeline/scaling/TimelineTimeScale";
 import type {
   TimelineScaleTick,
@@ -52,11 +49,7 @@ export function generateTicks(
   const ticks: TimelineScaleTick[] = [];
 
   const firstMinor = Math.ceil(scale.timeStart / minorInterval) * minorInterval;
-  for (
-    let t = firstMinor, i = 0;
-    t <= scale.timeEnd && i < maxTicks;
-    t += minorInterval, i += 1
-  ) {
+  for (let t = firstMinor, i = 0; t <= scale.timeEnd && i < maxTicks; t += minorInterval, i += 1) {
     // Round the candidate to the nearest minor step to keep floating-
     // point drift from accumulating across many additions.
     const rounded = Math.round(t / minorInterval) * minorInterval;

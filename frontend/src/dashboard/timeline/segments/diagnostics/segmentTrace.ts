@@ -9,14 +9,7 @@
 const CAPACITY = 256;
 
 export type SegmentTraceKind =
-  | "frame"
-  | "projection"
-  | "hit"
-  | "cull"
-  | "overlap"
-  | "geometry"
-  | "warning"
-  | "selection";
+  "frame" | "projection" | "hit" | "cull" | "overlap" | "geometry" | "warning" | "selection";
 
 export interface SegmentTraceEntry {
   kind: SegmentTraceKind;

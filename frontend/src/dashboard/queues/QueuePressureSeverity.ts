@@ -48,10 +48,7 @@ export function deriveSeverity(
 }
 
 /** Stable severity ordering for sorts (``critical`` before ``warning``). */
-export function compareSeverityDesc(
-  a: QueuePressureSeverity,
-  b: QueuePressureSeverity,
-): number {
+export function compareSeverityDesc(a: QueuePressureSeverity, b: QueuePressureSeverity): number {
   return SEVERITY_RANK[b] - SEVERITY_RANK[a];
 }
 

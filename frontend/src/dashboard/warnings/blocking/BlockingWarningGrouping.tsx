@@ -34,16 +34,10 @@ function BlockingWarningGroupingImpl({
       data-testid={`blocking-warning-section-${id}`}
     >
       <header className="flex items-center gap-2">
-        <h3
-          id={id}
-          className="font-mono text-xs uppercase tracking-wider text-subtle"
-        >
+        <h3 id={id} className="font-mono text-xs uppercase tracking-wider text-subtle">
           {title}
         </h3>
-        <span
-          className="font-mono text-xs text-text"
-          aria-label={`${count} warnings in ${title}`}
-        >
+        <span className="font-mono text-xs text-text" aria-label={`${count} warnings in ${title}`}>
           {count}
         </span>
       </header>

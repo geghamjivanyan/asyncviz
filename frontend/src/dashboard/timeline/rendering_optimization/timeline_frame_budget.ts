@@ -96,10 +96,7 @@ export class TimelineFrameBudget {
     } else {
       this.underBudgetStreak += 1;
       this.overBudgetStreak = 0;
-      if (
-        this.underBudgetStreak >= this.config.restoreAfterFrames &&
-        this.degradationStep > 0
-      ) {
+      if (this.underBudgetStreak >= this.config.restoreAfterFrames && this.degradationStep > 0) {
         this.degradationStep -= 1;
         this.restoreTransitions += 1;
         this.underBudgetStreak = 0;
@@ -124,8 +121,7 @@ export class TimelineFrameBudget {
       framesOverHard: this.framesOverHard,
       degradeTransitions: this.degradeTransitions,
       restoreTransitions: this.restoreTransitions,
-      meanFrameMs:
-        this.framesObserved > 0 ? this.durationSumMs / this.framesObserved : 0,
+      meanFrameMs: this.framesObserved > 0 ? this.durationSumMs / this.framesObserved : 0,
       maxFrameMs: this.maxFrameMs,
     };
   }

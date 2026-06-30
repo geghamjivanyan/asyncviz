@@ -20,9 +20,9 @@ describe("render integrity", () => {
   });
 
   it("flags non-positive dimensions", () => {
-    expect(
-      checkDirtyRegion({ x: 0, y: 0, width: 0, height: 1, reason: "data" })?.kind,
-    ).toBe("negative-region");
+    expect(checkDirtyRegion({ x: 0, y: 0, width: 0, height: 1, reason: "data" })?.kind).toBe(
+      "negative-region",
+    );
   });
 
   it("flags duplicate pass ids", () => {

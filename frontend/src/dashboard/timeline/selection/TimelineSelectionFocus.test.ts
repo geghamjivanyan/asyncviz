@@ -15,12 +15,12 @@ describe("selection focus", () => {
   });
 
   it("selectionAtLeastPartiallyVisible detects any overlap", () => {
-    expect(
-      selectionAtLeastPartiallyVisible(selection, { startSeconds: 0, endSeconds: 6 }),
-    ).toBe(true);
-    expect(
-      selectionAtLeastPartiallyVisible(selection, { startSeconds: 10, endSeconds: 20 }),
-    ).toBe(false);
+    expect(selectionAtLeastPartiallyVisible(selection, { startSeconds: 0, endSeconds: 6 })).toBe(
+      true,
+    );
+    expect(selectionAtLeastPartiallyVisible(selection, { startSeconds: 10, endSeconds: 20 })).toBe(
+      false,
+    );
   });
 
   it("centerWindowOnSelection centers the supplied duration", () => {

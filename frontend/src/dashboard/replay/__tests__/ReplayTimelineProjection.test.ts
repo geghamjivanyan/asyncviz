@@ -77,17 +77,12 @@ describe("bucketMarkers", () => {
     expect(buckets).toHaveLength(10);
     const total = buckets.reduce((sum, b) => sum + b.markerCount, 0);
     expect(total).toBe(3);
-    const critical = buckets.reduce(
-      (sum, b) => sum + b.severityCount.critical,
-      0,
-    );
+    const critical = buckets.reduce((sum, b) => sum + b.severityCount.critical, 0);
     expect(critical).toBe(1);
   });
   it("returns empty for zero bucketCount or empty window", () => {
     expect(bucketMarkers([marker(1)], window, 0)).toEqual([]);
-    expect(
-      bucketMarkers([marker(1)], { ...window, maxSequence: 0 }, 4),
-    ).toEqual([]);
+    expect(bucketMarkers([marker(1)], { ...window, maxSequence: 0 }, 4)).toEqual([]);
   });
 });
 

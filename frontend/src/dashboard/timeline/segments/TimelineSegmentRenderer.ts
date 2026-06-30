@@ -20,10 +20,7 @@
  * :func:`projectTimeline`.
  */
 
-import type {
-  RenderContext,
-  TimelineLayer,
-} from "@/dashboard/timeline/rendering/TimelineLayer";
+import type { RenderContext, TimelineLayer } from "@/dashboard/timeline/rendering/TimelineLayer";
 import { defaultSegmentDecorators } from "@/dashboard/timeline/segments/TimelineSegmentDecorators";
 import type { SegmentDecoratorRegistry } from "@/dashboard/timeline/segments/TimelineSegmentDecorators";
 import {
@@ -126,8 +123,7 @@ export class TimelineSegmentRenderer implements TimelineLayer {
     const { ctx, coords, palette, scene } = context;
     if (scene.segments.length === 0) return;
 
-    const frameStart =
-      typeof performance !== "undefined" ? performance.now() : Date.now();
+    const frameStart = typeof performance !== "undefined" ? performance.now() : Date.now();
 
     // Sync the timeline column from the row layout if one is bound,
     // so segments stay aligned with the label gutter on resize.
@@ -207,8 +203,7 @@ export class TimelineSegmentRenderer implements TimelineLayer {
       evictions: this.geometryCache.evictions(),
     });
 
-    const frameEnd =
-      typeof performance !== "undefined" ? performance.now() : Date.now();
+    const frameEnd = typeof performance !== "undefined" ? performance.now() : Date.now();
     this.metrics.recordFrame({
       durationMs: frameEnd - frameStart,
       visibleSegments: visible,

@@ -18,9 +18,7 @@ export function describeNodeForAccessibility(view: AwaitNodeView): string {
     stateLabel(view.state).toLowerCase(),
   ];
   if (view.kind === "gather") {
-    pieces.push(
-      `${view.completedCount}/${view.childCount} children completed`,
-    );
+    pieces.push(`${view.completedCount}/${view.childCount} children completed`);
     if (view.cancelledCount > 0) pieces.push(`${view.cancelledCount} cancelled`);
     if (view.failedCount > 0) pieces.push(`${view.failedCount} failed`);
     if (view.exceptionType !== null) {

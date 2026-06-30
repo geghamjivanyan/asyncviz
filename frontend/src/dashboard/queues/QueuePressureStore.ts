@@ -90,9 +90,7 @@ interface HydrationResult {
   queueIds: string[];
 }
 
-export function reduceHydration(
-  snapshot: QueueMetricsHydrationResponse,
-): HydrationResult {
+export function reduceHydration(snapshot: QueueMetricsHydrationResponse): HydrationResult {
   const recordsById: Record<string, QueueMetricsRecord> = {};
   const queueIds: string[] = [];
   for (const record of snapshot.queues) {
@@ -297,19 +295,12 @@ function applySaturation(
     pressure: {
       ...existing.pressure,
       saturated: true,
-      saturation_ratio: Math.max(
-        existing.pressure.saturation_ratio,
-        payload.occupancy_ratio,
-      ),
+      saturation_ratio: Math.max(existing.pressure.saturation_ratio, payload.occupancy_ratio),
     },
   };
 }
 
-function scaffoldRecord(
-  queueId: string,
-  queueKind: string,
-  maxsize: number,
-): QueueMetricsRecord {
+function scaffoldRecord(queueId: string, queueKind: string, maxsize: number): QueueMetricsRecord {
   return {
     queue_id: queueId,
     queue_kind: queueKind,
@@ -418,16 +409,14 @@ export const useQueuePressureStore = create<QueuePressureStoreState>((set, get) 
     // from ``performance.now`` for marker ordering. The real monotonic
     // value gets backfilled by the websocket bridge.
     const monotonicNs =
-      typeof performance !== "undefined" ? Math.floor(performance.now() * 1_000_000) : Date.now() * 1_000_000;
+      typeof performance !== "undefined"
+        ? Math.floor(performance.now() * 1_000_000)
+        : Date.now() * 1_000_000;
     const marker = markerFromPayload(payload, monotonicNs);
     const queueIds =
       payload.queue_id in records ? state.queueIds : [...state.queueIds, payload.queue_id];
     if (marker !== null) {
-      const { next: markers, evicted } = appendMarker(
-        state.markers,
-        marker,
-        state.markerCapacity,
-      );
+      const { next: markers, evicted } = appendMarker(state.markers, marker, state.markerCapacity);
       set((s) => ({
         recordsById: reduced,
         queueIds,

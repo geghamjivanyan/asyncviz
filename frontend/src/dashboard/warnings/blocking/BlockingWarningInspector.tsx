@@ -34,19 +34,14 @@ function BlockingWarningInspectorImpl({
     >
       <BlockingWarningLifecycleSummary view={view} />
       {view.taskName !== null || view.coroutineName !== null ? (
-        <dl
-          className="flex flex-wrap gap-4 text-xs font-mono"
-          aria-label="Correlated task"
-        >
+        <dl className="flex flex-wrap gap-4 text-xs font-mono" aria-label="Correlated task">
           {view.taskName !== null && (
             <div className="flex flex-col">
               <dt className="text-subtle uppercase tracking-wider text-[10px]">Task</dt>
               <dd>
                 <button
                   type="button"
-                  onClick={() =>
-                    view.taskId !== null && onSelectTask?.(view.taskId)
-                  }
+                  onClick={() => view.taskId !== null && onSelectTask?.(view.taskId)}
                   className="text-accent hover:underline"
                   aria-label={`Focus task ${view.taskName}`}
                   data-testid="blocking-warning-task-link"

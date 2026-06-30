@@ -19,7 +19,10 @@ import type { TimelineColorPalette } from "@/dashboard/timeline/rendering/Timeli
 import { rowLabelText, rowSecondaryText } from "@/dashboard/timeline/rows/TimelineRowColors";
 import type { TimelineRowLayoutSnapshot } from "@/dashboard/timeline/rows/TimelineRowLayout";
 import type { TimelineRowProjectionEntry } from "@/dashboard/timeline/rows/models/TimelineRowModels";
-import { TimelineRowTextCache, type CachedLabel } from "@/dashboard/timeline/rows/TimelineRowCaching";
+import {
+  TimelineRowTextCache,
+  type CachedLabel,
+} from "@/dashboard/timeline/rows/TimelineRowCaching";
 import type { TimelineRowMetrics } from "@/dashboard/timeline/rows/TimelineRowMetrics";
 
 export interface RowLabelRendererOptions {

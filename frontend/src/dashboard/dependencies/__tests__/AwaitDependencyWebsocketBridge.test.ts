@@ -23,9 +23,7 @@ beforeEach(() => {
 
 describe("gatherPayloadFromEnvelope", () => {
   it("returns null for non-gather event_type", () => {
-    expect(
-      gatherPayloadFromEnvelope(envelope({ event_type: "asyncio.task.created" })),
-    ).toBeNull();
+    expect(gatherPayloadFromEnvelope(envelope({ event_type: "asyncio.task.created" }))).toBeNull();
   });
 
   it("returns the payload for matching event_type", () => {
@@ -42,10 +40,7 @@ describe("makeAwaitDependencySubscribeFactory", () => {
   it("forwards matching envelopes to apply", () => {
     const listeners: Array<(envelope: RuntimeEnvelope) => void> = [];
     const source = {
-      subscribe(
-        _filter: "runtime_event",
-        listener: (envelope: RuntimeEnvelope) => void,
-      ) {
+      subscribe(_filter: "runtime_event", listener: (envelope: RuntimeEnvelope) => void) {
         listeners.push(listener);
         return { unsubscribe: () => {} };
       },
@@ -60,10 +55,7 @@ describe("makeAwaitDependencySubscribeFactory", () => {
   it("skips non-gather envelopes", () => {
     const listeners: Array<(envelope: RuntimeEnvelope) => void> = [];
     const source = {
-      subscribe(
-        _filter: "runtime_event",
-        listener: (envelope: RuntimeEnvelope) => void,
-      ) {
+      subscribe(_filter: "runtime_event", listener: (envelope: RuntimeEnvelope) => void) {
         listeners.push(listener);
         return { unsubscribe: () => {} };
       },
@@ -77,10 +69,7 @@ describe("makeAwaitDependencySubscribeFactory", () => {
   it("integrates end-to-end with the store via apply", () => {
     const listeners: Array<(envelope: RuntimeEnvelope) => void> = [];
     const source = {
-      subscribe(
-        _filter: "runtime_event",
-        listener: (envelope: RuntimeEnvelope) => void,
-      ) {
+      subscribe(_filter: "runtime_event", listener: (envelope: RuntimeEnvelope) => void) {
         listeners.push(listener);
         return { unsubscribe: () => {} };
       },
@@ -88,11 +77,7 @@ describe("makeAwaitDependencySubscribeFactory", () => {
     makeAwaitDependencySubscribeFactory(source)((payload) =>
       useAwaitDependencyStore.getState().applyEventPayload(payload),
     );
-    listeners[0](
-      envelope(
-        makeGatherCreated({ gather_id: "g-1", child_task_ids: ["t-a"] }),
-      ),
-    );
+    listeners[0](envelope(makeGatherCreated({ gather_id: "g-1", child_task_ids: ["t-a"] })));
     listeners[0](envelope(makeGatherCompleted({ gather_id: "g-1" })));
     const state = useAwaitDependencyStore.getState();
     expect(state.nodesById["g-1"]?.state).toBe("completed");

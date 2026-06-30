@@ -95,9 +95,7 @@ export interface MarkerProjectionInputs {
   limit?: number;
 }
 
-export function projectMarkersInWindow(
-  inputs: MarkerProjectionInputs,
-): ExecutorActivityMarker[] {
+export function projectMarkersInWindow(inputs: MarkerProjectionInputs): ExecutorActivityMarker[] {
   const { markers, startNs, endNs, limit } = inputs;
   if (markers.length === 0) return [];
   const out: ExecutorActivityMarker[] = [];

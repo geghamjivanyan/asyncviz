@@ -3,10 +3,7 @@
  * backend wire shape so projection logic exercises the real path.
  */
 
-import type {
-  ActiveTimelineSegment,
-  TimelineSegment,
-} from "@/types/runtime";
+import type { ActiveTimelineSegment, TimelineSegment } from "@/types/runtime";
 import type {
   TimelineRenderSegment,
   TimelineSegmentLifecycleState,

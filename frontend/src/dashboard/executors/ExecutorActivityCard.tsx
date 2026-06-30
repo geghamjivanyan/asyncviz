@@ -65,9 +65,7 @@ function ExecutorActivityCardImpl({
       <div className="executor-activity-card__header">
         <span className="executor-activity-card__name">{view.displayName}</span>
         <span className="executor-activity-card__kind">{view.executorKind}</span>
-        <span className="executor-activity-card__severity">
-          {severityLabel(view.severity)}
-        </span>
+        <span className="executor-activity-card__severity">{severityLabel(view.severity)}</span>
       </div>
       <div className="executor-activity-card__row">
         <span className="executor-activity-card__metric">
@@ -75,9 +73,7 @@ function ExecutorActivityCardImpl({
           <span className="executor-activity-card__metric-value">
             {view.activeWorkers}
             {view.maxWorkers !== null && (
-              <span className="executor-activity-card__metric-divisor">
-                /{view.maxWorkers}
-              </span>
+              <span className="executor-activity-card__metric-divisor">/{view.maxWorkers}</span>
             )}
           </span>
         </span>

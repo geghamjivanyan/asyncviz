@@ -30,10 +30,16 @@
 import type { RuntimeEnvelope } from "@/types/runtime";
 import type { TimelineRenderer } from "@/dashboard/timeline/rendering/TimelineRenderer";
 import { TimelineInvalidationTracker } from "@/dashboard/timeline/live/TimelineInvalidation";
-import { TimelineUpdateBatcher, type BatchingOptions } from "@/dashboard/timeline/live/TimelineUpdateBatching";
+import {
+  TimelineUpdateBatcher,
+  type BatchingOptions,
+} from "@/dashboard/timeline/live/TimelineUpdateBatching";
 import { TimelineDeltaProcessor } from "@/dashboard/timeline/live/TimelineDeltaProcessor";
 import { TimelineReplayCoordinator } from "@/dashboard/timeline/live/TimelineReplayCoordinator";
-import { TimelineAnimationClock, type AnimationClockOptions } from "@/dashboard/timeline/live/TimelineAnimationClock";
+import {
+  TimelineAnimationClock,
+  type AnimationClockOptions,
+} from "@/dashboard/timeline/live/TimelineAnimationClock";
 import {
   TimelineFrameScheduler,
   type FrameSchedulerOptions,
@@ -113,7 +119,9 @@ export class TimelineLiveEngine {
     if (this.disposed) return;
     const result = this.processor.process(envelope, this.tracker);
     this.metrics.recordEnvelope(result.suppressed);
-    traceEnvelope(`type=${envelope.type} suppressed=${result.suppressed} regions=${result.regionsPushed}`);
+    traceEnvelope(
+      `type=${envelope.type} suppressed=${result.suppressed} regions=${result.regionsPushed}`,
+    );
     if (this.replayCoordinator.currentMode() !== "replay") {
       this.metrics.recordLiveEnvelope();
     }
@@ -202,8 +210,7 @@ export class TimelineLiveEngine {
       this.metrics.recordFlushSkippedIdle();
       return;
     }
-    this.lastFlushScheduleMs =
-      typeof performance !== "undefined" ? performance.now() : Date.now();
+    this.lastFlushScheduleMs = typeof performance !== "undefined" ? performance.now() : Date.now();
     this.metrics.recordFlushScheduled();
     this.batcher.schedule();
   }

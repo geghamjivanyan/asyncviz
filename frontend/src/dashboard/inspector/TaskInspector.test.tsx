@@ -41,11 +41,7 @@ describe("TaskInspector", () => {
       segments: [makeSegment("s1", "t1", 0, 1_000_000_000)],
     });
     render(
-      <TaskInspector
-        inspection={inspection}
-        activePanel="overview"
-        onSelectPanel={vi.fn()}
-      />,
+      <TaskInspector inspection={inspection} activePanel="overview" onSelectPanel={vi.fn()} />,
     );
     // Worker appears in both the header h2 + the overview's name row;
     // confirming the count is >= 1 is enough to prove the panel

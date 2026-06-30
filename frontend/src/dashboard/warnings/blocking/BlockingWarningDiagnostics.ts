@@ -22,6 +22,4 @@ export {
   getBlockingWarningPanelMetrics,
   resetBlockingWarningPanelMetrics,
 } from "@/dashboard/warnings/blocking/diagnostics/BlockingWarningMetricsCollector";
-export type {
-  BlockingWarningPanelMetricsSnapshot,
-} from "@/dashboard/warnings/blocking/diagnostics/BlockingWarningMetricsCollector";
+export type { BlockingWarningPanelMetricsSnapshot } from "@/dashboard/warnings/blocking/diagnostics/BlockingWarningMetricsCollector";

@@ -47,14 +47,8 @@ export {
 } from "./models";
 
 // Primitives
-export {
-  TimelineDirtyRegionTracker,
-  type DirtyRegionStats,
-} from "./timeline_dirty_regions";
-export {
-  TimelineFrameBudget,
-  type FrameBudgetSnapshot,
-} from "./timeline_frame_budget";
+export { TimelineDirtyRegionTracker, type DirtyRegionStats } from "./timeline_dirty_regions";
+export { TimelineFrameBudget, type FrameBudgetSnapshot } from "./timeline_frame_budget";
 export {
   TimelineGeometryCache,
   type GeometryCacheStats,
@@ -89,10 +83,7 @@ export {
   type CanvasPoolStats,
   type PooledCanvas,
 } from "./timeline_canvas_pool";
-export {
-  BoundedLruMap,
-  type BoundedLruStats,
-} from "./utils/bounded_lru";
+export { BoundedLruMap, type BoundedLruStats } from "./utils/bounded_lru";
 
 // Adapters
 export {

@@ -9,12 +9,8 @@
  * work and makes it cheap to memoize.
  */
 
-import type {
-  BlockingWarningGroupModel,
-} from "@/dashboard/warnings/blocking/models/BlockingWarningModels";
-import type {
-  FreezeRegionView,
-} from "@/dashboard/timeline/freeze_regions/models/FreezeRegionModels";
+import type { BlockingWarningGroupModel } from "@/dashboard/warnings/blocking/models/BlockingWarningModels";
+import type { FreezeRegionView } from "@/dashboard/timeline/freeze_regions/models/FreezeRegionModels";
 import {
   compareFreezeKeys,
   intentForFreeze,
@@ -31,9 +27,7 @@ const NS_PER_S = 1e9;
  * renderer doesn't paint anything for NONE) — keeps the layer's input
  * surface lean.
  */
-export function projectFreezeRegion(
-  group: BlockingWarningGroupModel,
-): FreezeRegionView | null {
+export function projectFreezeRegion(group: BlockingWarningGroupModel): FreezeRegionView | null {
   if (group.severity === "NONE" && group.peak_severity === "NONE") return null;
   const startSeconds = group.first_seen_ns / NS_PER_S;
   const endNs = closeoutNsForGroup(group);

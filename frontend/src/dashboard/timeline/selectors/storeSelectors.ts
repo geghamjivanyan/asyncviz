@@ -32,5 +32,12 @@ export function useTimelineProjection(): TimelineProjection {
       activeSegmentsByTaskId,
       activeWarnings,
     });
-  }, [tasksById, segmentsById, segmentIdsByTaskId, activeSegmentsByTaskId, warningsById, activeWarningIds]);
+  }, [
+    tasksById,
+    segmentsById,
+    segmentIdsByTaskId,
+    activeSegmentsByTaskId,
+    warningsById,
+    activeWarningIds,
+  ]);
 }

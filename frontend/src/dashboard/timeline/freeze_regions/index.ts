@@ -4,9 +4,7 @@
  * file paths so the module boundary stays stable.
  */
 
-export {
-  FreezeRegionRenderer,
-} from "@/dashboard/timeline/freeze_regions/FreezeRegionRenderer";
+export { FreezeRegionRenderer } from "@/dashboard/timeline/freeze_regions/FreezeRegionRenderer";
 export type {
   FreezeRegionSource,
   FreezeRegionRendererOptions,
@@ -30,9 +28,7 @@ export {
   DEFAULT_FREEZE_REGION_PALETTE,
   freezeBodyFill,
 } from "@/dashboard/timeline/freeze_regions/FreezeRegionColors";
-export type {
-  FreezeRegionPalette,
-} from "@/dashboard/timeline/freeze_regions/FreezeRegionColors";
+export type { FreezeRegionPalette } from "@/dashboard/timeline/freeze_regions/FreezeRegionColors";
 
 export {
   MIN_FREEZE_PIXEL_WIDTH,
@@ -47,9 +43,7 @@ export {
   drawEscalationMarkers,
 } from "@/dashboard/timeline/freeze_regions/FreezeRegionMarkers";
 
-export {
-  resolveBodyStyle,
-} from "@/dashboard/timeline/freeze_regions/FreezeRegionStyling";
+export { resolveBodyStyle } from "@/dashboard/timeline/freeze_regions/FreezeRegionStyling";
 
 export {
   PULSE_PERIOD_MS,
@@ -78,30 +72,16 @@ export {
   describeFreezeFocusAnnouncement,
 } from "@/dashboard/timeline/freeze_regions/FreezeRegionAccessibility";
 
-export {
-  useFreezeRegionStore,
-} from "@/dashboard/timeline/freeze_regions/FreezeRegionStore";
-export type {
-  FreezeRegionStoreState,
-} from "@/dashboard/timeline/freeze_regions/FreezeRegionStore";
+export { useFreezeRegionStore } from "@/dashboard/timeline/freeze_regions/FreezeRegionStore";
+export type { FreezeRegionStoreState } from "@/dashboard/timeline/freeze_regions/FreezeRegionStore";
 
-export {
-  useFreezeRegionProjection,
-} from "@/dashboard/timeline/freeze_regions/hooks/useFreezeRegionProjection";
-export type {
-  FreezeRegionProjection,
-} from "@/dashboard/timeline/freeze_regions/hooks/useFreezeRegionProjection";
+export { useFreezeRegionProjection } from "@/dashboard/timeline/freeze_regions/hooks/useFreezeRegionProjection";
+export type { FreezeRegionProjection } from "@/dashboard/timeline/freeze_regions/hooks/useFreezeRegionProjection";
 
-export {
-  useFreezeRegionLayer,
-} from "@/dashboard/timeline/freeze_regions/hooks/useFreezeRegionLayer";
-export type {
-  UseFreezeRegionLayerOptions,
-} from "@/dashboard/timeline/freeze_regions/hooks/useFreezeRegionLayer";
+export { useFreezeRegionLayer } from "@/dashboard/timeline/freeze_regions/hooks/useFreezeRegionLayer";
+export type { UseFreezeRegionLayerOptions } from "@/dashboard/timeline/freeze_regions/hooks/useFreezeRegionLayer";
 
-export {
-  useFreezeRegionInteractions,
-} from "@/dashboard/timeline/freeze_regions/hooks/useFreezeRegionInteractions";
+export { useFreezeRegionInteractions } from "@/dashboard/timeline/freeze_regions/hooks/useFreezeRegionInteractions";
 export type {
   FreezeInteractionHandlers,
   UseFreezeRegionInteractionsOptions,
@@ -111,9 +91,7 @@ export {
   getFreezeRegionMetrics,
   resetFreezeRegionMetrics,
 } from "@/dashboard/timeline/freeze_regions/diagnostics/FreezeRegionMetricsCollector";
-export type {
-  FreezeRegionMetricsSnapshot,
-} from "@/dashboard/timeline/freeze_regions/diagnostics/FreezeRegionMetricsCollector";
+export type { FreezeRegionMetricsSnapshot } from "@/dashboard/timeline/freeze_regions/diagnostics/FreezeRegionMetricsCollector";
 
 export {
   clearFreezeRegionTrace,

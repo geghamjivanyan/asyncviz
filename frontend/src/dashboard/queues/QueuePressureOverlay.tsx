@@ -103,9 +103,7 @@ function QueuePressureOverlayImpl({
           widthPx={layout.width}
           heightPx={heightPx}
           onActivate={
-            onActivate
-              ? () => onActivate(layout.marker.id, layout.marker.queueId)
-              : undefined
+            onActivate ? () => onActivate(layout.marker.id, layout.marker.queueId) : undefined
           }
         />
       ))}

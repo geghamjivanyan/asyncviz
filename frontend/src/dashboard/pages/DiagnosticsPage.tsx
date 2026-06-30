@@ -69,9 +69,7 @@ interface ClientStats {
 export function DiagnosticsPage(): JSX.Element {
   const config = useRuntimeConfig();
   const metrics = useClientMetrics();
-  const [stats, setStats] = useState<ClientStats>(() =>
-    projectStats(metrics.snapshot()),
-  );
+  const [stats, setStats] = useState<ClientStats>(() => projectStats(metrics.snapshot()));
 
   useEffect(() => {
     const handle = window.setInterval(() => {
@@ -145,9 +143,7 @@ export function DiagnosticsPage(): JSX.Element {
     <div className="flex h-full flex-col gap-6 overflow-auto p-6 text-sm text-text">
       <header className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-baseline gap-3">
-          <h1 className="font-mono text-base uppercase tracking-widest text-text">
-            Diagnostics
-          </h1>
+          <h1 className="font-mono text-base uppercase tracking-widest text-text">Diagnostics</h1>
           <OverallStatusPill severity={topSeverity} findings={findings} />
         </div>
         <Badge intent="accent">build {config.buildVersion}</Badge>
@@ -170,8 +166,7 @@ export function DiagnosticsPage(): JSX.Element {
       >
         {recommendations.length === 0 ? (
           <p className="font-mono text-xs text-subtle">
-            No actionable recommendations — the runtime is operating
-            inside expected envelopes.
+            No actionable recommendations — the runtime is operating inside expected envelopes.
           </p>
         ) : (
           <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
@@ -182,10 +177,7 @@ export function DiagnosticsPage(): JSX.Element {
         )}
       </Section>
 
-      <Section
-        title="Runtime Summary"
-        subtitle="At-a-glance counts across each subsystem."
-      >
+      <Section title="Runtime Summary" subtitle="At-a-glance counts across each subsystem.">
         <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
           <SummaryCount
             label="Tasks"
@@ -225,9 +217,7 @@ export function DiagnosticsPage(): JSX.Element {
           <SummaryCount
             label="Replay"
             value={header.replay.lastSequence}
-            sublabel={
-              header.replay.isReplaying ? "Replaying" : "Idle"
-            }
+            sublabel={header.replay.isReplaying ? "Replaying" : "Idle"}
             intent={header.replay.isReplaying ? "accent" : "default"}
             href="/replay"
           />
@@ -235,9 +225,7 @@ export function DiagnosticsPage(): JSX.Element {
             label="Warnings"
             value={header.warnings.total}
             sublabel={
-              header.warnings.highest
-                ? `Highest: ${header.warnings.highest}`
-                : "None active"
+              header.warnings.highest ? `Highest: ${header.warnings.highest}` : "None active"
             }
             intent={
               header.warnings.highest === "critical" || header.warnings.highest === "error"
@@ -311,17 +299,39 @@ export function DiagnosticsPage(): JSX.Element {
             </dl>
           </Card>
 
-          <Card><TaskDiagnostics /></Card>
-          <Card><MetricsDiagnostics /></Card>
-          <Card><RuntimeEventDiagnostics /></Card>
-          <Card><ConnectionDiagnostics /></Card>
-          <Card><TimelineDiagnostics /></Card>
-          <Card><BlockingWarningsDiagnostics /></Card>
-          <Card><FreezeRegionDiagnostics /></Card>
-          <Card><QueuePressureDiagnostics /></Card>
-          <Card><SemaphoreContentionDiagnostics /></Card>
-          <Card><AwaitDependencyDiagnostics /></Card>
-          <Card><ExecutorActivityDiagnostics /></Card>
+          <Card>
+            <TaskDiagnostics />
+          </Card>
+          <Card>
+            <MetricsDiagnostics />
+          </Card>
+          <Card>
+            <RuntimeEventDiagnostics />
+          </Card>
+          <Card>
+            <ConnectionDiagnostics />
+          </Card>
+          <Card>
+            <TimelineDiagnostics />
+          </Card>
+          <Card>
+            <BlockingWarningsDiagnostics />
+          </Card>
+          <Card>
+            <FreezeRegionDiagnostics />
+          </Card>
+          <Card>
+            <QueuePressureDiagnostics />
+          </Card>
+          <Card>
+            <SemaphoreContentionDiagnostics />
+          </Card>
+          <Card>
+            <AwaitDependencyDiagnostics />
+          </Card>
+          <Card>
+            <ExecutorActivityDiagnostics />
+          </Card>
         </div>
       </Section>
     </div>
@@ -334,16 +344,10 @@ export function DiagnosticsPage(): JSX.Element {
 
 function FindingCard({ finding }: { finding: RuntimeFinding }): JSX.Element {
   return (
-    <Card
-      padding="md"
-      intent={severityIntent(finding.severity)}
-      className="flex flex-col gap-2"
-    >
+    <Card padding="md" intent={severityIntent(finding.severity)} className="flex flex-col gap-2">
       <header className="flex items-baseline justify-between gap-2">
         <div className="flex items-baseline gap-2">
-          <Badge intent={severityIntent(finding.severity)}>
-            {finding.severity}
-          </Badge>
+          <Badge intent={severityIntent(finding.severity)}>{finding.severity}</Badge>
           <h3 className="font-mono text-sm text-text">{finding.title}</h3>
         </div>
         <a
@@ -360,9 +364,7 @@ function FindingCard({ finding }: { finding: RuntimeFinding }): JSX.Element {
         <dt className="text-[10px] uppercase tracking-widest text-muted">Try</dt>
         <dd className="text-text">{finding.suggestedFix}</dd>
       </dl>
-      {finding.relatedObjects.length > 0 && (
-        <RelatedRow related={finding.relatedObjects} />
-      )}
+      {finding.relatedObjects.length > 0 && <RelatedRow related={finding.relatedObjects} />}
     </Card>
   );
 }
@@ -370,9 +372,7 @@ function FindingCard({ finding }: { finding: RuntimeFinding }): JSX.Element {
 function RelatedRow({ related }: { related: readonly RelatedRuntimeObject[] }): JSX.Element {
   return (
     <div className="flex flex-wrap items-baseline gap-2 border-t border-line/40 pt-2">
-      <span className="font-mono text-[10px] uppercase tracking-widest text-muted">
-        Related
-      </span>
+      <span className="font-mono text-[10px] uppercase tracking-widest text-muted">Related</span>
       {related.map((r) => (
         <span
           key={`${r.kind}-${r.id}`}
@@ -395,9 +395,7 @@ function RecommendationCard({
     <Card padding="md" className="flex flex-col gap-2">
       <header className="flex items-baseline justify-between gap-2">
         <div className="flex items-baseline gap-2">
-          <Badge intent={severityIntent(recommendation.severity)}>
-            {recommendation.severity}
-          </Badge>
+          <Badge intent={severityIntent(recommendation.severity)}>{recommendation.severity}</Badge>
           <h3 className="font-mono text-sm text-text">{recommendation.title}</h3>
         </div>
         <a
@@ -431,9 +429,7 @@ function SummaryCount({
 }): JSX.Element {
   const content = (
     <Card padding="sm" intent={intent} className="flex flex-col gap-1">
-      <span className="font-mono text-[10px] uppercase tracking-widest text-muted">
-        {label}
-      </span>
+      <span className="font-mono text-[10px] uppercase tracking-widest text-muted">{label}</span>
       <span className="truncate font-mono text-lg tabular-nums text-text">
         {typeof value === "number" ? value.toLocaleString() : value}
       </span>
@@ -470,12 +466,8 @@ function Section({
     <section className="flex flex-col gap-3">
       <header className="flex items-baseline justify-between gap-2">
         <div className="flex flex-col gap-0.5">
-          <h2 className="font-mono text-xs uppercase tracking-widest text-text">
-            {title}
-          </h2>
-          {subtitle !== undefined && (
-            <p className="font-mono text-[11px] text-muted">{subtitle}</p>
-          )}
+          <h2 className="font-mono text-xs uppercase tracking-widest text-text">{title}</h2>
+          {subtitle !== undefined && <p className="font-mono text-[11px] text-muted">{subtitle}</p>}
         </div>
         {collapsible === true && (
           <button
@@ -568,4 +560,3 @@ function projectStats(
     renderErrors: snap.renderErrors,
   };
 }
-

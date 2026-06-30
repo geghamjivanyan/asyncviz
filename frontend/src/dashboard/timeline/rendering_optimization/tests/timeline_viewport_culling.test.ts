@@ -44,9 +44,7 @@ describe("TimelineViewportCuller", () => {
   it("respects the overscan band", () => {
     const c = new TimelineViewportCuller(200);
     const coords = makeCoords();
-    const items = [
-      { startSeconds: -1.5, endSeconds: -1.0, rowIndex: 0 },
-    ];
+    const items = [{ startSeconds: -1.5, endSeconds: -1.0, rowIndex: 0 }];
     const out = c.cull(coords, items);
     expect(out).toHaveLength(1);
   });

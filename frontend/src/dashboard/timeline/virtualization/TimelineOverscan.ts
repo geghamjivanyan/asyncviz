@@ -61,10 +61,7 @@ export function resolveOverscan(
   }
 
   rowOverscan = Math.min(merged.maxRowOverscan, Math.max(0, Math.floor(rowOverscan)));
-  timeOverscanSeconds = Math.min(
-    merged.maxTimeOverscanSeconds,
-    Math.max(0, timeOverscanSeconds),
-  );
+  timeOverscanSeconds = Math.min(merged.maxTimeOverscanSeconds, Math.max(0, timeOverscanSeconds));
   return { rowOverscan, timeOverscanSeconds };
 }
 

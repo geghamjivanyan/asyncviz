@@ -32,13 +32,10 @@ function SemaphoreContentionDiagnosticsImpl({
 }: SemaphoreContentionDiagnosticsProps): JSX.Element {
   const selfMetrics = useSemaphoreContentionSelfMetrics();
   const storeStats = useSemaphoreContentionStats();
-  const [panelSnap, setPanelSnap] =
-    useState<SemaphoreContentionPanelMetricsSnapshot>(() =>
-      getSemaphoreContentionPanelMetrics().snapshot(),
-    );
-  const [tracingEnabled, setTracingEnabled] = useState(
-    isSemaphoreContentionTraceEnabled(),
+  const [panelSnap, setPanelSnap] = useState<SemaphoreContentionPanelMetricsSnapshot>(() =>
+    getSemaphoreContentionPanelMetrics().snapshot(),
   );
+  const [tracingEnabled, setTracingEnabled] = useState(isSemaphoreContentionTraceEnabled());
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -73,10 +70,7 @@ function SemaphoreContentionDiagnosticsImpl({
       <div className="semaphore-contention-diagnostics__grid">
         <DiagnosticsSection title="Frontend panel">
           <DiagnosticsRow label="hydrations" value={panelSnap.hydrations} />
-          <DiagnosticsRow
-            label="hydration failures"
-            value={panelSnap.hydrationFailures}
-          />
+          <DiagnosticsRow label="hydration failures" value={panelSnap.hydrationFailures} />
           <DiagnosticsRow label="websocket events" value={panelSnap.websocketEvents} />
           <DiagnosticsRow label="cards rendered" value={panelSnap.cardsRendered} />
           <DiagnosticsRow label="markers rendered" value={panelSnap.markersRendered} />
@@ -85,24 +79,16 @@ function SemaphoreContentionDiagnosticsImpl({
         </DiagnosticsSection>
 
         <DiagnosticsSection title="Store stats">
-          <DiagnosticsRow
-            label="hydrations applied"
-            value={storeStats.hydrationsApplied}
-          />
+          <DiagnosticsRow label="hydrations applied" value={storeStats.hydrationsApplied} />
           <DiagnosticsRow label="events applied" value={storeStats.eventsApplied} />
           <DiagnosticsRow label="events dropped" value={storeStats.eventsDropped} />
-          <DiagnosticsRow
-            label="markers appended"
-            value={storeStats.markersAppended}
-          />
+          <DiagnosticsRow label="markers appended" value={storeStats.markersAppended} />
           <DiagnosticsRow label="markers evicted" value={storeStats.markersEvicted} />
         </DiagnosticsSection>
 
         <DiagnosticsSection title="Backend engine">
           {selfMetrics === null ? (
-            <p className="semaphore-contention-diagnostics__placeholder">
-              No snapshot yet.
-            </p>
+            <p className="semaphore-contention-diagnostics__placeholder">No snapshot yet.</p>
           ) : (
             <>
               <DiagnosticsRow
@@ -113,34 +99,16 @@ function SemaphoreContentionDiagnosticsImpl({
                 label="semaphores finalized"
                 value={selfMetrics.semaphores_finalized}
               />
-              <DiagnosticsRow
-                label="events emitted"
-                value={selfMetrics.events_emitted}
-              />
-              <DiagnosticsRow
-                label="events dropped"
-                value={selfMetrics.events_dropped}
-              />
-              <DiagnosticsRow
-                label="acquire events"
-                value={selfMetrics.acquire_events}
-              />
-              <DiagnosticsRow
-                label="release events"
-                value={selfMetrics.release_events}
-              />
-              <DiagnosticsRow
-                label="blocked acquires"
-                value={selfMetrics.blocked_acquires}
-              />
+              <DiagnosticsRow label="events emitted" value={selfMetrics.events_emitted} />
+              <DiagnosticsRow label="events dropped" value={selfMetrics.events_dropped} />
+              <DiagnosticsRow label="acquire events" value={selfMetrics.acquire_events} />
+              <DiagnosticsRow label="release events" value={selfMetrics.release_events} />
+              <DiagnosticsRow label="blocked acquires" value={selfMetrics.blocked_acquires} />
               <DiagnosticsRow
                 label="contention detections"
                 value={selfMetrics.contention_detections}
               />
-              <DiagnosticsRow
-                label="cancelled waits"
-                value={selfMetrics.cancelled_waits}
-              />
+              <DiagnosticsRow label="cancelled waits" value={selfMetrics.cancelled_waits} />
             </>
           )}
         </DiagnosticsSection>
@@ -152,9 +120,7 @@ function SemaphoreContentionDiagnosticsImpl({
           <ul>
             {trace.slice(-32).map((entry, idx) => (
               <li key={`${entry.at}-${idx}`}>
-                <span className="semaphore-contention-diagnostics__trace-kind">
-                  {entry.kind}
-                </span>
+                <span className="semaphore-contention-diagnostics__trace-kind">{entry.kind}</span>
                 <span className="semaphore-contention-diagnostics__trace-detail">
                   {entry.detail}
                 </span>

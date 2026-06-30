@@ -68,7 +68,11 @@ export interface TimelineRendererOptions {
 export interface RendererVirtualizer {
   resolveFrame(args: {
     coords: TimelineCoordinateSystem;
-    inputs: { rows: readonly TimelineRow[]; segments: readonly TimelineRenderSegment[]; sequence: number };
+    inputs: {
+      rows: readonly TimelineRow[];
+      segments: readonly TimelineRenderSegment[];
+      sequence: number;
+    };
   }): {
     rows: readonly TimelineRow[];
     segments: readonly TimelineRenderSegment[];

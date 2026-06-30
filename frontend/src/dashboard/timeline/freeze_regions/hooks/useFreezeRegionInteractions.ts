@@ -18,9 +18,7 @@ import { useFreezeRegionStore } from "@/dashboard/timeline/freeze_regions/Freeze
 import { hitTestFreezeRegions } from "@/dashboard/timeline/freeze_regions/FreezeRegionHitTesting";
 import { getFreezeRegionMetrics } from "@/dashboard/timeline/freeze_regions/diagnostics/FreezeRegionMetricsCollector";
 import { recordFreezeRegionTrace } from "@/dashboard/timeline/freeze_regions/diagnostics/FreezeRegionTracing";
-import type {
-  FreezeRegionView,
-} from "@/dashboard/timeline/freeze_regions/models/FreezeRegionModels";
+import type { FreezeRegionView } from "@/dashboard/timeline/freeze_regions/models/FreezeRegionModels";
 
 export interface FreezeInteractionHandlers {
   onPointerMove(xCss: number): void;

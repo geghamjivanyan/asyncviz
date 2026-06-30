@@ -1,8 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  TimelinePanMomentum,
-  decayVelocity,
-} from "@/dashboard/timeline/pan/TimelinePanMomentum";
+import { TimelinePanMomentum, decayVelocity } from "@/dashboard/timeline/pan/TimelinePanMomentum";
 
 describe("TimelinePanMomentum", () => {
   it("velocity is zero when no samples are recorded", () => {

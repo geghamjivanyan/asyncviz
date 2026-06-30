@@ -71,10 +71,7 @@ describe("TimelineSegmentRenderer", () => {
     const metrics = new TimelineSegmentMetrics();
     const renderer = new TimelineSegmentRenderer({ metrics });
     const { renderContext } = buildContext({
-      segments: [
-        makeRenderSegment("a", 0, 1, 5),
-        makeRenderSegment("b", 0, 3, 6),
-      ],
+      segments: [makeRenderSegment("a", 0, 1, 5), makeRenderSegment("b", 0, 3, 6)],
     });
     renderer.render(renderContext);
     expect(metrics.snapshot().overlapsObserved).toBe(1);

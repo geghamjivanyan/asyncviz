@@ -5,10 +5,7 @@ import {
 } from "@/dashboard/inspector/TaskInspectorAccessibility";
 import { buildTaskInspection } from "@/dashboard/inspector/selectors/inspectionSelectors";
 import { EMPTY_TASK_INSPECTION } from "@/dashboard/inspector/models/TaskInspectionModels";
-import {
-  makeTask,
-  makeWarning,
-} from "@/dashboard/inspector/__fixtures__/makeInspectionFixtures";
+import { makeTask, makeWarning } from "@/dashboard/inspector/__fixtures__/makeInspectionFixtures";
 
 describe("inspector a11y helpers", () => {
   it("describes the empty inspection", () => {

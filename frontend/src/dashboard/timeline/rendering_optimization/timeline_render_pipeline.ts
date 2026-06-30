@@ -23,34 +23,22 @@ import {
   type DirtyRegion,
 } from "@/dashboard/timeline/rendering_optimization/models/dirty_region";
 import { RenderPriority } from "@/dashboard/timeline/rendering_optimization/models/render_priority";
-import {
-  type TimelineDirtyRegionTracker,
-} from "@/dashboard/timeline/rendering_optimization/timeline_dirty_regions";
-import {
-  type TimelineFrameBudget,
-} from "@/dashboard/timeline/rendering_optimization/timeline_frame_budget";
+import { type TimelineDirtyRegionTracker } from "@/dashboard/timeline/rendering_optimization/timeline_dirty_regions";
+import { type TimelineFrameBudget } from "@/dashboard/timeline/rendering_optimization/timeline_frame_budget";
 import {
   TimelineIncrementalRenderer,
   type PassDrawer,
 } from "@/dashboard/timeline/rendering_optimization/timeline_incremental_renderer";
-import {
-  type TimelineLayerManager,
-} from "@/dashboard/timeline/rendering_optimization/timeline_layer_manager";
-import {
-  type TimelineOverlayScheduler,
-} from "@/dashboard/timeline/rendering_optimization/timeline_overlay_scheduler";
+import { type TimelineLayerManager } from "@/dashboard/timeline/rendering_optimization/timeline_layer_manager";
+import { type TimelineOverlayScheduler } from "@/dashboard/timeline/rendering_optimization/timeline_overlay_scheduler";
 import {
   checkDirtyRegion,
   checkPasses,
   checkRedrawArea,
   type IntegrityViolation,
 } from "@/dashboard/timeline/rendering_optimization/timeline_render_integrity";
-import {
-  type RenderOptimizationMetrics,
-} from "@/dashboard/timeline/rendering_optimization/timeline_render_observability";
-import {
-  recordRenderOptimizationTrace,
-} from "@/dashboard/timeline/rendering_optimization/timeline_render_tracing";
+import { type RenderOptimizationMetrics } from "@/dashboard/timeline/rendering_optimization/timeline_render_observability";
+import { recordRenderOptimizationTrace } from "@/dashboard/timeline/rendering_optimization/timeline_render_tracing";
 
 export interface PipelineDrawHooks {
   readonly drawPass: (passId: string, region: DirtyRegion | null) => void;
@@ -88,10 +76,7 @@ export class TimelineRenderPipeline {
     private readonly metrics: RenderOptimizationMetrics,
   ) {}
 
-  execute(
-    inputs: PipelineFrameInputs,
-    hooks: PipelineDrawHooks,
-  ): PipelineFrameResult {
+  execute(inputs: PipelineFrameInputs, hooks: PipelineDrawHooks): PipelineFrameResult {
     if (
       inputs.ctx === null ||
       inputs.cssWidth <= 0 ||
@@ -206,10 +191,7 @@ export class TimelineRenderPipeline {
       );
     } else if (budgetSnapshot.degradationStep < this.previousDegradationStep) {
       this.metrics.recordRestore();
-      recordRenderOptimizationTrace(
-        "restore",
-        `step=${budgetSnapshot.degradationStep}`,
-      );
+      recordRenderOptimizationTrace("restore", `step=${budgetSnapshot.degradationStep}`);
     }
     this.previousDegradationStep = budgetSnapshot.degradationStep;
 
@@ -243,7 +225,13 @@ export class TimelineRenderPipeline {
    *  priority passes are dropped first; overlays are dropped under
    *  ``drop-overlays``; keyframe-only mode keeps CRITICAL+HIGH only. */
   private applyDegradation(
-    passes: readonly { readonly id: string; readonly priority: RenderPriority; readonly regions: readonly DirtyRegion[]; readonly label: string; readonly degraded: boolean }[],
+    passes: readonly {
+      readonly id: string;
+      readonly priority: RenderPriority;
+      readonly regions: readonly DirtyRegion[];
+      readonly label: string;
+      readonly degraded: boolean;
+    }[],
   ) {
     const strategies = this.budget.activeStrategies();
     if (strategies.length === 0) return passes.slice();

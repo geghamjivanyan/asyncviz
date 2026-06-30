@@ -6,9 +6,7 @@ import {
 import { makeFreezeRegionView } from "@/dashboard/timeline/freeze_regions/__fixtures__/makeFreezeRegionFixtures";
 
 const buildRegions = (count: number) =>
-  Array.from({ length: count }, (_, i) =>
-    makeFreezeRegionView({ groupId: `g-${i}` }),
-  );
+  Array.from({ length: count }, (_, i) => makeFreezeRegionView({ groupId: `g-${i}` }));
 
 describe("clampFreezeRegions", () => {
   it("returns the full list when under the cap", () => {

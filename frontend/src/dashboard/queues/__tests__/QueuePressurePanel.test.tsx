@@ -70,9 +70,7 @@ describe("<QueuePressurePanel />", () => {
         }),
       ],
     });
-    expect(screen.getByTestId("queue-pressure-live-region")).toHaveTextContent(
-      /2 queues/,
-    );
+    expect(screen.getByTestId("queue-pressure-live-region")).toHaveTextContent(/2 queues/);
   });
 
   it("shows blocked-producer / blocked-consumer badges on contended queues", () => {

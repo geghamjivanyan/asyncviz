@@ -23,10 +23,7 @@ describe("reduceHydration", () => {
   it("indexes records by id + preserves insertion order", () => {
     const reduced = reduceHydration(
       makeHydration({
-        queues: [
-          makeRecord({ queue_id: "q-1" }),
-          makeRecord({ queue_id: "q-2" }),
-        ],
+        queues: [makeRecord({ queue_id: "q-1" }), makeRecord({ queue_id: "q-2" })],
       }),
     );
     expect(reduced.queueIds).toEqual(["q-1", "q-2"]);
@@ -116,9 +113,9 @@ describe("appendMarker", () => {
 
 describe("useQueuePressureStore actions", () => {
   it("hydrateSnapshot bumps stats + flips status to ready", () => {
-    useQueuePressureStore.getState().hydrateSnapshot(
-      makeHydration({ queues: [makeRecord({ queue_id: "q-a" })] }),
-    );
+    useQueuePressureStore
+      .getState()
+      .hydrateSnapshot(makeHydration({ queues: [makeRecord({ queue_id: "q-a" })] }));
     const state = useQueuePressureStore.getState();
     expect(state.status).toBe("ready");
     expect(state.queueIds).toEqual(["q-a"]);
@@ -126,9 +123,9 @@ describe("useQueuePressureStore actions", () => {
   });
 
   it("applyEventPayload registers a marker for pressure-change", () => {
-    useQueuePressureStore.getState().hydrateSnapshot(
-      makeHydration({ queues: [makeRecord({ queue_id: "q-1" })] }),
-    );
+    useQueuePressureStore
+      .getState()
+      .hydrateSnapshot(makeHydration({ queues: [makeRecord({ queue_id: "q-1" })] }));
     useQueuePressureStore.getState().applyEventPayload(makePressureChange({ queue_id: "q-1" }));
     const state = useQueuePressureStore.getState();
     expect(state.markers).toHaveLength(1);
@@ -136,9 +133,7 @@ describe("useQueuePressureStore actions", () => {
   });
 
   it("applyEventPayload increments dropped stats when the queue is unknown", () => {
-    useQueuePressureStore
-      .getState()
-      .applyEventPayload(makePressureChange({ queue_id: "ghost" }));
+    useQueuePressureStore.getState().applyEventPayload(makePressureChange({ queue_id: "ghost" }));
     expect(useQueuePressureStore.getState().stats.eventsDropped).toBe(1);
   });
 

@@ -5,7 +5,10 @@
  * snapshot view, module-level lazy singleton + reset helper).
  */
 
-import type { InvalidationReason, TimelineLiveMode } from "@/dashboard/timeline/live/models/TimelineLiveModels";
+import type {
+  InvalidationReason,
+  TimelineLiveMode,
+} from "@/dashboard/timeline/live/models/TimelineLiveModels";
 
 export interface TimelineLiveMetricsSnapshot {
   envelopesObserved: number;

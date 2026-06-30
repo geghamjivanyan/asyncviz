@@ -53,9 +53,7 @@ export function FreezeRegionDiagnostics() {
 
   return (
     <div data-testid="freeze-region-diagnostics" className="flex flex-col gap-2">
-      <h2 className="font-mono text-xs uppercase tracking-widest text-subtle">
-        Freeze Regions
-      </h2>
+      <h2 className="font-mono text-xs uppercase tracking-widest text-subtle">Freeze Regions</h2>
       <dl className="grid grid-cols-[max-content_1fr] gap-x-3 gap-y-1 font-mono text-xs">
         <dt className="text-muted">frames</dt>
         <dd className="text-text">{snap.framesRendered}</dd>
@@ -77,8 +75,7 @@ export function FreezeRegionDiagnostics() {
         <dd className="text-text">{snap.revealCalls}</dd>
         <dt className="text-muted">avg frame</dt>
         <dd className="text-text">
-          {snap.averageFrameDurationMs.toFixed(2)} ms · max{" "}
-          {snap.maxFrameDurationMs.toFixed(2)} ms
+          {snap.averageFrameDurationMs.toFixed(2)} ms · max {snap.maxFrameDurationMs.toFixed(2)} ms
         </dd>
         <dt className="text-muted">selected</dt>
         <dd className="text-text">{selectedGroupId ?? "<none>"}</dd>
@@ -105,10 +102,7 @@ export function FreezeRegionDiagnostics() {
           data-testid="freeze-region-trace-list"
         >
           {trace.slice(-MAX_TRACE_ROWS).map((entry, index) => (
-            <li
-              key={`${entry.atMs}-${index}`}
-              className="flex items-center gap-2"
-            >
+            <li key={`${entry.atMs}-${index}`} className="flex items-center gap-2">
               <span className="text-subtle">{entry.atMs.toFixed(0)} ms</span>
               <span className="text-text">{entry.kind}</span>
               <span className="text-subtle truncate">{entry.detail}</span>

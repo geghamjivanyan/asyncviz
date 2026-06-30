@@ -40,9 +40,7 @@ export function isBlockingWarningTraceEnabled(): boolean {
   return enabled;
 }
 
-export function recordBlockingWarningTrace(
-  entry: Omit<BlockingWarningTraceEntry, "atMs">,
-): void {
+export function recordBlockingWarningTrace(entry: Omit<BlockingWarningTraceEntry, "atMs">): void {
   if (!enabled) return;
   const atMs = typeof performance !== "undefined" ? performance.now() : Date.now();
   ring.push({ ...entry, atMs });

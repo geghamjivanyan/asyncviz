@@ -247,9 +247,7 @@ function resolveEnv(env: Maybe<RuntimeEnv>): RuntimeEnv | undefined {
   return env;
 }
 
-function resolveLocation(
-  location: Maybe<BrowserLocationLike>,
-): BrowserLocationLike | undefined {
+function resolveLocation(location: Maybe<BrowserLocationLike>): BrowserLocationLike | undefined {
   if (location === null) return undefined;
   if (location === undefined) return readBrowserLocation();
   return location;

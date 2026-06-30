@@ -54,10 +54,7 @@ export class TimelineSegmentWindowing<TSegment extends SpatialIndexable> {
   }): TSegment[] {
     const { segments, sequence, rowWindow, timeWindow } = args;
     if (segments.length === 0) return [];
-    if (
-      this.options.disableIndex ||
-      segments.length < this.options.indexMinSegments
-    ) {
+    if (this.options.disableIndex || segments.length < this.options.indexMinSegments) {
       this.index = null;
       this.builtForSequence = sequence;
       this.builtForLength = segments.length;

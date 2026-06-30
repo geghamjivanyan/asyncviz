@@ -24,10 +24,7 @@ export function dispatchDragStart(
   controller.beginDrag(event);
 }
 
-export function dispatchDragMove(
-  controller: TimelinePanController,
-  event: PointerMoveInput,
-): void {
+export function dispatchDragMove(controller: TimelinePanController, event: PointerMoveInput): void {
   controller.updateDrag(event);
 }
 
@@ -39,9 +36,6 @@ export function dispatchDragCancel(controller: TimelinePanController): void {
   controller.cancelDrag();
 }
 
-export function dispatchWheelPan(
-  controller: TimelinePanController,
-  event: WheelPanInput,
-): void {
+export function dispatchWheelPan(controller: TimelinePanController, event: WheelPanInput): void {
   controller.applyWheelGesture({ deltaXPx: event.deltaXPx });
 }

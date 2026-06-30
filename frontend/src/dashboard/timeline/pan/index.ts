@@ -8,9 +8,7 @@ export {
   type PanStateListener,
 } from "@/dashboard/timeline/pan/TimelinePanController";
 
-export {
-  buildPanState,
-} from "@/dashboard/timeline/pan/TimelinePanState";
+export { buildPanState } from "@/dashboard/timeline/pan/TimelinePanState";
 
 export {
   isPastClickThreshold,

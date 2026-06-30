@@ -21,9 +21,7 @@ export interface ExecutorActivityFrame extends MarkerVirtualizationOutput {
   windowedMarkerCount: number;
 }
 
-export function layoutFrame(
-  inputs: ExecutorActivityFrameInputs,
-): ExecutorActivityFrame {
+export function layoutFrame(inputs: ExecutorActivityFrameInputs): ExecutorActivityFrame {
   const layouts = layoutMarkers(inputs.markers, inputs);
   const virtualized = virtualizeMarkers({
     layouts,

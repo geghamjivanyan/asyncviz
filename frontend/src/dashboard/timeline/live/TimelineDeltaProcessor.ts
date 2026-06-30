@@ -23,10 +23,7 @@ import type {
   WarningDeltaPayload,
 } from "@/types/runtime";
 import type { TimelineInvalidationTracker } from "@/dashboard/timeline/live/TimelineInvalidation";
-import {
-  invalidateRow,
-  invalidateRows,
-} from "@/dashboard/timeline/live/TimelineRowInvalidation";
+import { invalidateRow, invalidateRows } from "@/dashboard/timeline/live/TimelineRowInvalidation";
 import { invalidateSegment } from "@/dashboard/timeline/live/TimelineSegmentInvalidation";
 import {
   invalidateViewport,
@@ -69,7 +66,12 @@ export class TimelineDeltaProcessor {
     if (envelope.sequence !== undefined && envelope.sequence !== null && lastApplied >= 0) {
       if (envelope.sequence <= lastApplied) {
         this._suppressed += 1;
-        return { invalidated: false, regionsPushed: 0, suppressed: true, suppressionReason: "stale" };
+        return {
+          invalidated: false,
+          regionsPushed: 0,
+          suppressed: true,
+          suppressionReason: "stale",
+        };
       }
     }
     this._processed += 1;
@@ -102,7 +104,11 @@ export class TimelineDeltaProcessor {
     }
   }
 
-  metrics(): { processed: number; suppressed: number; byType: ReadonlyMap<RuntimeEnvelope["type"], number> } {
+  metrics(): {
+    processed: number;
+    suppressed: number;
+    byType: ReadonlyMap<RuntimeEnvelope["type"], number>;
+  } {
     return { processed: this._processed, suppressed: this._suppressed, byType: this._byType };
   }
 
@@ -122,8 +128,7 @@ export class TimelineDeltaProcessor {
     if (!payload || typeof payload.task_id !== "string") {
       return { invalidated: false, regionsPushed: 0, suppressed: false };
     }
-    const segmentId =
-      payload.segment?.segment_id ?? payload.open_segment?.segment_id ?? null;
+    const segmentId = payload.segment?.segment_id ?? payload.open_segment?.segment_id ?? null;
     if (segmentId !== null) {
       invalidateSegment(tracker, segmentId, payload.task_id, {
         sequence: envelope.sequence ?? null,

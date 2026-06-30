@@ -27,10 +27,7 @@ export {
   pickMarkerAt,
 } from "@/dashboard/queues/QueuePressureGeometry";
 
-export {
-  virtualizeList,
-  virtualizeMarkers,
-} from "@/dashboard/queues/QueuePressureVirtualization";
+export { virtualizeList, virtualizeMarkers } from "@/dashboard/queues/QueuePressureVirtualization";
 
 export { hitTestMarkers, neighborQueueId } from "@/dashboard/queues/QueuePressureHitTesting";
 

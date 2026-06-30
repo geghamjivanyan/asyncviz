@@ -71,7 +71,7 @@ export function ExecutorsPage(): JSX.Element {
     () =>
       selectedExecutorId === null
         ? null
-        : views.find((v) => v.executorId === selectedExecutorId) ?? null,
+        : (views.find((v) => v.executorId === selectedExecutorId) ?? null),
     [views, selectedExecutorId],
   );
 
@@ -92,7 +92,7 @@ export function ExecutorsPage(): JSX.Element {
     }
   }, [views, selectedExecutorId, selectExecutor]);
   const selectedRecord =
-    selectedExecutorId !== null ? recordsById.get(selectedExecutorId) ?? null : null;
+    selectedExecutorId !== null ? (recordsById.get(selectedExecutorId) ?? null) : null;
 
   const hasExecutors = views.length > 0;
   const isLoading = status === "loading" && !hasExecutors;
@@ -151,10 +151,7 @@ export function ExecutorsPage(): JSX.Element {
               sub={summary.peakBacklogName ?? undefined}
               intent={summary.peakBacklog > 0 ? "warning" : "default"}
             />
-            <SummaryCell
-              label="Avg queue wait"
-              value={formatSeconds(summary.avgQueueWait)}
-            />
+            <SummaryCell label="Avg queue wait" value={formatSeconds(summary.avgQueueWait)} />
             <SummaryCell
               label="Peak execution"
               value={formatSeconds(summary.peakExecution)}
@@ -226,9 +223,7 @@ export function ExecutorsPage(): JSX.Element {
                 view={selectedView}
                 record={selectedRecord}
                 peakBacklog={
-                  selectedExecutorId
-                    ? peakBacklogRef.current.get(selectedExecutorId) ?? 0
-                    : 0
+                  selectedExecutorId ? (peakBacklogRef.current.get(selectedExecutorId) ?? 0) : 0
                 }
                 onClear={() => selectExecutor(null)}
               />
@@ -351,10 +346,7 @@ function ExecutorCard({
     <Card
       padding="sm"
       intent={intent}
-      className={cn(
-        "flex flex-col gap-4 transition-colors",
-        selected ? "ring-1 ring-accent" : "",
-      )}
+      className={cn("flex flex-col gap-4 transition-colors", selected ? "ring-1 ring-accent" : "")}
       data-executor-id={view.executorId}
       data-severity={view.severity}
       data-status={status}
@@ -396,11 +388,7 @@ function ExecutorCard({
           </span>
         </div>
         <ProgressBar ratio={utilization} intent={intent} />
-        <WorkerSquares
-          maxWorkers={maxWorkers}
-          activeWorkers={view.activeWorkers}
-          intent={intent}
-        />
+        <WorkerSquares maxWorkers={maxWorkers} activeWorkers={view.activeWorkers} intent={intent} />
       </section>
 
       {/* Queue */}
@@ -453,9 +441,7 @@ function ExecutorCard({
         <Metric
           label="Peak execution"
           value={formatSeconds(peakExecution ?? Number.NaN)}
-          intent={
-            peakExecution !== null && peakExecution >= 1 ? "danger" : undefined
-          }
+          intent={peakExecution !== null && peakExecution >= 1 ? "danger" : undefined}
         />
       </MetricGroup>
 
@@ -534,11 +520,7 @@ function WorkerSquares({
   const displayed = Math.min(maxWorkers, MAX_SQUARES);
   const overflow = maxWorkers - displayed;
   const busyColor =
-    intent === "danger"
-      ? "bg-danger"
-      : intent === "warning"
-        ? "bg-warning"
-        : "bg-accent";
+    intent === "danger" ? "bg-danger" : intent === "warning" ? "bg-warning" : "bg-accent";
   const displayedBusy =
     maxWorkers <= MAX_SQUARES
       ? activeWorkers
@@ -623,9 +605,7 @@ function QueueVisualization({
             {denominator > 0 ? ` / ${denominator}` : ""}
           </span>
           {peak > 0 && (
-            <span className="text-[10px] uppercase tracking-widest text-subtle">
-              peak {peak}
-            </span>
+            <span className="text-[10px] uppercase tracking-widest text-subtle">peak {peak}</span>
           )}
         </span>
       </div>
@@ -652,15 +632,7 @@ function MetricGroup({ label, children }: { label: string; children: React.React
   );
 }
 
-function Metric({
-  label,
-  value,
-  intent,
-}: {
-  label: string;
-  value: string;
-  intent?: Intent;
-}) {
+function Metric({ label, value, intent }: { label: string; value: string; intent?: Intent }) {
   const valueColor =
     intent === "danger"
       ? "text-danger"
@@ -740,9 +712,7 @@ function ExecutorInspector({
       <div className="flex flex-wrap items-center gap-2">
         <Badge intent={intent}>{STATUS_LABEL[status]}</Badge>
         {view.severity !== "calm" && (
-          <Badge intent={SEVERITY_INTENT[view.severity]}>
-            {view.severity.toUpperCase()}
-          </Badge>
+          <Badge intent={SEVERITY_INTENT[view.severity]}>{view.severity.toUpperCase()}</Badge>
         )}
       </div>
 
@@ -793,10 +763,7 @@ function ExecutorInspector({
           value={formatSeconds(view.p95SubmissionLatencySeconds)}
           intent={view.p95SubmissionLatencySeconds >= 1 ? "warning" : undefined}
         />
-        <InspectorKV
-          label="Peak wait"
-          value={formatSeconds(peakSubmission ?? Number.NaN)}
-        />
+        <InspectorKV label="Peak wait" value={formatSeconds(peakSubmission ?? Number.NaN)} />
         <InspectorKV
           label="Avg execution"
           value={formatSeconds(view.meanExecutionDurationSeconds)}
@@ -809,9 +776,7 @@ function ExecutorInspector({
         <InspectorKV
           label="Peak execution"
           value={formatSeconds(peakExecution ?? Number.NaN)}
-          intent={
-            peakExecution !== null && peakExecution >= 1 ? "danger" : undefined
-          }
+          intent={peakExecution !== null && peakExecution >= 1 ? "danger" : undefined}
         />
       </InspectorSection>
 
@@ -840,32 +805,16 @@ const SEVERITY_INTENT: Record<ExecutorActivityView["severity"], Intent> = {
   saturated: "warning",
 };
 
-function InspectorSection({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
+function InspectorSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="flex flex-col gap-1.5 border-t border-line/40 pt-2">
-      <span className="font-mono text-[10px] uppercase tracking-widest text-subtle">
-        {title}
-      </span>
+      <span className="font-mono text-[10px] uppercase tracking-widest text-subtle">{title}</span>
       <div className="flex flex-col gap-1">{children}</div>
     </section>
   );
 }
 
-function InspectorKV({
-  label,
-  value,
-  intent,
-}: {
-  label: string;
-  value: string;
-  intent?: Intent;
-}) {
+function InspectorKV({ label, value, intent }: { label: string; value: string; intent?: Intent }) {
   const valueColor =
     intent === "danger"
       ? "text-danger"

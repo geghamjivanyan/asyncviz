@@ -11,10 +11,7 @@ import type {
   QueuePressureSeverity,
   QueuePressureView,
 } from "@/dashboard/queues/models/QueuePressureModels";
-import {
-  markerLabel,
-  severityLabel,
-} from "@/dashboard/queues/QueuePressureSeverity";
+import { markerLabel, severityLabel } from "@/dashboard/queues/QueuePressureSeverity";
 
 /** One-line summary suitable for a card's ``aria-label``. */
 export function describeQueueForAccessibility(view: QueuePressureView): string {

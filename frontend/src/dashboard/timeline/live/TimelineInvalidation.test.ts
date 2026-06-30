@@ -1,9 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { TimelineInvalidationTracker } from "@/dashboard/timeline/live/TimelineInvalidation";
-import {
-  invalidateRow,
-  invalidateRows,
-} from "@/dashboard/timeline/live/TimelineRowInvalidation";
+import { invalidateRow, invalidateRows } from "@/dashboard/timeline/live/TimelineRowInvalidation";
 import {
   invalidateSegment,
   invalidateSegments,

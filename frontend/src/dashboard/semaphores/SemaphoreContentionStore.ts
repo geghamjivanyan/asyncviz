@@ -53,11 +53,7 @@ const INITIAL_STATS: SemaphoreContentionStoreStats = {
   lastEventAtMs: 0,
 };
 
-export type SemaphoreContentionStoreStatus =
-  | "idle"
-  | "loading"
-  | "ready"
-  | "error";
+export type SemaphoreContentionStoreStatus = "idle" | "loading" | "ready" | "error";
 
 export interface SemaphoreContentionStoreState {
   recordsById: Record<string, SemaphoreRecord>;
@@ -124,9 +120,7 @@ export function reduceHydration(snapshot: SemaphoreHydrationResponse): Hydration
 
 function scaffoldFromPayload(payload: SemaphoreEventPayload): SemaphoreRecord {
   const creator =
-    payload.event_type === "asyncio.semaphore.created"
-      ? payload.creator_task_id
-      : null;
+    payload.event_type === "asyncio.semaphore.created" ? payload.creator_task_id : null;
   const name = payload.event_type === "asyncio.semaphore.created" ? payload.name : null;
   return {
     semaphoreId: payload.semaphore_id,
@@ -164,10 +158,7 @@ function snapshotOf(payload: SemaphoreEventPayload): SemaphoreSnapshotRecord {
   };
 }
 
-function applySnapshot(
-  record: SemaphoreRecord,
-  snap: SemaphoreSnapshotRecord,
-): SemaphoreRecord {
+function applySnapshot(record: SemaphoreRecord, snap: SemaphoreSnapshotRecord): SemaphoreRecord {
   return {
     ...record,
     currentValue: snap.current_value,
@@ -176,10 +167,7 @@ function applySnapshot(
   };
 }
 
-function applyCreated(
-  record: SemaphoreRecord,
-  payload: SemaphoreCreatedPayload,
-): SemaphoreRecord {
+function applyCreated(record: SemaphoreRecord, payload: SemaphoreCreatedPayload): SemaphoreRecord {
   const snap = snapshotOf(payload);
   return {
     ...applySnapshot(record, snap),
@@ -316,9 +304,7 @@ export function markerFromPayload(
         monotonicNs,
         label: "Wait cancelled",
         detail:
-          payload.wait_seconds !== null
-            ? `${payload.wait_seconds.toFixed(2)}s waited`
-            : undefined,
+          payload.wait_seconds !== null ? `${payload.wait_seconds.toFixed(2)}s waited` : undefined,
       };
     case "asyncio.semaphore.acquired": {
       // Synthetic "saturation cleared" hint: if this was a blocked
@@ -357,121 +343,115 @@ export function appendMarker(
 
 // ── Zustand instance ────────────────────────────────────────────────────
 
-export const useSemaphoreContentionStore = create<SemaphoreContentionStoreState>(
-  (set, get) => ({
-    recordsById: {},
-    semaphoreIds: [],
-    selfMetrics: null,
-    registrySize: 0,
-    registryFinalized: 0,
-    markers: [],
-    markerCapacity: DEFAULT_MARKER_CAPACITY,
-    selectedSemaphoreId: null,
-    status: "idle",
-    errorMessage: null,
-    lastSequence: 0,
-    stats: INITIAL_STATS,
+export const useSemaphoreContentionStore = create<SemaphoreContentionStoreState>((set, get) => ({
+  recordsById: {},
+  semaphoreIds: [],
+  selfMetrics: null,
+  registrySize: 0,
+  registryFinalized: 0,
+  markers: [],
+  markerCapacity: DEFAULT_MARKER_CAPACITY,
+  selectedSemaphoreId: null,
+  status: "idle",
+  errorMessage: null,
+  lastSequence: 0,
+  stats: INITIAL_STATS,
 
-    hydrateSnapshot(snapshot) {
-      const reduced = reduceHydration(snapshot);
-      set((state) => ({
-        recordsById: reduced.recordsById,
-        semaphoreIds: reduced.semaphoreIds,
-        selfMetrics: snapshot.metrics,
-        registrySize: snapshot.registry_size,
-        registryFinalized: snapshot.registry_finalized,
-        status: "ready",
-        errorMessage: null,
-        stats: {
-          ...state.stats,
-          hydrationsApplied: state.stats.hydrationsApplied + 1,
-          lastEventAtMs: Date.now(),
-        },
+  hydrateSnapshot(snapshot) {
+    const reduced = reduceHydration(snapshot);
+    set((state) => ({
+      recordsById: reduced.recordsById,
+      semaphoreIds: reduced.semaphoreIds,
+      selfMetrics: snapshot.metrics,
+      registrySize: snapshot.registry_size,
+      registryFinalized: snapshot.registry_finalized,
+      status: "ready",
+      errorMessage: null,
+      stats: {
+        ...state.stats,
+        hydrationsApplied: state.stats.hydrationsApplied + 1,
+        lastEventAtMs: Date.now(),
+      },
+    }));
+  },
+
+  applyEventPayload(payload) {
+    const state = get();
+    const reduced = reduceEventPayload(state.recordsById, payload);
+    if (reduced === null) {
+      set((s) => ({
+        stats: { ...s.stats, eventsDropped: s.stats.eventsDropped + 1 },
       }));
-    },
-
-    applyEventPayload(payload) {
-      const state = get();
-      const reduced = reduceEventPayload(state.recordsById, payload);
-      if (reduced === null) {
-        set((s) => ({
-          stats: { ...s.stats, eventsDropped: s.stats.eventsDropped + 1 },
-        }));
-        return;
-      }
-      const monotonicNs =
-        typeof performance !== "undefined"
-          ? Math.floor(performance.now() * 1_000_000)
-          : Date.now() * 1_000_000;
-      const marker = markerFromPayload(payload, monotonicNs);
-      const semaphoreIds =
-        payload.semaphore_id in state.recordsById
-          ? state.semaphoreIds
-          : [...state.semaphoreIds, payload.semaphore_id];
-      if (marker !== null) {
-        const { next: markers, evicted } = appendMarker(
-          state.markers,
-          marker,
-          state.markerCapacity,
-        );
-        set((s) => ({
-          recordsById: reduced,
-          semaphoreIds,
-          markers,
-          status: s.status === "idle" ? "ready" : s.status,
-          stats: {
-            ...s.stats,
-            eventsApplied: s.stats.eventsApplied + 1,
-            markersAppended: s.stats.markersAppended + 1,
-            markersEvicted: s.stats.markersEvicted + evicted,
-            lastEventAtMs: Date.now(),
-          },
-        }));
-        return;
-      }
+      return;
+    }
+    const monotonicNs =
+      typeof performance !== "undefined"
+        ? Math.floor(performance.now() * 1_000_000)
+        : Date.now() * 1_000_000;
+    const marker = markerFromPayload(payload, monotonicNs);
+    const semaphoreIds =
+      payload.semaphore_id in state.recordsById
+        ? state.semaphoreIds
+        : [...state.semaphoreIds, payload.semaphore_id];
+    if (marker !== null) {
+      const { next: markers, evicted } = appendMarker(state.markers, marker, state.markerCapacity);
       set((s) => ({
         recordsById: reduced,
         semaphoreIds,
+        markers,
         status: s.status === "idle" ? "ready" : s.status,
         stats: {
           ...s.stats,
           eventsApplied: s.stats.eventsApplied + 1,
+          markersAppended: s.stats.markersAppended + 1,
+          markersEvicted: s.stats.markersEvicted + evicted,
           lastEventAtMs: Date.now(),
         },
       }));
-    },
+      return;
+    }
+    set((s) => ({
+      recordsById: reduced,
+      semaphoreIds,
+      status: s.status === "idle" ? "ready" : s.status,
+      stats: {
+        ...s.stats,
+        eventsApplied: s.stats.eventsApplied + 1,
+        lastEventAtMs: Date.now(),
+      },
+    }));
+  },
 
-    setSelectedSemaphore(semaphoreId) {
-      set({ selectedSemaphoreId: semaphoreId });
-    },
+  setSelectedSemaphore(semaphoreId) {
+    set({ selectedSemaphoreId: semaphoreId });
+  },
 
-    markLoading() {
-      set({ status: "loading", errorMessage: null });
-    },
+  markLoading() {
+    set({ status: "loading", errorMessage: null });
+  },
 
-    markError(message) {
-      set({ status: "error", errorMessage: message });
-    },
+  markError(message) {
+    set({ status: "error", errorMessage: message });
+  },
 
-    setMarkerCapacity(capacity) {
-      if (capacity < 1) return;
-      set({ markerCapacity: capacity });
-    },
+  setMarkerCapacity(capacity) {
+    if (capacity < 1) return;
+    set({ markerCapacity: capacity });
+  },
 
-    reset() {
-      set({
-        recordsById: {},
-        semaphoreIds: [],
-        selfMetrics: null,
-        registrySize: 0,
-        registryFinalized: 0,
-        markers: [],
-        selectedSemaphoreId: null,
-        status: "idle",
-        errorMessage: null,
-        lastSequence: 0,
-        stats: INITIAL_STATS,
-      });
-    },
-  }),
-);
+  reset() {
+    set({
+      recordsById: {},
+      semaphoreIds: [],
+      selfMetrics: null,
+      registrySize: 0,
+      registryFinalized: 0,
+      markers: [],
+      selectedSemaphoreId: null,
+      status: "idle",
+      errorMessage: null,
+      lastSequence: 0,
+      stats: INITIAL_STATS,
+    });
+  },
+}));

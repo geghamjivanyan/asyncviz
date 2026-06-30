@@ -12,11 +12,7 @@
  * the engine's internals.
  */
 
-export type ScaleInvalidationKind =
-  | "scale-window"
-  | "viewport"
-  | "constraints"
-  | "manual";
+export type ScaleInvalidationKind = "scale-window" | "viewport" | "constraints" | "manual";
 
 export type ScaleInvalidationListener = (kind: ScaleInvalidationKind) => void;
 

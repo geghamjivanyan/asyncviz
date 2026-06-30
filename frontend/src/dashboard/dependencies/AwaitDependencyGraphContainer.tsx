@@ -60,10 +60,7 @@ export function AwaitDependencyGraphContainer({
     [selectNode, revealNode],
   );
 
-  const statusProps = useMemo(
-    () => ({ status, errorMessage }),
-    [status, errorMessage],
-  );
+  const statusProps = useMemo(() => ({ status, errorMessage }), [status, errorMessage]);
 
   return (
     <AwaitDependencyGraph

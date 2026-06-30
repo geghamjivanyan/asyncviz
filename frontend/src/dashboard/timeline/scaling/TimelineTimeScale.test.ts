@@ -1,8 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  TimelineTimeScale,
-  safeScale,
-} from "@/dashboard/timeline/scaling/TimelineTimeScale";
+import { TimelineTimeScale, safeScale } from "@/dashboard/timeline/scaling/TimelineTimeScale";
 
 describe("TimelineTimeScale", () => {
   it("pre-computes pixelsPerSecond + secondsPerPixel", () => {

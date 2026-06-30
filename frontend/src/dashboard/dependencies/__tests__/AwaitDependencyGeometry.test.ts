@@ -6,10 +6,7 @@ import {
 } from "@/dashboard/dependencies/AwaitDependencyGeometry";
 import { virtualize } from "@/dashboard/dependencies/AwaitDependencyVirtualization";
 import { nodeAt, neighborNodeId } from "@/dashboard/dependencies/AwaitDependencyHitTesting";
-import type {
-  LaidEdge,
-  LaidNode,
-} from "@/dashboard/dependencies/layout/AwaitDependencyLayout";
+import type { LaidEdge, LaidNode } from "@/dashboard/dependencies/layout/AwaitDependencyLayout";
 
 const viewport: Viewport = { x: 0, y: 0, width: 200, height: 200 };
 
@@ -105,11 +102,9 @@ describe("nodeAt", () => {
 
 describe("neighborNodeId", () => {
   it("steps forward / backward through views", () => {
-    const views = [
-      { id: "a" },
-      { id: "b" },
-      { id: "c" },
-    ] as unknown as Parameters<typeof neighborNodeId>[0];
+    const views = [{ id: "a" }, { id: "b" }, { id: "c" }] as unknown as Parameters<
+      typeof neighborNodeId
+    >[0];
     expect(neighborNodeId(views, null, 1)).toBe("a");
     expect(neighborNodeId(views, "a", 1)).toBe("b");
     expect(neighborNodeId(views, "c", 1)).toBe("c");

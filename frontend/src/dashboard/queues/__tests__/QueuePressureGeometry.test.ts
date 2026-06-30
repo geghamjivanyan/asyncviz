@@ -5,10 +5,7 @@ import {
   pickMarkerAt,
 } from "@/dashboard/queues/QueuePressureGeometry";
 import type { QueuePressureMarker } from "@/dashboard/queues/models/QueuePressureModels";
-import {
-  virtualizeMarkers,
-  virtualizeList,
-} from "@/dashboard/queues/QueuePressureVirtualization";
+import { virtualizeMarkers, virtualizeList } from "@/dashboard/queues/QueuePressureVirtualization";
 
 const baseMarker = (overrides: Partial<QueuePressureMarker> = {}): QueuePressureMarker => ({
   id: "m-1",
@@ -22,20 +19,23 @@ const baseMarker = (overrides: Partial<QueuePressureMarker> = {}): QueuePressure
 
 describe("layoutMarker", () => {
   it("centers the glyph at the time-mapped x", () => {
-    const layout = layoutMarker(
-      baseMarker({ monotonicNs: 500 }),
-      { startNs: 0, endNs: 1000, viewportWidth: 200, glyphWidth: 10 },
-    );
+    const layout = layoutMarker(baseMarker({ monotonicNs: 500 }), {
+      startNs: 0,
+      endNs: 1000,
+      viewportWidth: 200,
+      glyphWidth: 10,
+    });
     expect(layout.x).toBeCloseTo(100, 6);
     expect(layout.left).toBeCloseTo(95, 6);
     expect(layout.clipped).toBe(false);
   });
 
   it("clips markers entirely outside the viewport", () => {
-    const layout = layoutMarker(
-      baseMarker({ monotonicNs: 2000 }),
-      { startNs: 0, endNs: 1000, viewportWidth: 200 },
-    );
+    const layout = layoutMarker(baseMarker({ monotonicNs: 2000 }), {
+      startNs: 0,
+      endNs: 1000,
+      viewportWidth: 200,
+    });
     expect(layout.clipped).toBe(true);
   });
 

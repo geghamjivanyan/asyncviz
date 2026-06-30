@@ -10,7 +10,11 @@ import { memo, useCallback, useEffect, useRef } from "react";
 import { cn } from "@/lib/cn";
 import type { DependencyFrame } from "@/dashboard/dependencies/AwaitDependencyRenderer";
 import { describeNodeForAccessibility } from "@/dashboard/dependencies/AwaitDependencyAccessibility";
-import { nodeKindLabel, severityForState, stateLabel } from "@/dashboard/dependencies/AwaitDependencySeverity";
+import {
+  nodeKindLabel,
+  severityForState,
+  stateLabel,
+} from "@/dashboard/dependencies/AwaitDependencySeverity";
 import { getAwaitDependencyPanelMetrics } from "@/dashboard/dependencies/diagnostics/AwaitDependencyMetricsCollector";
 import { recordAwaitDependencyTrace } from "@/dashboard/dependencies/diagnostics/AwaitDependencyTracing";
 import type { AwaitNodeKind } from "@/dashboard/dependencies/models/AwaitDependencyModels";
@@ -22,9 +26,7 @@ export interface AwaitDependencyCanvasProps {
   className?: string;
 }
 
-function edgePath(
-  fromX: number, fromY: number, toX: number, toY: number,
-): string {
+function edgePath(fromX: number, fromY: number, toX: number, toY: number): string {
   // Cubic bezier with control points pushed to the midpoint of the
   // gap so edges curve nicely between layers without overlapping.
   const dx = (toX - fromX) / 2;
@@ -122,9 +124,7 @@ function AwaitDependencyCanvasImpl({
               height: `${laid.height}px`,
             }}
           >
-            <span className="await-dependency-canvas__kind">
-              {nodeKindLabel(view.kind)}
-            </span>
+            <span className="await-dependency-canvas__kind">{nodeKindLabel(view.kind)}</span>
             <span className="await-dependency-canvas__label">{view.label}</span>
             <span className="await-dependency-canvas__state">
               {stateLabel(view.state)}

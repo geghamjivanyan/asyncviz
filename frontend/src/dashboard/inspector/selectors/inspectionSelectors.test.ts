@@ -93,11 +93,7 @@ describe("inspectionSelectors", () => {
       ],
       activeSegment: null,
     });
-    const lifecycle = buildLifecycleSummary(
-      makeTask("t1", { duration_seconds: 1.5 }),
-      [],
-      false,
-    );
+    const lifecycle = buildLifecycleSummary(makeTask("t1", { duration_seconds: 1.5 }), [], false);
     const metrics = buildMetricsSummary({ timeline, lifecycle });
     expect(metrics.runRatio).toBeCloseTo(1 / 1.5);
     expect(metrics.waitRatio).toBeCloseTo(0.5 / 1.5);
@@ -207,9 +203,7 @@ describe("inspectionSelectors", () => {
     });
     const inspection = buildTaskInspection({
       task,
-      segments: [
-        makeSegment("s1", "t1", 0, 1_000_000_000, { segment_type: "wait" }),
-      ],
+      segments: [makeSegment("s1", "t1", 0, 1_000_000_000, { segment_type: "wait" })],
       activeSegment: null,
     });
     expect(inspection.timeline.segmentCount).toBe(1);

@@ -7,7 +7,11 @@
  * means the batcher can run inside a worker later.
  */
 
-import type { DirtyRegion, InvalidationBatch, InvalidationReason } from "@/dashboard/timeline/live/models/TimelineLiveModels";
+import type {
+  DirtyRegion,
+  InvalidationBatch,
+  InvalidationReason,
+} from "@/dashboard/timeline/live/models/TimelineLiveModels";
 import { EMPTY_INVALIDATION_BATCH } from "@/dashboard/timeline/live/models/TimelineLiveModels";
 
 /** Pure: fold an iterable of :type:`DirtyRegion` into one batch. */
@@ -27,7 +31,11 @@ export function coalesceRegions(regions: Iterable<DirtyRegion>): InvalidationBat
     if (region.reason === "active-tick") includesActiveTick = true;
     if (region.taskIds) for (const id of region.taskIds) taskIds.add(id);
     if (region.segmentIds) for (const id of region.segmentIds) segmentIds.add(id);
-    if (region.sequence !== undefined && region.sequence !== null && region.sequence > highestSequence) {
+    if (
+      region.sequence !== undefined &&
+      region.sequence !== null &&
+      region.sequence > highestSequence
+    ) {
       highestSequence = region.sequence;
     }
   }

@@ -38,12 +38,7 @@ export interface DirtyRegion {
 export type TimelineLiveMode = "idle" | "live" | "replay" | "paused";
 
 /** Replay transition state. */
-export type TimelineReplayPhase =
-  | "idle"
-  | "buffering"
-  | "applying"
-  | "transitioning"
-  | "done";
+export type TimelineReplayPhase = "idle" | "buffering" | "applying" | "transitioning" | "done";
 
 /** Coalesced batch the engine flushes to the renderer. */
 export interface InvalidationBatch {

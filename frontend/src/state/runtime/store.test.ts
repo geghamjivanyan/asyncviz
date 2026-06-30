@@ -541,7 +541,6 @@ describe("RuntimeStore — replay_status envelope", () => {
   });
 });
 
-
 describe("RuntimeStore — replay batch", () => {
   beforeEach(() => {
     useRuntimeStore.getState().reset();

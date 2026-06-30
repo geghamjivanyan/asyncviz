@@ -28,6 +28,8 @@ pip install asyncviz
 asyncviz run app.py
 ```
 
+![AsyncViz demo](docs/images/demo.gif)
+
 ---
 
 ## Why AsyncViz?
@@ -62,6 +64,8 @@ Visualize:
 * Gather fan-outs
 * Dependency chains
 * Runtime relationships
+
+![Dependencies page](docs/images/dependencies.png)
 
 ---
 
@@ -126,6 +130,8 @@ Supports:
 * Virtualized rendering
 * Large runtime sessions
 
+![Timeline view](docs/images/timeline.png)
+
 ---
 
 ### Runtime Recording & Replay
@@ -138,6 +144,8 @@ asyncviz replay session-<timestamp>.avz
 ```
 
 `asyncviz record` writes a portable `.avz` bundle containing every event from the run. `asyncviz replay` opens the same dashboard against that bundle, with playback controls, a lane-based timeline, scrubbing, bookmarks, and selection statistics — so the captured session can be inspected and shared without rerunning the application.
+
+![Replay page](docs/images/replay.png)
 
 ---
 
@@ -185,6 +193,8 @@ AsyncViz includes a built-in dashboard with dedicated views for different aspect
 
 High-level runtime activity and health.
 
+![Overview page](docs/images/overview.png)
+
 ### Timeline
 
 Task execution over time.
@@ -220,6 +230,8 @@ Playback of recorded sessions, with scrubbing, bookmarks, and selection statisti
 ### Diagnostics
 
 Findings, recommendations, and per-subsystem health, explained in plain language.
+
+![Diagnostics page](docs/images/diagnostics.png)
 
 ---
 

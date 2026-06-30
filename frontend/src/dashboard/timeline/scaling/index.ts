@@ -7,10 +7,7 @@ export {
   type TimelineScaleEngineOptions,
 } from "@/dashboard/timeline/scaling/TimelineScaleEngine";
 
-export {
-  TimelineTimeScale,
-  safeScale,
-} from "@/dashboard/timeline/scaling/TimelineTimeScale";
+export { TimelineTimeScale, safeScale } from "@/dashboard/timeline/scaling/TimelineTimeScale";
 
 export {
   fitScaleToRange,
@@ -52,9 +49,7 @@ export {
   type TimelineScaleGridLines,
 } from "@/dashboard/timeline/scaling/TimelineScaleGrid";
 
-export {
-  TimelineScaleTickCache,
-} from "@/dashboard/timeline/scaling/TimelineScaleCache";
+export { TimelineScaleTickCache } from "@/dashboard/timeline/scaling/TimelineScaleCache";
 
 export {
   EMPTY_SCALE_VIEWPORT,

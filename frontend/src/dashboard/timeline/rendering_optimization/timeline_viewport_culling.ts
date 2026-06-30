@@ -39,10 +39,7 @@ export class TimelineViewportCuller {
 
   /** Cull a list of items against the active coordinate system. The
    *  output array preserves input order. */
-  cull<T extends CullableBounds>(
-    coords: TimelineCoordinateSystem,
-    items: readonly T[],
-  ): T[] {
+  cull<T extends CullableBounds>(coords: TimelineCoordinateSystem, items: readonly T[]): T[] {
     const overscanRows = this.overscanPx / coords.camera.rowHeight;
     const rowStart = coords.camera.rowStart - overscanRows;
     const rowVisible =

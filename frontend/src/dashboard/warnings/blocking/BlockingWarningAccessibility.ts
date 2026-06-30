@@ -40,7 +40,9 @@ export function describeViewForAccessibility(view: BlockingWarningView): string 
   parts.push(`duration ${formatDurationMs(view.freezeDurationMs)}`);
   parts.push(`peak lag ${formatLagMs(view.peakLagMs)}`);
   if (view.captureIds.length > 0) {
-    parts.push(`${view.captureIds.length} correlated capture${view.captureIds.length === 1 ? "" : "s"}`);
+    parts.push(
+      `${view.captureIds.length} correlated capture${view.captureIds.length === 1 ? "" : "s"}`,
+    );
   }
   if (view.peakSeverity !== view.severity) {
     parts.push(`peak severity ${SEVERITY_LABEL[view.peakSeverity]}`);

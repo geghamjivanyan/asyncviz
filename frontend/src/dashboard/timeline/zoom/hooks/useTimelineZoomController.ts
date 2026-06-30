@@ -12,8 +12,10 @@ import {
 } from "@/dashboard/timeline/zoom/TimelineZoomController";
 import type { TimelineZoomState } from "@/dashboard/timeline/zoom/models/TimelineZoomModels";
 
-export interface UseTimelineZoomControllerArgs
-  extends Omit<TimelineZoomControllerOptions, "engine"> {
+export interface UseTimelineZoomControllerArgs extends Omit<
+  TimelineZoomControllerOptions,
+  "engine"
+> {
   engine: TimelineZoomControllerOptions["engine"] | null;
 }
 

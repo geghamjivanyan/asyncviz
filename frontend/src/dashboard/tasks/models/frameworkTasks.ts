@@ -45,10 +45,7 @@ const FRAMEWORK_NAME_SUBSTRINGS: readonly string[] = [
 ];
 
 /** Prefixes that identify AsyncViz's own internal bookkeeping tasks. */
-const ASYNCVIZ_INTERNAL_PREFIXES: readonly string[] = [
-  "asyncviz-",
-  "asyncviz.",
-];
+const ASYNCVIZ_INTERNAL_PREFIXES: readonly string[] = ["asyncviz-", "asyncviz."];
 
 /**
  * Pure: return ``true`` when the inputs name a framework / runtime

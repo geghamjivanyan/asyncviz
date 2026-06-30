@@ -15,7 +15,10 @@
  * The helpers normalize all three modes to a comparable factor.
  */
 
-import { DEFAULT_ZOOM_CONFIG, type ZoomConfig } from "@/dashboard/timeline/zoom/models/TimelineZoomModels";
+import {
+  DEFAULT_ZOOM_CONFIG,
+  type ZoomConfig,
+} from "@/dashboard/timeline/zoom/models/TimelineZoomModels";
 
 export type WheelDeltaMode = "pixel" | "line" | "page";
 
@@ -48,10 +51,7 @@ export function pinchToZoomFactor(ratio: number): number {
 /** Pure: convert a normalized step (number of "clicks") into a zoom
  *  factor using the controller's step factor. ``steps > 0`` zooms out,
  *  ``< 0`` zooms in — matches keyboard semantics. */
-export function stepsToZoomFactor(
-  steps: number,
-  config: ZoomConfig = DEFAULT_ZOOM_CONFIG,
-): number {
+export function stepsToZoomFactor(steps: number, config: ZoomConfig = DEFAULT_ZOOM_CONFIG): number {
   if (!Number.isFinite(steps) || steps === 0) return 1;
   const factor = config.stepFactor;
   if (steps > 0) return Math.pow(1 / factor, steps);

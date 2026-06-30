@@ -22,10 +22,7 @@
  *     constraints + precision guards run exactly once.
  */
 
-import {
-  safeScale,
-  type TimelineTimeScale,
-} from "@/dashboard/timeline/scaling/TimelineTimeScale";
+import { safeScale, type TimelineTimeScale } from "@/dashboard/timeline/scaling/TimelineTimeScale";
 import {
   normalizeViewport,
   type NormalizeViewportResult,
@@ -136,11 +133,7 @@ export class TimelineScaleEngine {
   setViewport(viewport: ScaleViewport): TimelineTimeScale {
     if (!viewportChanged(this.viewport, viewport)) return this.scale;
     this.viewport = viewport;
-    const next = this.normalizeAndBuild(
-      this.scale.timeStart,
-      this.scale.timeEnd,
-      viewport.widthPx,
-    );
+    const next = this.normalizeAndBuild(this.scale.timeStart, this.scale.timeEnd, viewport.widthPx);
     this.commit(next, "viewport");
     return this.scale;
   }

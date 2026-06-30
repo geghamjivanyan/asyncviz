@@ -90,12 +90,7 @@ function TaskInspectorImpl({
       case "warnings":
         return <TaskInspectorWarnings inspection={inspection} />;
       case "relationships":
-        return (
-          <TaskInspectorRelationships
-            inspection={inspection}
-            onSelectTask={onSelectTask}
-          />
-        );
+        return <TaskInspectorRelationships inspection={inspection} onSelectTask={onSelectTask} />;
       case "events":
         return <TaskInspectorEvents events={events ?? []} />;
       case "replay":

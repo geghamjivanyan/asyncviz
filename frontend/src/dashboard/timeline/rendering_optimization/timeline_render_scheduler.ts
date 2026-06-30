@@ -31,9 +31,7 @@ import {
   type DirtyRegionReason,
 } from "@/dashboard/timeline/rendering_optimization/models/dirty_region";
 import { FULL_REGION_SENTINEL } from "@/dashboard/timeline/rendering_optimization/models/dirty_region";
-import {
-  TimelineDirtyRegionTracker,
-} from "@/dashboard/timeline/rendering_optimization/timeline_dirty_regions";
+import { TimelineDirtyRegionTracker } from "@/dashboard/timeline/rendering_optimization/timeline_dirty_regions";
 import { TimelineDrawBatcher } from "@/dashboard/timeline/rendering_optimization/timeline_draw_batcher";
 import { TimelineFrameBudget } from "@/dashboard/timeline/rendering_optimization/timeline_frame_budget";
 import { TimelineGeometryCache } from "@/dashboard/timeline/rendering_optimization/timeline_geometry_cache";
@@ -113,10 +111,7 @@ export class TimelineRenderScheduler {
     this.projectionCache = new TimelineProjectionCache(this.config.projectionCacheCapacity);
     this.textCache = new TimelineTextRenderer(this.config.textCacheCapacity);
     this.drawBatcher = new TimelineDrawBatcher(this.config.drawBatchCapacity);
-    this.canvasPool = new TimelineCanvasPool(
-      this.config.canvasPoolCapacity,
-      options.canvasFactory,
-    );
+    this.canvasPool = new TimelineCanvasPool(this.config.canvasPoolCapacity, options.canvasFactory);
     this.culler = new TimelineViewportCuller(this.config.overscanPx);
     this.replay = new TimelineReplayRenderCoordinator();
     this.pipeline = new TimelineRenderPipeline(
@@ -204,10 +199,7 @@ export class TimelineRenderScheduler {
       };
     }
     const nowMs = typeof performance !== "undefined" ? performance.now() : Date.now();
-    return this.pipeline.execute(
-      { ctx, cssWidth, cssHeight, nowMs },
-      hooks,
-    );
+    return this.pipeline.execute({ ctx, cssWidth, cssHeight, nowMs }, hooks);
   }
 
   // ── Cache / culling accessors ─────────────────────────────────────

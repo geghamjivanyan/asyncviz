@@ -59,10 +59,7 @@ export function projectQueuePressure(
 }
 
 /** Project a single record. Exported for tests + reducers. */
-export function projectRecord(
-  record: QueueMetricsRecord,
-  displayName?: string,
-): QueuePressureView {
+export function projectRecord(record: QueueMetricsRecord, displayName?: string): QueuePressureView {
   const severity = deriveSeverity(record.pressure.level, record.pressure.saturated);
   return {
     queueId: record.queue_id,
@@ -112,9 +109,7 @@ export interface MarkerProjectionInputs {
  * append order; this is an O(N) window filter, not a full scan of the
  * marker store — the caller passes an already-bounded slice.
  */
-export function projectMarkersInWindow(
-  inputs: MarkerProjectionInputs,
-): QueuePressureMarker[] {
+export function projectMarkersInWindow(inputs: MarkerProjectionInputs): QueuePressureMarker[] {
   const { markers, startNs, endNs, limit } = inputs;
   if (markers.length === 0) return [];
   const out: QueuePressureMarker[] = [];

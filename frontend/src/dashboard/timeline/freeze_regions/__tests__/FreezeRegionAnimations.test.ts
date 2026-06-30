@@ -21,9 +21,7 @@ describe("pulseMultiplier", () => {
   });
 
   it("hits the minimum amplitude at three-quarter-period", () => {
-    expect(pulseMultiplier(true, (3 * PULSE_PERIOD_MS) / 4)).toBeCloseTo(
-      1 - PULSE_AMPLITUDE,
-    );
+    expect(pulseMultiplier(true, (3 * PULSE_PERIOD_MS) / 4)).toBeCloseTo(1 - PULSE_AMPLITUDE);
   });
 
   it("is replay-deterministic for the same nowMs", () => {

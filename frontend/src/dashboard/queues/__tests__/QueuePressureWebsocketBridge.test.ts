@@ -73,9 +73,9 @@ describe("makeQueuePressureSubscribeFactory", () => {
   });
 
   it("integrates end-to-end with the store via apply", () => {
-    useQueuePressureStore.getState().hydrateSnapshot(
-      makeHydration({ queues: [makeRecord({ queue_id: "q-1" })] }),
-    );
+    useQueuePressureStore
+      .getState()
+      .hydrateSnapshot(makeHydration({ queues: [makeRecord({ queue_id: "q-1" })] }));
     const listeners: Array<(envelope: RuntimeEnvelope) => void> = [];
     const source = {
       subscribe(_filter: "runtime_event", listener: (envelope: RuntimeEnvelope) => void) {

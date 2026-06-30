@@ -24,9 +24,7 @@ describe("AwaitDependencyStore reducers", () => {
       }),
     );
     const s = useAwaitDependencyStore.getState();
-    expect(Object.keys(s.nodesById).sort()).toEqual([
-      "g-1", "t-a", "t-b", "t-parent",
-    ]);
+    expect(Object.keys(s.nodesById).sort()).toEqual(["g-1", "t-a", "t-b", "t-parent"]);
     expect(s.edgeIds).toContain("awaits:t-parent->g-1");
     expect(s.edgeIds).toContain("fanout:g-1->t-a");
     expect(s.edgeIds).toContain("fanout:g-1->t-b");
@@ -45,13 +43,9 @@ describe("AwaitDependencyStore reducers", () => {
   it("wait.started moves gather node to running", () => {
     const store = useAwaitDependencyStore.getState();
     store.applyEventPayload(makeGatherCreated());
-    expect(useAwaitDependencyStore.getState().nodesById["g-1"]?.state).toBe(
-      "pending",
-    );
+    expect(useAwaitDependencyStore.getState().nodesById["g-1"]?.state).toBe("pending");
     store.applyEventPayload(makeWaitStarted());
-    expect(useAwaitDependencyStore.getState().nodesById["g-1"]?.state).toBe(
-      "running",
-    );
+    expect(useAwaitDependencyStore.getState().nodesById["g-1"]?.state).toBe("running");
   });
 
   it("child.completed updates child state + marks fanout edge", () => {
@@ -75,9 +69,7 @@ describe("AwaitDependencyStore reducers", () => {
   it("gather.completed marks gather as completed with duration", () => {
     const store = useAwaitDependencyStore.getState();
     store.applyEventPayload(makeGatherCreated());
-    store.applyEventPayload(
-      makeGatherCompleted({ completed_count: 2, duration_seconds: 0.5 }),
-    );
+    store.applyEventPayload(makeGatherCompleted({ completed_count: 2, duration_seconds: 0.5 }));
     const node = useAwaitDependencyStore.getState().nodesById["g-1"];
     expect(node?.state).toBe("completed");
     expect(node?.durationSeconds).toBe(0.5);
@@ -87,17 +79,13 @@ describe("AwaitDependencyStore reducers", () => {
     const store = useAwaitDependencyStore.getState();
     store.applyEventPayload(makeGatherCreated());
     store.applyEventPayload(makeGatherCancelled());
-    expect(useAwaitDependencyStore.getState().nodesById["g-1"]?.state).toBe(
-      "cancelled",
-    );
+    expect(useAwaitDependencyStore.getState().nodesById["g-1"]?.state).toBe("cancelled");
   });
 
   it("gather.failed captures the exception type", () => {
     const store = useAwaitDependencyStore.getState();
     store.applyEventPayload(makeGatherCreated());
-    store.applyEventPayload(
-      makeGatherFailed({ exception_type: "RuntimeError" }),
-    );
+    store.applyEventPayload(makeGatherFailed({ exception_type: "RuntimeError" }));
     const node = useAwaitDependencyStore.getState().nodesById["g-1"];
     expect(node?.state).toBe("failed");
     expect(node?.exceptionType).toBe("RuntimeError");

@@ -34,9 +34,7 @@ describe("<QueuePressureOverlay />", () => {
       endNs: 1000,
       viewportWidth: 200,
     });
-    render(
-      <QueuePressureOverlay frame={frame} heightPx={20} onActivate={onActivate} />,
-    );
+    render(<QueuePressureOverlay frame={frame} heightPx={20} onActivate={onActivate} />);
     const user = userEvent.setup();
     await user.click(screen.getByTestId("queue-pressure-overlay-marker"));
     expect(onActivate).toHaveBeenCalledWith("a", "q-a");
@@ -52,9 +50,7 @@ describe("<QueuePressureOverlay />", () => {
       maxMarkers: 5,
     });
     render(<QueuePressureOverlay frame={frame} heightPx={20} />);
-    expect(screen.getByTestId("queue-pressure-overlay-overflow")).toHaveTextContent(
-      /\+15 more/,
-    );
+    expect(screen.getByTestId("queue-pressure-overlay-overflow")).toHaveTextContent(/\+15 more/);
   });
 
   it("hides itself when empty and hideWhenEmpty is set", () => {

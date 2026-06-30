@@ -79,10 +79,7 @@ describe("projectTimelineSegments", () => {
       segmentsById: { s: makeWireSegment("s", "t1", 0, 1_000_000_000) },
       segmentIdsByTaskId: { t1: ["s"] },
       activeSegmentsByTaskId: {},
-      activeWarnings: [
-        makeWarning("w1", ["t1"], "warning"),
-        makeWarning("w2", ["t1"], "critical"),
-      ],
+      activeWarnings: [makeWarning("w1", ["t1"], "warning"), makeWarning("w2", ["t1"], "critical")],
     });
     expect(projection.segments[0]!.warningSeverity).toBe("critical");
   });

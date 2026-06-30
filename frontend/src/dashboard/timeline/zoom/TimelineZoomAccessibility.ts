@@ -16,16 +16,14 @@ import type { TimelineZoomState } from "@/dashboard/timeline/zoom/models/Timelin
 export function describeZoomState(state: TimelineZoomState): string {
   const duration = formatDuration(state.durationSeconds);
   const percent = `${Math.round(state.level * 100)}%`;
-  const edge = state.atMin
-    ? " (at minimum zoom)"
-    : state.atMax
-      ? " (at maximum zoom)"
-      : "";
+  const edge = state.atMin ? " (at minimum zoom)" : state.atMax ? " (at maximum zoom)" : "";
   return `Visible duration ${duration}, zoom level ${percent}${edge}.`;
 }
 
 /** Pure: build an announcement for a zoom action ("Zoomed in", etc.). */
-export function describeZoomAction(action: "zoom-in" | "zoom-out" | "zoom-reset" | "fit-all"): string {
+export function describeZoomAction(
+  action: "zoom-in" | "zoom-out" | "zoom-reset" | "fit-all",
+): string {
   switch (action) {
     case "zoom-in":
       return "Zoomed in.";

@@ -19,12 +19,7 @@ import type { TaskSnapshot } from "@/types/runtime";
 
 /** Coarse classification of an in-flight selection mutation. */
 export type SelectionReason =
-  | "pointer"
-  | "keyboard"
-  | "programmatic"
-  | "restore"
-  | "store"
-  | "clear";
+  "pointer" | "keyboard" | "programmatic" | "restore" | "store" | "clear";
 
 /** Snapshot of the controller's observable state. */
 export interface TimelineSelectionState {

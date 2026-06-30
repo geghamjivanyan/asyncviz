@@ -16,9 +16,7 @@ export function replayEventPayload(payload: AwaitGatherEventPayload): void {
   useAwaitDependencyStore.getState().applyEventPayload(payload);
 }
 
-export function replayEventStream(
-  payloads: Iterable<AwaitGatherEventPayload>,
-): void {
+export function replayEventStream(payloads: Iterable<AwaitGatherEventPayload>): void {
   const apply = useAwaitDependencyStore.getState().applyEventPayload;
   for (const payload of payloads) apply(payload);
 }

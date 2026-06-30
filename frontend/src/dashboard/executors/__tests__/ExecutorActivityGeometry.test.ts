@@ -14,9 +14,7 @@ import {
 } from "@/dashboard/executors/ExecutorActivityHitTesting";
 import type { ExecutorActivityMarker } from "@/dashboard/executors/models/ExecutorActivityModels";
 
-const baseMarker = (
-  overrides: Partial<ExecutorActivityMarker> = {},
-): ExecutorActivityMarker => ({
+const baseMarker = (overrides: Partial<ExecutorActivityMarker> = {}): ExecutorActivityMarker => ({
   id: "m-1",
   executorId: "e-1",
   kind: "contention",
@@ -115,7 +113,13 @@ describe("virtualizeList", () => {
 describe("hitTestMarkers", () => {
   it("returns executor id of the hit marker", () => {
     const layouts = [
-      { marker: baseMarker({ id: "a", executorId: "e-A" }), x: 10, left: 5, width: 10, clipped: false },
+      {
+        marker: baseMarker({ id: "a", executorId: "e-A" }),
+        x: 10,
+        left: 5,
+        width: 10,
+        clipped: false,
+      },
     ];
     const hit = hitTestMarkers(layouts, 11, 5);
     expect(hit?.executorId).toBe("e-A");

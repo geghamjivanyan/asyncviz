@@ -1,8 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  flatGrouping,
-  groupByLineageRoot,
-} from "@/dashboard/timeline/rows/TimelineRowGrouping";
+import { flatGrouping, groupByLineageRoot } from "@/dashboard/timeline/rows/TimelineRowGrouping";
 import { normalizeRow } from "@/dashboard/timeline/rows/utils/normalizeRow";
 
 const rows = [
@@ -42,9 +39,7 @@ describe("row grouping", () => {
 
   it("preserves rowIndex ordering inside groups", () => {
     const grouping = groupByLineageRoot(rows);
-    const sortedIds = grouping.groups
-      .flatMap((g) => g.rows)
-      .map((r) => r.rowIndex);
+    const sortedIds = grouping.groups.flatMap((g) => g.rows).map((r) => r.rowIndex);
     expect(sortedIds).toEqual([...sortedIds].sort((a, b) => a - b));
   });
 });

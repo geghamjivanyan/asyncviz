@@ -5,9 +5,7 @@
  * bookkeeping.
  */
 
-import type {
-  SelectionAnchor,
-} from "@/dashboard/timeline/selection/models/TimelineSelectionModels";
+import type { SelectionAnchor } from "@/dashboard/timeline/selection/models/TimelineSelectionModels";
 
 export function anchorFromHit(args: {
   timeSeconds?: number | null;

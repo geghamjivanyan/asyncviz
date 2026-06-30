@@ -49,12 +49,7 @@ import type { TransportEvent, WebSocketTransport } from "@/runtime/websocket/tra
 import { WebSocketDiagnostics, type DiagnosticsOptions } from "@/runtime/websocket/diagnostics";
 
 export type RejectReason =
-  | "invalid-json"
-  | "invalid-shape"
-  | "unknown-type"
-  | "protocol-mismatch"
-  | "duplicate"
-  | "stale";
+  "invalid-json" | "invalid-shape" | "unknown-type" | "protocol-mismatch" | "duplicate" | "stale";
 
 export interface RuntimeWebSocketClientOptions {
   /** Pre-built transport. Production builds inject :class:`NativeWebSocketTransport`. */

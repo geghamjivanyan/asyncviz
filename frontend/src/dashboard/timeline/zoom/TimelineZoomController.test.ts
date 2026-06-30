@@ -1,7 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import {
-  TimelineZoomController,
-} from "@/dashboard/timeline/zoom/TimelineZoomController";
+import { TimelineZoomController } from "@/dashboard/timeline/zoom/TimelineZoomController";
 import { TimelineZoomMetrics } from "@/dashboard/timeline/zoom/TimelineZoomMetrics";
 import { timeAnchor, xAnchor } from "@/dashboard/timeline/zoom/TimelineZoomAnchoring";
 import { buildEngine } from "@/dashboard/timeline/zoom/__fixtures__/makeZoomFixtures";

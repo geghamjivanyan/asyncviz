@@ -75,10 +75,7 @@ export function deriveSeverity(inputs: SeverityInputs): SemaphoreContentionSever
 }
 
 /** Compute utilization ratio in ``[0, 1]``. ``null`` current = 0. */
-export function utilizationOf(
-  currentValue: number | null,
-  initialValue: number,
-): number {
+export function utilizationOf(currentValue: number | null, initialValue: number): number {
   if (initialValue <= 0) return 0;
   const used = initialValue - (currentValue ?? initialValue);
   return Math.max(0, Math.min(1, used / initialValue));

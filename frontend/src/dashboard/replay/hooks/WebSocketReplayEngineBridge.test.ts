@@ -8,11 +8,7 @@
  */
 
 import { describe, expect, it, vi } from "vitest";
-import type {
-  EnvelopeListener,
-  Subscription,
-  SubscriptionFilter,
-} from "@/runtime/websocket";
+import type { EnvelopeListener, Subscription, SubscriptionFilter } from "@/runtime/websocket";
 import type { RuntimeEnvelope } from "@/types/runtime";
 import {
   WebSocketReplayEngineBridge,
@@ -65,7 +61,6 @@ function statusEnvelope(payload: Record<string, unknown>): RuntimeEnvelope {
     payload,
   };
 }
-
 
 describe("WebSocketReplayEngineBridge", () => {
   it("starts with the empty window + idle playback", () => {
@@ -162,10 +157,7 @@ describe("WebSocketReplayEngineBridge", () => {
     const bridge = new WebSocketReplayEngineBridge({ client });
     bridge.dispatch({ type: "play" });
     bridge.dispatch({ type: "set-speed", speed: 4 });
-    expect(bridge.intents).toEqual([
-      { type: "play" },
-      { type: "set-speed", speed: 4 },
-    ]);
+    expect(bridge.intents).toEqual([{ type: "play" }, { type: "set-speed", speed: 4 }]);
   });
 
   it("dispose removes the websocket subscription", () => {

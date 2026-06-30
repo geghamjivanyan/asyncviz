@@ -30,7 +30,15 @@ import type { AwaitNodeView } from "@/dashboard/dependencies/models/AwaitDepende
 export type FindingSeverity = "info" | "warning" | "critical";
 
 export interface RelatedRuntimeObject {
-  readonly kind: "queue" | "semaphore" | "executor" | "dependency" | "task" | "warning" | "connection" | "replay";
+  readonly kind:
+    | "queue"
+    | "semaphore"
+    | "executor"
+    | "dependency"
+    | "task"
+    | "warning"
+    | "connection"
+    | "replay";
   readonly id: string;
   readonly label: string;
 }
@@ -75,9 +83,7 @@ export interface RuntimeFindingsInputs {
  *  on dashboards with dozens of saturated objects. */
 const RELATED_CAP = 4;
 
-export function deriveRuntimeFindings(
-  inputs: RuntimeFindingsInputs,
-): readonly RuntimeFinding[] {
+export function deriveRuntimeFindings(inputs: RuntimeFindingsInputs): readonly RuntimeFinding[] {
   const out: RuntimeFinding[] = [];
 
   out.push(...queueFindings(inputs.queues));
@@ -86,7 +92,9 @@ export function deriveRuntimeFindings(
   out.push(...dependencyFindings(inputs.dependencyNodes));
   out.push(...blockingFindings(inputs.blockingWarningCount));
   out.push(...taskFailureFindings(inputs.tasks));
-  out.push(...connectionFindings(inputs.connection, inputs.websocketReconnects, inputs.websocketFailures));
+  out.push(
+    ...connectionFindings(inputs.connection, inputs.websocketReconnects, inputs.websocketFailures),
+  );
   out.push(...eventRateFindings(inputs.eventRate, inputs.envelopesDropped));
   out.push(...healthFindings(inputs.health, inputs.warnings));
 
@@ -102,9 +110,7 @@ export function deriveRuntimeFindings(
 
 // ── per-subsystem rules ──────────────────────────────────────────────────
 
-function queueFindings(
-  queues: readonly QueuePressureView[],
-): RuntimeFinding[] {
+function queueFindings(queues: readonly QueuePressureView[]): RuntimeFinding[] {
   const saturated = queues.filter((q) => q.severity === "saturated");
   const critical = queues.filter((q) => q.severity === "critical");
   const warning = queues.filter((q) => q.severity === "warning");
@@ -145,8 +151,7 @@ function queueFindings(
       title: "Queue showing pressure",
       severity: "warning",
       description: describeQueueGroup(warning, "is showing pressure"),
-      impact:
-        "Producers occasionally block. Latency may rise during burst windows.",
+      impact: "Producers occasionally block. Latency may rise during burst windows.",
       suggestedFix:
         "Check consumer throughput; if it's CPU-bound, move heavy work into an executor.",
       relatedObjects: queueRelated(warning),
@@ -157,12 +162,8 @@ function queueFindings(
   return findings;
 }
 
-function semaphoreFindings(
-  semaphores: readonly SemaphoreContentionView[],
-): RuntimeFinding[] {
-  const blocked = semaphores.filter(
-    (s) => s.severity === "saturated" || s.severity === "critical",
-  );
+function semaphoreFindings(semaphores: readonly SemaphoreContentionView[]): RuntimeFinding[] {
+  const blocked = semaphores.filter((s) => s.severity === "saturated" || s.severity === "critical");
   const contended = semaphores.filter((s) => s.severity === "warning");
   const findings: RuntimeFinding[] = [];
   if (blocked.length > 0) {
@@ -197,9 +198,7 @@ function semaphoreFindings(
   return findings;
 }
 
-function executorFindings(
-  executors: readonly ExecutorActivityView[],
-): RuntimeFinding[] {
+function executorFindings(executors: readonly ExecutorActivityView[]): RuntimeFinding[] {
   const saturated = executors.filter(
     (e) => e.severity === "saturated" || e.severity === "critical",
   );
@@ -225,8 +224,7 @@ function executorFindings(
       title: "Executor under pressure",
       severity: "warning",
       description: describeExecutorGroup(warning),
-      impact:
-        "The executor is approaching its worker cap; small bursts push it into saturation.",
+      impact: "The executor is approaching its worker cap; small bursts push it into saturation.",
       suggestedFix:
         "Profile callables for unexpectedly long work; consider batching writes or splitting long-running callables.",
       relatedObjects: executorRelated(warning),
@@ -237,21 +235,15 @@ function executorFindings(
   return findings;
 }
 
-function dependencyFindings(
-  nodes: readonly AwaitNodeView[],
-): RuntimeFinding[] {
-  const failed = nodes.filter(
-    (n) => n.kind === "gather" && n.state === "failed",
-  );
-  const cancelled = nodes.filter(
-    (n) => n.kind === "gather" && n.state === "cancelled",
-  );
+function dependencyFindings(nodes: readonly AwaitNodeView[]): RuntimeFinding[] {
+  const failed = nodes.filter((n) => n.kind === "gather" && n.state === "failed");
+  const cancelled = nodes.filter((n) => n.kind === "gather" && n.state === "cancelled");
   const stuckGathers = nodes.filter(
     (n) =>
-      n.kind === "gather"
-      && n.state === "pending"
-      && n.childCount > 0
-      && n.completedCount + n.failedCount + n.cancelledCount === 0,
+      n.kind === "gather" &&
+      n.state === "pending" &&
+      n.childCount > 0 &&
+      n.completedCount + n.failedCount + n.cancelledCount === 0,
   );
 
   const findings: RuntimeFinding[] = [];
@@ -317,8 +309,7 @@ function dependencyFindings(
 
 function blockingFindings(blockingWarningCount: number): RuntimeFinding[] {
   if (blockingWarningCount <= 0) return [];
-  const severity: FindingSeverity =
-    blockingWarningCount >= 3 ? "critical" : "warning";
+  const severity: FindingSeverity = blockingWarningCount >= 3 ? "critical" : "warning";
   return [
     {
       id: "blocking-callbacks",
@@ -364,7 +355,10 @@ function connectionFindings(
   const findings: RuntimeFinding[] = [];
   // "Reconnect storm" — more than 2 reconnects since the session
   // started OR an active reconnect loop.
-  if (websocketReconnects >= 3 || (connection.isReconnecting && connection.reconnectAttempts >= 2)) {
+  if (
+    websocketReconnects >= 3 ||
+    (connection.isReconnecting && connection.reconnectAttempts >= 2)
+  ) {
     findings.push({
       id: "reconnect-storm",
       title: "Reconnect storm",
@@ -374,9 +368,7 @@ function connectionFindings(
         "Each reconnect re-hydrates the snapshot. Charts flash and the dashboard briefly shows stale state.",
       suggestedFix:
         "Check network health and proxy timeouts. If the server is healthy, look for client-side load (browser tab CPU starvation).",
-      relatedObjects: [
-        { kind: "connection", id: "websocket", label: connection.label },
-      ],
+      relatedObjects: [{ kind: "connection", id: "websocket", label: connection.label }],
       jumpTarget: "/diagnostics",
       jumpLabel: "Developer diagnostics",
     });
@@ -391,9 +383,7 @@ function connectionFindings(
         "Failures mean the dashboard temporarily lost the live stream and reverted to its last hydrated snapshot.",
       suggestedFix:
         "Inspect the developer diagnostics for the failure cause (timeout vs handshake error vs server kicked).",
-      relatedObjects: [
-        { kind: "connection", id: "websocket", label: connection.label },
-      ],
+      relatedObjects: [{ kind: "connection", id: "websocket", label: connection.label }],
       jumpTarget: "/diagnostics",
       jumpLabel: "Developer diagnostics",
     });
@@ -404,13 +394,10 @@ function connectionFindings(
       title: "Live connection lost",
       severity: "critical",
       description: `Websocket is in '${connection.label}' state — no live data flowing.`,
-      impact:
-        "Every metric on the dashboard is frozen at the moment the connection dropped.",
+      impact: "Every metric on the dashboard is frozen at the moment the connection dropped.",
       suggestedFix:
         "Check that ``asyncviz run`` (or your dashboard host) is still running. The frontend will reconnect automatically once it's reachable.",
-      relatedObjects: [
-        { kind: "connection", id: "websocket", label: connection.label },
-      ],
+      relatedObjects: [{ kind: "connection", id: "websocket", label: connection.label }],
       jumpTarget: "/diagnostics",
       jumpLabel: "Developer diagnostics",
     });
@@ -461,8 +448,7 @@ function eventRateFindings(
       description: `${envelopesDropped} envelope${envelopesDropped === 1 ? "" : "s"} could not be applied to the store.`,
       impact:
         "Some on-screen metrics are slightly behind the runtime. The store catches up after the next snapshot.",
-      suggestedFix:
-        "If the count is large, check websocket flow control + browser tab throttling.",
+      suggestedFix: "If the count is large, check websocket flow control + browser tab throttling.",
       relatedObjects: [],
       jumpTarget: "/diagnostics",
       jumpLabel: "Developer diagnostics",
@@ -486,10 +472,7 @@ function eventRateFindings(
   return findings;
 }
 
-function healthFindings(
-  health: RuntimeHealthSummary,
-  warnings: WarningSummary,
-): RuntimeFinding[] {
+function healthFindings(health: RuntimeHealthSummary, warnings: WarningSummary): RuntimeFinding[] {
   const findings: RuntimeFinding[] = [];
   if (health.level === "starting" || health.isHydrating) {
     findings.push({
@@ -497,8 +480,7 @@ function healthFindings(
       title: "Runtime starting up",
       severity: "info",
       description: "The dashboard is still hydrating its initial snapshot from the backend.",
-      impact:
-        "Metrics may briefly show empty or zero values until hydration completes.",
+      impact: "Metrics may briefly show empty or zero values until hydration completes.",
       suggestedFix:
         "Wait a few seconds — the runtime will transition to 'healthy' once the first snapshot has been applied.",
       relatedObjects: [],
@@ -546,10 +528,8 @@ function healthyFinding(): RuntimeFinding {
     severity: "info",
     description:
       "No queue saturation, semaphore contention, executor pressure, blocking calls, or connection issues detected.",
-    impact:
-      "Every subsystem is operating inside its expected envelope.",
-    suggestedFix:
-      "Nothing to do. The runtime summary below shows current counts for reference.",
+    impact: "Every subsystem is operating inside its expected envelope.",
+    suggestedFix: "Nothing to do. The runtime summary below shows current counts for reference.",
     relatedObjects: [],
     jumpTarget: "/timeline",
     jumpLabel: "Open Timeline",
@@ -558,29 +538,25 @@ function healthyFinding(): RuntimeFinding {
 
 // ── describe helpers (kept short — these read inside the card) ──────────
 
-function describeQueueGroup(
-  views: readonly QueuePressureView[],
-  trailing: string,
-): string {
+function describeQueueGroup(views: readonly QueuePressureView[], trailing: string): string {
   const names = views.slice(0, 3).map((v) => v.displayName);
   const rest = views.length > 3 ? ` (+${views.length - 3} more)` : "";
   return `${names.join(", ")}${rest} ${trailing}.`;
 }
 
-function describeSemaphoreGroup(
-  views: readonly SemaphoreContentionView[],
-): string {
+function describeSemaphoreGroup(views: readonly SemaphoreContentionView[]): string {
   const sample = views.slice(0, 3);
   const rest = views.length > 3 ? ` (+${views.length - 3} more)` : "";
   return sample
-    .map((v) => `${v.displayName}: ${v.waiterCount} waiter(s), ${v.currentValue}/${v.initialValue} permits free`)
+    .map(
+      (v) =>
+        `${v.displayName}: ${v.waiterCount} waiter(s), ${v.currentValue}/${v.initialValue} permits free`,
+    )
     .join("; ")
     .concat(rest, ".");
 }
 
-function describeExecutorGroup(
-  views: readonly ExecutorActivityView[],
-): string {
+function describeExecutorGroup(views: readonly ExecutorActivityView[]): string {
   const sample = views.slice(0, 3);
   const rest = views.length > 3 ? ` (+${views.length - 3} more)` : "";
   return sample
@@ -592,9 +568,7 @@ function describeExecutorGroup(
     .concat(rest, ".");
 }
 
-function queueRelated(
-  views: readonly QueuePressureView[],
-): readonly RelatedRuntimeObject[] {
+function queueRelated(views: readonly QueuePressureView[]): readonly RelatedRuntimeObject[] {
   return views.slice(0, RELATED_CAP).map((v) => ({
     kind: "queue" as const,
     id: v.queueId,
@@ -612,9 +586,7 @@ function semaphoreRelated(
   }));
 }
 
-function executorRelated(
-  views: readonly ExecutorActivityView[],
-): readonly RelatedRuntimeObject[] {
+function executorRelated(views: readonly ExecutorActivityView[]): readonly RelatedRuntimeObject[] {
   return views.slice(0, RELATED_CAP).map((v) => ({
     kind: "executor" as const,
     id: v.executorId,

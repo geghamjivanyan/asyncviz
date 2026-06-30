@@ -11,18 +11,10 @@
 // ── shared ──────────────────────────────────────────────────────────────
 
 /** Backend semaphore kinds reported by the registry. */
-export type SemaphoreKind =
-  | "Semaphore"
-  | "BoundedSemaphore"
-  | "subclass"
-  | "unknown";
+export type SemaphoreKind = "Semaphore" | "BoundedSemaphore" | "subclass" | "unknown";
 
 /** Visual severity bucket — cards + markers key colors off this. */
-export type SemaphoreContentionSeverity =
-  | "calm"
-  | "warning"
-  | "critical"
-  | "saturated";
+export type SemaphoreContentionSeverity = "calm" | "warning" | "critical" | "saturated";
 
 // ── wire-shape: snapshot dict carried on every event ───────────────────
 
@@ -197,10 +189,7 @@ export interface SemaphoreContentionView {
 
 // ── timeline marker view-shape ──────────────────────────────────────────
 
-export type SemaphoreMarkerKind =
-  | "contention"
-  | "saturation"
-  | "wait-cancelled";
+export type SemaphoreMarkerKind = "contention" | "saturation" | "wait-cancelled";
 
 export interface SemaphoreContentionMarker {
   id: string;

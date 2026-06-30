@@ -58,11 +58,7 @@ describe("projectQueuePressure", () => {
       }),
     ];
     const { bySeverityDescending, alarmCount } = projectQueuePressure({ records });
-    expect(bySeverityDescending.map((v) => v.queueId)).toEqual([
-      "q-sat",
-      "q-warn",
-      "q-calm",
-    ]);
+    expect(bySeverityDescending.map((v) => v.queueId)).toEqual(["q-sat", "q-warn", "q-calm"]);
     expect(alarmCount).toBe(2);
   });
 
@@ -76,9 +72,30 @@ describe("projectQueuePressure", () => {
 
 describe("projectMarkersInWindow", () => {
   const markers: QueuePressureMarker[] = [
-    { id: "a", queueId: "q-1", kind: "pressure-change", severity: "warning", monotonicNs: 100, label: "a" },
-    { id: "b", queueId: "q-1", kind: "saturation", severity: "saturated", monotonicNs: 500, label: "b" },
-    { id: "c", queueId: "q-2", kind: "contention", severity: "warning", monotonicNs: 900, label: "c" },
+    {
+      id: "a",
+      queueId: "q-1",
+      kind: "pressure-change",
+      severity: "warning",
+      monotonicNs: 100,
+      label: "a",
+    },
+    {
+      id: "b",
+      queueId: "q-1",
+      kind: "saturation",
+      severity: "saturated",
+      monotonicNs: 500,
+      label: "b",
+    },
+    {
+      id: "c",
+      queueId: "q-2",
+      kind: "contention",
+      severity: "warning",
+      monotonicNs: 900,
+      label: "c",
+    },
   ];
 
   it("returns markers within window", () => {

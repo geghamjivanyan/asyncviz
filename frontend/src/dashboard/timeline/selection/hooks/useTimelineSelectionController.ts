@@ -12,8 +12,10 @@ import {
 } from "@/dashboard/timeline/selection/TimelineSelectionController";
 import type { TimelineSelectionState } from "@/dashboard/timeline/selection/models/TimelineSelectionModels";
 
-export interface UseTimelineSelectionControllerArgs
-  extends Omit<TimelineSelectionControllerOptions, "rows" | "viewport" | "focus"> {
+export interface UseTimelineSelectionControllerArgs extends Omit<
+  TimelineSelectionControllerOptions,
+  "rows" | "viewport" | "focus"
+> {
   rows: SelectionRowSource;
   viewport?: SelectionViewportSource | null;
   focus?: SelectionFocusAdapter | null;

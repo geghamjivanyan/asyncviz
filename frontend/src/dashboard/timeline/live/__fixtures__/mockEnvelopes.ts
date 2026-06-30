@@ -93,10 +93,7 @@ export function makeWarningDeltaEnvelope(args: {
   };
 }
 
-export function makeRuntimeEventEnvelope(
-  sequence: number,
-  taskId: string,
-): RuntimeEnvelope {
+export function makeRuntimeEventEnvelope(sequence: number, taskId: string): RuntimeEnvelope {
   return {
     protocol_version: "1",
     type: "runtime_event",

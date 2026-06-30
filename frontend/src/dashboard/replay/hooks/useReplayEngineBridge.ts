@@ -9,9 +9,7 @@
 import { useEffect } from "react";
 import type { ReplayEngineBridge } from "@/dashboard/replay/hooks/ReplayEngineBridge";
 import { useReplayTimelineStore } from "@/dashboard/replay/ReplayTimelineStore";
-import {
-  recordReplayTimelineTrace,
-} from "@/dashboard/replay/diagnostics/ReplayTimelineTracing";
+import { recordReplayTimelineTrace } from "@/dashboard/replay/diagnostics/ReplayTimelineTracing";
 
 export interface UseReplayEngineBridgeOptions {
   readonly bridge: ReplayEngineBridge;

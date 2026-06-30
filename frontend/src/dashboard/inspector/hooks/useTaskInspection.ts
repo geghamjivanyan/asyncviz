@@ -7,9 +7,7 @@
  */
 
 import { useMemo, useRef } from "react";
-import {
-  buildTaskInspection,
-} from "@/dashboard/inspector/selectors/inspectionSelectors";
+import { buildTaskInspection } from "@/dashboard/inspector/selectors/inspectionSelectors";
 import {
   useReplayMetaSummary,
   useSelectedTaskActiveSegment,
@@ -21,9 +19,7 @@ import {
   useSelectedTaskTransitions,
   useSelectedTaskWarnings,
 } from "@/dashboard/inspector/selectors/storeInspectionSelectors";
-import {
-  getTimelineInspectorMetrics,
-} from "@/dashboard/inspector/TaskInspectorMetricsCollector";
+import { getTimelineInspectorMetrics } from "@/dashboard/inspector/TaskInspectorMetricsCollector";
 import { traceInspectorProjection } from "@/dashboard/inspector/TaskInspectorTracing";
 import type { TaskInspection } from "@/dashboard/inspector/models/TaskInspectionModels";
 

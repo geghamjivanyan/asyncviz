@@ -24,7 +24,10 @@
 import type { RuntimeEnvelope } from "@/types/runtime";
 import type { TimelineInvalidationTracker } from "@/dashboard/timeline/live/TimelineInvalidation";
 import type { TimelineDeltaProcessor } from "@/dashboard/timeline/live/TimelineDeltaProcessor";
-import type { TimelineLiveMode, TimelineReplayPhase } from "@/dashboard/timeline/live/models/TimelineLiveModels";
+import type {
+  TimelineLiveMode,
+  TimelineReplayPhase,
+} from "@/dashboard/timeline/live/models/TimelineLiveModels";
 
 export interface ReplayCoordinatorOptions {
   processor: TimelineDeltaProcessor;
@@ -100,7 +103,11 @@ export class TimelineReplayCoordinator {
       }
       if (result.invalidated) regionsPushed += result.regionsPushed;
       applied += 1;
-      if (envelope.sequence !== undefined && envelope.sequence !== null && envelope.sequence > highestSequence) {
+      if (
+        envelope.sequence !== undefined &&
+        envelope.sequence !== null &&
+        envelope.sequence > highestSequence
+      ) {
         highestSequence = envelope.sequence;
       }
     }

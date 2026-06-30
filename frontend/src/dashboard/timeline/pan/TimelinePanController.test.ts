@@ -61,7 +61,9 @@ describe("TimelinePanController", () => {
   it("centerOnTime centers the viewport on the target", () => {
     const { engine, controller } = setup();
     controller.centerOnTime(20);
-    expect(engine.currentScale().timeStart + engine.currentScale().durationSeconds / 2).toBeCloseTo(20);
+    expect(engine.currentScale().timeStart + engine.currentScale().durationSeconds / 2).toBeCloseTo(
+      20,
+    );
   });
 
   it("drag lifecycle: beginDrag + updateDrag + endDrag moves the viewport", () => {

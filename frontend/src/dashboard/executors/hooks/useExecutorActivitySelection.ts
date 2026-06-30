@@ -17,10 +17,7 @@ import { recordExecutorActivityTrace } from "@/dashboard/executors/diagnostics/E
 export interface UseExecutorActivitySelectionResult {
   selectedExecutorId: string | null;
   selectExecutor: (executorId: string | null) => void;
-  revealExecutor: (
-    executorId: string,
-    options?: { taskId?: string | null },
-  ) => boolean;
+  revealExecutor: (executorId: string, options?: { taskId?: string | null }) => boolean;
 }
 
 export function useExecutorActivitySelection(): UseExecutorActivitySelectionResult {

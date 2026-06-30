@@ -70,10 +70,7 @@ describe("<ReplayPlaybackControls/>", () => {
   it("dispatches set-speed", async () => {
     const dispatch = vi.fn();
     render(<ReplayPlaybackControls dispatch={dispatch} />);
-    await userEvent.selectOptions(
-      screen.getByRole("combobox", { name: /replay speed/i }),
-      "2",
-    );
+    await userEvent.selectOptions(screen.getByRole("combobox", { name: /replay speed/i }), "2");
     expect(dispatch).toHaveBeenCalledWith({ type: "set-speed", speed: 2 });
   });
 });

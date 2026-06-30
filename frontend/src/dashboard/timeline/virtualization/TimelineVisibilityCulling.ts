@@ -61,9 +61,7 @@ export function cullSegmentsLinear<TSegment extends SpatialIndexable>(
       continue;
     }
     const effectiveEnd =
-      seg.isActive === true
-        ? Math.max(seg.endSeconds, timeWindow.endSeconds)
-        : seg.endSeconds;
+      seg.isActive === true ? Math.max(seg.endSeconds, timeWindow.endSeconds) : seg.endSeconds;
     if (effectiveEnd < timeWindow.overscanStartSeconds) continue;
     if (seg.startSeconds > timeWindow.overscanEndSeconds) continue;
     out.push(seg);

@@ -21,9 +21,7 @@ import {
   BlockingWarningStateBadge,
 } from "@/dashboard/warnings/blocking/BlockingWarningSeverity";
 import { freezeSummaryLabel, intentToken } from "@/dashboard/warnings/blocking/utils/formatting";
-import {
-  describeViewForAccessibility,
-} from "@/dashboard/warnings/blocking/BlockingWarningAccessibility";
+import { describeViewForAccessibility } from "@/dashboard/warnings/blocking/BlockingWarningAccessibility";
 
 export interface BlockingWarningCardProps {
   view: BlockingWarningView;

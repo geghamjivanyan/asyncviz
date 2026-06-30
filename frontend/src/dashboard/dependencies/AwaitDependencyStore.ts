@@ -52,11 +52,7 @@ const INITIAL_STATS: AwaitDependencyStoreStats = {
   lastEventAtMs: 0,
 };
 
-export type AwaitDependencyStoreStatus =
-  | "idle"
-  | "loading"
-  | "ready"
-  | "error";
+export type AwaitDependencyStoreStatus = "idle" | "loading" | "ready" | "error";
 
 export interface AwaitDependencyStoreState {
   nodesById: Record<string, AwaitNodeRecord>;
@@ -268,13 +264,7 @@ function applyCreated(
   // events yet — the gather edges still want an anchor).
   const parentId = payload.parent_task_id;
   if (parentId !== null) {
-    ensureNode(
-      topology,
-      parentId,
-      (n) => freshTaskNode(parentId, parentId, n),
-      ns,
-      maxNodes,
-    );
+    ensureNode(topology, parentId, (n) => freshTaskNode(parentId, parentId, n), ns, maxNodes);
   }
   // Gather node.
   const gatherId = payload.gather_id;
@@ -291,13 +281,7 @@ function applyCreated(
   }
   // Child nodes + fanout edges declared up-front from ``child_task_ids``.
   payload.child_task_ids.forEach((cid, index) => {
-    ensureNode(
-      topology,
-      cid,
-      (n) => freshTaskNode(cid, cid, n),
-      ns,
-      maxNodes,
-    );
+    ensureNode(topology, cid, (n) => freshTaskNode(cid, cid, n), ns, maxNodes);
     ensureEdge(topology, "fanout", gatherId, cid, index, ns);
   });
 }
@@ -315,14 +299,7 @@ function applyChildAttached(
     ns,
     maxNodes,
   );
-  ensureEdge(
-    topology,
-    "fanout",
-    payload.gather_id,
-    payload.child_task_id,
-    payload.child_index,
-    ns,
-  );
+  ensureEdge(topology, "fanout", payload.gather_id, payload.child_task_id, payload.child_index, ns);
 }
 
 function applyWaitStarted(
@@ -338,11 +315,7 @@ function applyChildCompleted(
   payload: GatherChildCompletedPayload,
   ns: number,
 ): void {
-  const childState = payload.cancelled
-    ? "cancelled"
-    : payload.failed
-    ? "failed"
-    : "completed";
+  const childState = payload.cancelled ? "cancelled" : payload.failed ? "failed" : "completed";
   finalizeNode(topology, payload.child_task_id, childState, ns);
   markChildEdge(topology, payload.gather_id, payload.child_task_id, ns, {
     completed: true,
@@ -385,11 +358,7 @@ function applyCancelled(
   });
 }
 
-function applyFailed(
-  topology: MutableTopology,
-  payload: GatherFailedPayload,
-  ns: number,
-): void {
+function applyFailed(topology: MutableTopology, payload: GatherFailedPayload, ns: number): void {
   finalizeNode(topology, payload.gather_id, "failed", ns, {
     completedCount: payload.completed_count,
     durationSeconds: payload.duration_seconds,
@@ -439,72 +408,70 @@ export function reduceEventPayload(
 
 // ── Zustand instance ────────────────────────────────────────────────────
 
-export const useAwaitDependencyStore = create<AwaitDependencyStoreState>(
-  (set, get) => ({
-    nodesById: {},
-    nodeIds: [],
-    edgesById: {},
-    edgeIds: [],
-    selectedNodeId: null,
-    maxNodes: DEFAULT_MAX_NODES,
-    status: "idle",
-    errorMessage: null,
-    stats: INITIAL_STATS,
+export const useAwaitDependencyStore = create<AwaitDependencyStoreState>((set, get) => ({
+  nodesById: {},
+  nodeIds: [],
+  edgesById: {},
+  edgeIds: [],
+  selectedNodeId: null,
+  maxNodes: DEFAULT_MAX_NODES,
+  status: "idle",
+  errorMessage: null,
+  stats: INITIAL_STATS,
 
-    applyEventPayload(payload) {
-      const state = get();
-      const { topology, applied } = reduceEventPayload(state, payload);
-      if (!applied) {
-        set((s) => ({
-          stats: { ...s.stats, eventsDropped: s.stats.eventsDropped + 1 },
-        }));
-        return;
-      }
+  applyEventPayload(payload) {
+    const state = get();
+    const { topology, applied } = reduceEventPayload(state, payload);
+    if (!applied) {
       set((s) => ({
-        nodesById: topology.nodesById,
-        nodeIds: topology.nodeIds,
-        edgesById: topology.edgesById,
-        edgeIds: topology.edgeIds,
-        status: s.status === "idle" ? "ready" : s.status,
-        stats: {
-          ...s.stats,
-          eventsApplied: s.stats.eventsApplied + 1,
-          nodesCreated: s.stats.nodesCreated + topology.nodesCreated,
-          edgesCreated: s.stats.edgesCreated + topology.edgesCreated,
-          nodesEvicted: s.stats.nodesEvicted + topology.nodesEvicted,
-          lastEventAtMs: Date.now(),
-        },
+        stats: { ...s.stats, eventsDropped: s.stats.eventsDropped + 1 },
       }));
-    },
+      return;
+    }
+    set((s) => ({
+      nodesById: topology.nodesById,
+      nodeIds: topology.nodeIds,
+      edgesById: topology.edgesById,
+      edgeIds: topology.edgeIds,
+      status: s.status === "idle" ? "ready" : s.status,
+      stats: {
+        ...s.stats,
+        eventsApplied: s.stats.eventsApplied + 1,
+        nodesCreated: s.stats.nodesCreated + topology.nodesCreated,
+        edgesCreated: s.stats.edgesCreated + topology.edgesCreated,
+        nodesEvicted: s.stats.nodesEvicted + topology.nodesEvicted,
+        lastEventAtMs: Date.now(),
+      },
+    }));
+  },
 
-    setSelectedNode(id) {
-      set({ selectedNodeId: id });
-    },
+  setSelectedNode(id) {
+    set({ selectedNodeId: id });
+  },
 
-    markLoading() {
-      set({ status: "loading", errorMessage: null });
-    },
+  markLoading() {
+    set({ status: "loading", errorMessage: null });
+  },
 
-    markError(message) {
-      set({ status: "error", errorMessage: message });
-    },
+  markError(message) {
+    set({ status: "error", errorMessage: message });
+  },
 
-    setMaxNodes(cap) {
-      if (cap < 1) return;
-      set({ maxNodes: cap });
-    },
+  setMaxNodes(cap) {
+    if (cap < 1) return;
+    set({ maxNodes: cap });
+  },
 
-    reset() {
-      set({
-        nodesById: {},
-        nodeIds: [],
-        edgesById: {},
-        edgeIds: [],
-        selectedNodeId: null,
-        status: "idle",
-        errorMessage: null,
-        stats: INITIAL_STATS,
-      });
-    },
-  }),
-);
+  reset() {
+    set({
+      nodesById: {},
+      nodeIds: [],
+      edgesById: {},
+      edgeIds: [],
+      selectedNodeId: null,
+      status: "idle",
+      errorMessage: null,
+      stats: INITIAL_STATS,
+    });
+  },
+}));

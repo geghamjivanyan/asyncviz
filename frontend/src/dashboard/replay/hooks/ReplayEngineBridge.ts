@@ -26,13 +26,9 @@ export interface ReplayEngineBridge {
   /** Latest known playback snapshot. */
   getPlaybackSnapshot(): ReplayPlaybackSnapshot;
   /** Subscribe to playback snapshot updates. Fires on every change. */
-  subscribePlayback(
-    listener: (snapshot: ReplayPlaybackSnapshot) => void,
-  ): ReplayEngineUnsubscribe;
+  subscribePlayback(listener: (snapshot: ReplayPlaybackSnapshot) => void): ReplayEngineUnsubscribe;
   /** Subscribe to incoming markers (e.g. from a websocket stream). */
-  subscribeMarkers(
-    listener: (marker: ReplayTimelineMarker) => void,
-  ): ReplayEngineUnsubscribe;
+  subscribeMarkers(listener: (marker: ReplayTimelineMarker) => void): ReplayEngineUnsubscribe;
   /** Subscribe to bookmark mutations (added/removed/renamed). */
   subscribeBookmarks(
     listener: (bookmarks: readonly ReplayBookmark[]) => void,
@@ -60,15 +56,9 @@ export class InMemoryReplayEngineBridge implements ReplayEngineBridge {
     paused: false,
   };
   private bookmarks: ReplayBookmark[] = [];
-  private playbackListeners = new Set<
-    (snapshot: ReplayPlaybackSnapshot) => void
-  >();
-  private markerListeners = new Set<
-    (marker: ReplayTimelineMarker) => void
-  >();
-  private bookmarkListeners = new Set<
-    (bookmarks: readonly ReplayBookmark[]) => void
-  >();
+  private playbackListeners = new Set<(snapshot: ReplayPlaybackSnapshot) => void>();
+  private markerListeners = new Set<(marker: ReplayTimelineMarker) => void>();
+  private bookmarkListeners = new Set<(bookmarks: readonly ReplayBookmark[]) => void>();
   readonly intents: ReplayControlIntent[] = [];
 
   getSessionWindow(): ReplaySessionWindow {
@@ -97,16 +87,12 @@ export class InMemoryReplayEngineBridge implements ReplayEngineBridge {
     this.bookmarkListeners.forEach((listener) => listener(this.bookmarks));
   }
 
-  subscribePlayback(
-    listener: (snapshot: ReplayPlaybackSnapshot) => void,
-  ): ReplayEngineUnsubscribe {
+  subscribePlayback(listener: (snapshot: ReplayPlaybackSnapshot) => void): ReplayEngineUnsubscribe {
     this.playbackListeners.add(listener);
     return () => this.playbackListeners.delete(listener);
   }
 
-  subscribeMarkers(
-    listener: (marker: ReplayTimelineMarker) => void,
-  ): ReplayEngineUnsubscribe {
+  subscribeMarkers(listener: (marker: ReplayTimelineMarker) => void): ReplayEngineUnsubscribe {
     this.markerListeners.add(listener);
     return () => this.markerListeners.delete(listener);
   }

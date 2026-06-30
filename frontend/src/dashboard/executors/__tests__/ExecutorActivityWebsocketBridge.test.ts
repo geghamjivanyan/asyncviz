@@ -26,9 +26,7 @@ beforeEach(() => {
 describe("executorActivityPayloadFromEnvelope", () => {
   it("returns null for non-executor event_type", () => {
     expect(
-      executorActivityPayloadFromEnvelope(
-        envelope({ event_type: "asyncio.task.created" }),
-      ),
+      executorActivityPayloadFromEnvelope(envelope({ event_type: "asyncio.task.created" })),
     ).toBeNull();
   });
 
@@ -73,9 +71,9 @@ describe("makeExecutorActivitySubscribeFactory", () => {
   });
 
   it("integrates end-to-end with the store via apply", () => {
-    useExecutorActivityStore.getState().hydrateSnapshot(
-      makeHydration({ executors: [makeRecord({ executor_id: "e-1" })] }),
-    );
+    useExecutorActivityStore
+      .getState()
+      .hydrateSnapshot(makeHydration({ executors: [makeRecord({ executor_id: "e-1" })] }));
     const listeners: Array<(envelope: RuntimeEnvelope) => void> = [];
     const source = {
       subscribe(_filter: "runtime_event", listener: (envelope: RuntimeEnvelope) => void) {
@@ -86,9 +84,7 @@ describe("makeExecutorActivitySubscribeFactory", () => {
     makeExecutorActivitySubscribeFactory(source)((payload) =>
       useExecutorActivityStore.getState().applyEventPayload(payload),
     );
-    listeners[0](
-      envelope(makeSaturationChanged({ executor_id: "e-1", new_level: "critical" })),
-    );
+    listeners[0](envelope(makeSaturationChanged({ executor_id: "e-1", new_level: "critical" })));
     const state = useExecutorActivityStore.getState();
     expect(state.recordsById["e-1"]?.saturation.level).toBe("critical");
     expect(state.markers).toHaveLength(1);

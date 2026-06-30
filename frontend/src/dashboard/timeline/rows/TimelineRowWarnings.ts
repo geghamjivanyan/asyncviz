@@ -9,10 +9,7 @@
 import type { TimelineColorPalette } from "@/dashboard/timeline/rendering/TimelineColors";
 import type { TimelineRowWarningSeverity } from "@/dashboard/timeline/rendering/TimelineLayer";
 import type { TimelineRowLayoutSnapshot } from "@/dashboard/timeline/rows/TimelineRowLayout";
-import {
-  rowWarningStroke,
-  rowWarningTint,
-} from "@/dashboard/timeline/rows/TimelineRowColors";
+import { rowWarningStroke, rowWarningTint } from "@/dashboard/timeline/rows/TimelineRowColors";
 import type { TimelineRowProjectionEntry } from "@/dashboard/timeline/rows/models/TimelineRowModels";
 import type { TimelineRowMetrics } from "@/dashboard/timeline/rows/TimelineRowMetrics";
 
@@ -37,7 +34,12 @@ export function renderRowWarnings(args: RowWarningRenderArgs): void {
 
   // Full-row warning tint behind the segments.
   ctx.fillStyle = rowWarningTint(palette, severity);
-  ctx.fillRect(layout.timelineColumnX, rowTopY, Math.max(0, viewportWidth - layout.timelineColumnX), layout.rowHeightPx);
+  ctx.fillRect(
+    layout.timelineColumnX,
+    rowTopY,
+    Math.max(0, viewportWidth - layout.timelineColumnX),
+    layout.rowHeightPx,
+  );
 
   drawBadge(ctx, palette, severity, row.warningCount, layout, rowTopY);
   metrics?.recordWarning();

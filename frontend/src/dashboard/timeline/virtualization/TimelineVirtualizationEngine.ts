@@ -101,7 +101,8 @@ export class TimelineVirtualizationEngine<
     const { coords, inputs } = args;
     this.cache.syncSequence(inputs.sequence);
     const window = this.viewportWindow.resolve(coords, inputs.rows.length, inputs.sequence);
-    const fromWindowCache = this.viewportWindow.peek() !== null && this.viewportWindow.metrics().hits > 0;
+    const fromWindowCache =
+      this.viewportWindow.peek() !== null && this.viewportWindow.metrics().hits > 0;
     this.metrics.recordWindowResolution({ fromCache: fromWindowCache });
     traceWindowResolve(`key=${window.key}`);
 
@@ -114,8 +115,7 @@ export class TimelineVirtualizationEngine<
     this.metrics.recordCacheLookup(false);
     traceCacheMiss(`key=${window.key}`);
 
-    const start =
-      typeof performance !== "undefined" ? performance.now() : Date.now();
+    const start = typeof performance !== "undefined" ? performance.now() : Date.now();
 
     const rows = projectRowWindow(inputs.rows, window.rows);
     this.metrics.recordRowCull({ visible: rows.length, total: inputs.rows.length });
@@ -138,8 +138,7 @@ export class TimelineVirtualizationEngine<
       `visible=${segments.length}/${inputs.segments.length} rows=[${window.rows.overscanStartIndex}..${window.rows.overscanEndIndex})`,
     );
 
-    const end =
-      typeof performance !== "undefined" ? performance.now() : Date.now();
+    const end = typeof performance !== "undefined" ? performance.now() : Date.now();
     this.metrics.recordRecalculation(end - start);
 
     const frame: VirtualizationFrame<TRow, TSegment> = {

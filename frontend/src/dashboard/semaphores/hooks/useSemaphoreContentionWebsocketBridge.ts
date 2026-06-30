@@ -67,9 +67,7 @@ export function useSemaphoreContentionWebsocketBridge(
   const applyEventPayload = useSemaphoreContentionStore((s) => s.applyEventPayload);
   const factory = useMemo<SemaphoreContentionSubscribeFactory | undefined>(
     () =>
-      enabled
-        ? (subscribeOverride ?? makeSemaphoreContentionSubscribeFactory(client))
-        : undefined,
+      enabled ? (subscribeOverride ?? makeSemaphoreContentionSubscribeFactory(client)) : undefined,
     [enabled, subscribeOverride, client],
   );
 

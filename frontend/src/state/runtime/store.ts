@@ -331,13 +331,11 @@ function reduceReplayStatusEnvelope(
   // the central reducer's normalization surface.
   const payload = envelope.payload as { playback?: { state?: unknown } } | undefined;
   const rawState = payload?.playback?.state;
-  const replayPlaybackState: RuntimeMeta["replayPlaybackState"] = (
-    typeof rawState === "string" && KNOWN_REPLAY_PLAYBACK_STATES.has(
-      rawState as RuntimeMeta["replayPlaybackState"],
-    )
+  const replayPlaybackState: RuntimeMeta["replayPlaybackState"] =
+    typeof rawState === "string" &&
+    KNOWN_REPLAY_PLAYBACK_STATES.has(rawState as RuntimeMeta["replayPlaybackState"])
       ? (rawState as RuntimeMeta["replayPlaybackState"])
-      : prev.runtime.replayPlaybackState
-  );
+      : prev.runtime.replayPlaybackState;
   return {
     runtime: {
       ...prev.runtime,
@@ -529,7 +527,8 @@ function describeRuntimeEvent(envelope: RuntimeEnvelope): RecentRuntimeEventEntr
   const rawPayload = envelope.payload as Record<string, unknown> | null | undefined;
   const payload: Record<string, unknown> = rawPayload ?? {};
   const rawEventType = (payload as { event_type?: unknown }).event_type;
-  const eventType = typeof rawEventType === "string" && rawEventType !== "" ? rawEventType : "unknown";
+  const eventType =
+    typeof rawEventType === "string" && rawEventType !== "" ? rawEventType : "unknown";
   const rawTaskId = (payload as { task_id?: unknown }).task_id;
   const taskId = typeof rawTaskId === "string" ? rawTaskId : null;
   return {

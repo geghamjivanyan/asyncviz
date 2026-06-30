@@ -12,9 +12,7 @@ import type {
 
 const NS_PER_S = 1e9;
 
-export function makeFreezeRegionView(
-  overrides: Partial<FreezeRegionView> = {},
-): FreezeRegionView {
+export function makeFreezeRegionView(overrides: Partial<FreezeRegionView> = {}): FreezeRegionView {
   const startSeconds = overrides.startSeconds ?? 1.0;
   const endSeconds = overrides.endSeconds ?? 2.5;
   return {

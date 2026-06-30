@@ -23,10 +23,7 @@
  */
 
 import type { TimelineScaleEngine } from "@/dashboard/timeline/scaling/TimelineScaleEngine";
-import {
-  makeDragAnchor,
-  timeStartFromAnchor,
-} from "@/dashboard/timeline/pan/TimelinePanAnchoring";
+import { makeDragAnchor, timeStartFromAnchor } from "@/dashboard/timeline/pan/TimelinePanAnchoring";
 import {
   dragDeltaToSeconds,
   stepsToPanSeconds,
@@ -38,13 +35,8 @@ import {
   panWouldExceedBound,
   viewportEdgeState,
 } from "@/dashboard/timeline/pan/TimelinePanConstraints";
-import {
-  TimelinePanMomentum,
-} from "@/dashboard/timeline/pan/TimelinePanMomentum";
-import {
-  deltaToCenter,
-  deltaToTimeStart,
-} from "@/dashboard/timeline/pan/utils/panMath";
+import { TimelinePanMomentum } from "@/dashboard/timeline/pan/TimelinePanMomentum";
+import { deltaToCenter, deltaToTimeStart } from "@/dashboard/timeline/pan/utils/panMath";
 import {
   getTimelinePanMetrics,
   type TimelinePanMetrics,
@@ -253,11 +245,7 @@ export class TimelinePanController {
     if (this.disposed) return;
     if (this.dragAnchor === null) return;
     const scale = this.engine.currentScale();
-    const candidate = timeStartFromAnchor(
-      this.dragAnchor,
-      args.pointerXCss,
-      scale.secondsPerPixel,
-    );
+    const candidate = timeStartFromAnchor(this.dragAnchor, args.pointerXCss, scale.secondsPerPixel);
     const clampedStart = clampPanTimeStart(candidate, {
       timeStartSeconds: scale.timeStart,
       durationSeconds: scale.durationSeconds,

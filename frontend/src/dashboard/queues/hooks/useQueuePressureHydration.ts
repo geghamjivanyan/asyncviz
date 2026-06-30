@@ -25,9 +25,7 @@ export function queuePressureSnapshotUrl(apiBaseUrl: string): string {
   return `${base}/api/queues/metrics`;
 }
 
-export function useQueuePressureHydration(
-  options: QueuePressureHydrationOptions = {},
-): void {
+export function useQueuePressureHydration(options: QueuePressureHydrationOptions = {}): void {
   const { enabled = true, fetcher = typeof fetch === "function" ? fetch : undefined } = options;
   const config = useRuntimeConfig();
   const clientMetrics = useClientMetrics();

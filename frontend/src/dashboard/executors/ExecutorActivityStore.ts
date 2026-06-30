@@ -50,11 +50,7 @@ const INITIAL_STATS: ExecutorActivityStoreStats = {
   lastEventAtMs: 0,
 };
 
-export type ExecutorActivityStoreStatus =
-  | "idle"
-  | "loading"
-  | "ready"
-  | "error";
+export type ExecutorActivityStoreStatus = "idle" | "loading" | "ready" | "error";
 
 export interface ExecutorActivityStoreState {
   recordsById: Record<string, ExecutorMetricsRecord>;
@@ -86,9 +82,7 @@ interface HydrationResult {
   executorIds: string[];
 }
 
-export function reduceHydration(
-  snapshot: ExecutorActivityHydrationResponse,
-): HydrationResult {
+export function reduceHydration(snapshot: ExecutorActivityHydrationResponse): HydrationResult {
   const recordsById: Record<string, ExecutorMetricsRecord> = {};
   const executorIds: string[] = [];
   for (const record of snapshot.executors) {
@@ -154,9 +148,8 @@ function applyUpdated(
   existing: ExecutorMetricsRecord | undefined,
   payload: ExecutorMetricsUpdatedPayload,
 ): ExecutorMetricsRecord {
-  const base = existing ?? scaffoldRecord(
-    payload.executor_id, payload.executor_kind, payload.max_workers,
-  );
+  const base =
+    existing ?? scaffoldRecord(payload.executor_id, payload.executor_kind, payload.max_workers);
   return {
     ...base,
     executor_id: payload.executor_id,
@@ -353,118 +346,114 @@ export function appendMarker(
 
 // ── Zustand instance ────────────────────────────────────────────────────
 
-export const useExecutorActivityStore = create<ExecutorActivityStoreState>(
-  (set, get) => ({
-    recordsById: {},
-    executorIds: [],
-    selfMetrics: null,
-    config: {},
-    markers: [],
-    markerCapacity: DEFAULT_MARKER_CAPACITY,
-    selectedExecutorId: null,
-    status: "idle",
-    errorMessage: null,
-    lastSequence: 0,
-    stats: INITIAL_STATS,
+export const useExecutorActivityStore = create<ExecutorActivityStoreState>((set, get) => ({
+  recordsById: {},
+  executorIds: [],
+  selfMetrics: null,
+  config: {},
+  markers: [],
+  markerCapacity: DEFAULT_MARKER_CAPACITY,
+  selectedExecutorId: null,
+  status: "idle",
+  errorMessage: null,
+  lastSequence: 0,
+  stats: INITIAL_STATS,
 
-    hydrateSnapshot(snapshot) {
-      const reduced = reduceHydration(snapshot);
-      set((state) => ({
-        recordsById: reduced.recordsById,
-        executorIds: reduced.executorIds,
-        selfMetrics: snapshot.self_metrics,
-        config: snapshot.config,
-        status: "ready",
-        errorMessage: null,
-        stats: {
-          ...state.stats,
-          hydrationsApplied: state.stats.hydrationsApplied + 1,
-          lastEventAtMs: Date.now(),
-        },
+  hydrateSnapshot(snapshot) {
+    const reduced = reduceHydration(snapshot);
+    set((state) => ({
+      recordsById: reduced.recordsById,
+      executorIds: reduced.executorIds,
+      selfMetrics: snapshot.self_metrics,
+      config: snapshot.config,
+      status: "ready",
+      errorMessage: null,
+      stats: {
+        ...state.stats,
+        hydrationsApplied: state.stats.hydrationsApplied + 1,
+        lastEventAtMs: Date.now(),
+      },
+    }));
+  },
+
+  applyEventPayload(payload) {
+    const state = get();
+    const reduced = reduceEventPayload(state.recordsById, payload);
+    if (reduced === null) {
+      set((s) => ({
+        stats: { ...s.stats, eventsDropped: s.stats.eventsDropped + 1 },
       }));
-    },
-
-    applyEventPayload(payload) {
-      const state = get();
-      const reduced = reduceEventPayload(state.recordsById, payload);
-      if (reduced === null) {
-        set((s) => ({
-          stats: { ...s.stats, eventsDropped: s.stats.eventsDropped + 1 },
-        }));
-        return;
-      }
-      const monotonicNs =
-        typeof performance !== "undefined"
-          ? Math.floor(performance.now() * 1_000_000)
-          : Date.now() * 1_000_000;
-      const marker = markerFromPayload(payload, monotonicNs);
-      const executorIds =
-        payload.executor_id in state.recordsById
-          ? state.executorIds
-          : [...state.executorIds, payload.executor_id];
-      if (marker !== null) {
-        const { next: markers, evicted } = appendMarker(
-          state.markers, marker, state.markerCapacity,
-        );
-        set((s) => ({
-          recordsById: reduced,
-          executorIds,
-          markers,
-          status: s.status === "idle" ? "ready" : s.status,
-          lastSequence: Math.max(s.lastSequence, payload.sequence),
-          stats: {
-            ...s.stats,
-            eventsApplied: s.stats.eventsApplied + 1,
-            markersAppended: s.stats.markersAppended + 1,
-            markersEvicted: s.stats.markersEvicted + evicted,
-            lastEventAtMs: Date.now(),
-          },
-        }));
-        return;
-      }
+      return;
+    }
+    const monotonicNs =
+      typeof performance !== "undefined"
+        ? Math.floor(performance.now() * 1_000_000)
+        : Date.now() * 1_000_000;
+    const marker = markerFromPayload(payload, monotonicNs);
+    const executorIds =
+      payload.executor_id in state.recordsById
+        ? state.executorIds
+        : [...state.executorIds, payload.executor_id];
+    if (marker !== null) {
+      const { next: markers, evicted } = appendMarker(state.markers, marker, state.markerCapacity);
       set((s) => ({
         recordsById: reduced,
         executorIds,
+        markers,
         status: s.status === "idle" ? "ready" : s.status,
         lastSequence: Math.max(s.lastSequence, payload.sequence),
         stats: {
           ...s.stats,
           eventsApplied: s.stats.eventsApplied + 1,
+          markersAppended: s.stats.markersAppended + 1,
+          markersEvicted: s.stats.markersEvicted + evicted,
           lastEventAtMs: Date.now(),
         },
       }));
-    },
+      return;
+    }
+    set((s) => ({
+      recordsById: reduced,
+      executorIds,
+      status: s.status === "idle" ? "ready" : s.status,
+      lastSequence: Math.max(s.lastSequence, payload.sequence),
+      stats: {
+        ...s.stats,
+        eventsApplied: s.stats.eventsApplied + 1,
+        lastEventAtMs: Date.now(),
+      },
+    }));
+  },
 
-    setSelectedExecutor(executorId) {
-      set({ selectedExecutorId: executorId });
-    },
+  setSelectedExecutor(executorId) {
+    set({ selectedExecutorId: executorId });
+  },
 
-    markLoading() {
-      set({ status: "loading", errorMessage: null });
-    },
+  markLoading() {
+    set({ status: "loading", errorMessage: null });
+  },
 
-    markError(message) {
-      set({ status: "error", errorMessage: message });
-    },
+  markError(message) {
+    set({ status: "error", errorMessage: message });
+  },
 
-    setMarkerCapacity(capacity) {
-      if (capacity < 1) return;
-      set({ markerCapacity: capacity });
-    },
+  setMarkerCapacity(capacity) {
+    if (capacity < 1) return;
+    set({ markerCapacity: capacity });
+  },
 
-    reset() {
-      set({
-        recordsById: {},
-        executorIds: [],
-        selfMetrics: null,
-        config: {},
-        markers: [],
-        selectedExecutorId: null,
-        status: "idle",
-        errorMessage: null,
-        lastSequence: 0,
-        stats: INITIAL_STATS,
-      });
-    },
-  }),
-);
+  reset() {
+    set({
+      recordsById: {},
+      executorIds: [],
+      selfMetrics: null,
+      config: {},
+      markers: [],
+      selectedExecutorId: null,
+      status: "idle",
+      errorMessage: null,
+      lastSequence: 0,
+      stats: INITIAL_STATS,
+    });
+  },
+}));

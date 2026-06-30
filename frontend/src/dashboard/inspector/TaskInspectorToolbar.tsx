@@ -42,10 +42,7 @@ function TaskInspectorToolbarImpl({
       data-task-inspector-toolbar="true"
       role="tablist"
       aria-label="Task inspector panels"
-      className={cn(
-        "flex flex-wrap gap-1 border-b border-line bg-panel px-2 py-1",
-        className,
-      )}
+      className={cn("flex flex-wrap gap-1 border-b border-line bg-panel px-2 py-1", className)}
     >
       {panels.map((kind) => {
         const isActive = kind === activePanel;

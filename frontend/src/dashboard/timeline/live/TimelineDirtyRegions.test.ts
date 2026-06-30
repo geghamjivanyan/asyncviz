@@ -43,18 +43,16 @@ describe("TimelineDirtyRegions", () => {
   });
 
   it("batchToRendererReason picks viewport > data > selection > camera", () => {
-    expect(
-      batchToRendererReason(coalesceRegions([{ reason: "viewport", atMs: 0 }])),
-    ).toBe("viewport");
-    expect(
-      batchToRendererReason(coalesceRegions([{ reason: "segment", atMs: 0 }])),
-    ).toBe("data");
-    expect(
-      batchToRendererReason(coalesceRegions([{ reason: "selection", atMs: 0 }])),
-    ).toBe("selection");
-    expect(
-      batchToRendererReason(coalesceRegions([{ reason: "active-tick", atMs: 0 }])),
-    ).toBe("camera");
+    expect(batchToRendererReason(coalesceRegions([{ reason: "viewport", atMs: 0 }]))).toBe(
+      "viewport",
+    );
+    expect(batchToRendererReason(coalesceRegions([{ reason: "segment", atMs: 0 }]))).toBe("data");
+    expect(batchToRendererReason(coalesceRegions([{ reason: "selection", atMs: 0 }]))).toBe(
+      "selection",
+    );
+    expect(batchToRendererReason(coalesceRegions([{ reason: "active-tick", atMs: 0 }]))).toBe(
+      "camera",
+    );
   });
 
   it("batchIsActionable returns false for empty batches", () => {

@@ -7,12 +7,7 @@ export type ConnectionState = "idle" | "connecting" | "open" | "closed" | "error
 export type RuntimeStatus = "idle" | "running" | "paused" | "stopped";
 
 export type TaskLifecycleState =
-  | "created"
-  | "running"
-  | "waiting"
-  | "completed"
-  | "cancelled"
-  | "failed";
+  "created" | "running" | "waiting" | "completed" | "cancelled" | "failed";
 
 export interface TaskSnapshot {
   task_id: string;

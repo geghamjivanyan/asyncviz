@@ -8,10 +8,7 @@
  */
 
 import type { TimelineScaleEngine } from "@/dashboard/timeline/scaling/TimelineScaleEngine";
-import {
-  mergeBounds,
-  viewportEdgeState,
-} from "@/dashboard/timeline/pan/TimelinePanConstraints";
+import { mergeBounds, viewportEdgeState } from "@/dashboard/timeline/pan/TimelinePanConstraints";
 import type {
   PanBounds,
   TimelinePanState,

@@ -13,9 +13,7 @@
  *     for each cluster instead of N stacked ones.
  */
 
-import {
-  sequenceToPixel,
-} from "@/dashboard/replay/ReplayTimelineGeometry";
+import { sequenceToPixel } from "@/dashboard/replay/ReplayTimelineGeometry";
 import type {
   ReplayMarkerSeverity,
   ReplayTimelineMarker,
@@ -69,10 +67,7 @@ export function virtualizeMarkers(
     pixelX: number;
   } | null = null;
   for (const marker of markers) {
-    if (
-      marker.sequence < viewport.startSequence ||
-      marker.sequence > viewport.endSequence
-    ) {
+    if (marker.sequence < viewport.startSequence || marker.sequence > viewport.endSequence) {
       continue;
     }
     const pixelX = sequenceToPixel(marker.sequence, viewport);
@@ -87,10 +82,7 @@ export function virtualizeMarkers(
     }
     if (Math.abs(pixelX - openCluster.pixelX) <= clusterRadiusPx) {
       openCluster.members.push(marker);
-      openCluster.severity = dominantSeverity(
-        openCluster.severity,
-        marker.severity,
-      );
+      openCluster.severity = dominantSeverity(openCluster.severity, marker.severity);
       continue;
     }
     // Flush the open cluster.

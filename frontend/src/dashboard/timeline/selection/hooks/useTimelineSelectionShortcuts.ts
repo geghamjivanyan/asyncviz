@@ -16,9 +16,7 @@ export interface UseTimelineSelectionShortcutsArgs {
   disabled?: boolean;
 }
 
-export function useTimelineSelectionShortcuts(
-  args: UseTimelineSelectionShortcutsArgs,
-): void {
+export function useTimelineSelectionShortcuts(args: UseTimelineSelectionShortcutsArgs): void {
   const { controller, bindings, disabled } = args;
   useEffect(() => {
     if (controller === null || disabled) return;
@@ -31,9 +29,7 @@ export function useTimelineSelectionShortcuts(
       const target = event.target as HTMLElement | null;
       if (
         target !== null &&
-        (target.tagName === "INPUT" ||
-          target.tagName === "TEXTAREA" ||
-          target.isContentEditable)
+        (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable)
       ) {
         return;
       }

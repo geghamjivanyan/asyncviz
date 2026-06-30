@@ -21,18 +21,12 @@ export function useExecutorRecords(): ReadonlyArray<ExecutorMetricsRecord> {
 
 export function useExecutorActivityViews(): ReadonlyArray<ExecutorActivityView> {
   const records = useExecutorRecords();
-  return useMemo(
-    () => projectExecutorActivity({ records }).views,
-    [records],
-  );
+  return useMemo(() => projectExecutorActivity({ records }).views, [records]);
 }
 
 export function useExecutorActivityViewsBySeverity(): ReadonlyArray<ExecutorActivityView> {
   const records = useExecutorRecords();
-  return useMemo(
-    () => projectExecutorActivity({ records }).bySeverityDescending,
-    [records],
-  );
+  return useMemo(() => projectExecutorActivity({ records }).bySeverityDescending, [records]);
 }
 
 export function useSelectedExecutorView(): ExecutorActivityView | null {

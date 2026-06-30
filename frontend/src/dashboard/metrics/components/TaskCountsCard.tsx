@@ -17,9 +17,17 @@ function TaskCountsCardImpl({ counts }: TaskCountsCardProps) {
   const intent: Intent = counts.failed > 0 ? "danger" : counts.active > 0 ? "success" : "default";
   const detail = (
     <span className="flex min-w-0 items-baseline gap-x-2 truncate">
-      <CountChip color={counts.active > 0 ? "text-success" : "text-subtle"} value={counts.active} label="running" />
+      <CountChip
+        color={counts.active > 0 ? "text-success" : "text-subtle"}
+        value={counts.active}
+        label="running"
+      />
       <Sep />
-      <CountChip color={counts.waiting > 0 ? "text-accent" : "text-subtle"} value={counts.waiting} label="waiting" />
+      <CountChip
+        color={counts.waiting > 0 ? "text-accent" : "text-subtle"}
+        value={counts.waiting}
+        label="waiting"
+      />
       <Sep />
       <CountChip color="text-subtle" value={counts.completed} label="done" />
       <Sep />
@@ -42,15 +50,7 @@ function TaskCountsCardImpl({ counts }: TaskCountsCardProps) {
   );
 }
 
-function CountChip({
-  color,
-  value,
-  label,
-}: {
-  color: string;
-  value: number;
-  label: string;
-}) {
+function CountChip({ color, value, label }: { color: string; value: number; label: string }) {
   return (
     <span className="inline-flex items-baseline gap-1">
       <span className={`font-mono text-xs tabular-nums ${color}`}>{formatCount(value)}</span>

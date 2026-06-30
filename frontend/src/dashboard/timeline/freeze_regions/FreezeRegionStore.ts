@@ -16,9 +16,7 @@
  */
 
 import { create } from "zustand";
-import type {
-  FreezeHitTestEntry,
-} from "@/dashboard/timeline/freeze_regions/FreezeRegionHitTesting";
+import type { FreezeHitTestEntry } from "@/dashboard/timeline/freeze_regions/FreezeRegionHitTesting";
 
 export interface FreezeRegionStoreState {
   hoveredGroupId: string | null;
@@ -62,8 +60,7 @@ export const useFreezeRegionStore = create<FreezeRegionStoreState>((set) => ({
     set((prev) => (prev.hoveredGroupId === groupId ? {} : { hoveredGroupId: groupId })),
   setSelectedGroup: (groupId) =>
     set((prev) => (prev.selectedGroupId === groupId ? {} : { selectedGroupId: groupId })),
-  setVisibleEntries: (entries, hidden) =>
-    set({ visibleEntries: entries, hiddenCount: hidden }),
+  setVisibleEntries: (entries, hidden) => set({ visibleEntries: entries, hiddenCount: hidden }),
   revealGroup: (groupId) => set({ revealedGroupId: groupId }),
   setReducedMotion: (value) =>
     set((prev) => (prev.reducedMotion === value ? {} : { reducedMotion: value })),

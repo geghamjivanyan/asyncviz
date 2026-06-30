@@ -5,10 +5,7 @@
  * functions directly without doing geometry themselves.
  */
 
-import {
-  sequenceInViewport,
-  sequenceToPixel,
-} from "@/dashboard/replay/ReplayTimelineGeometry";
+import { sequenceInViewport, sequenceToPixel } from "@/dashboard/replay/ReplayTimelineGeometry";
 import type {
   ReplayBookmark,
   ReplaySessionWindow,
@@ -97,10 +94,7 @@ export function bucketMarkers(
     if (marker.sequence < window.minSequence) continue;
     if (marker.sequence > window.maxSequence) continue;
     const relative = marker.sequence - window.minSequence;
-    const idx = Math.min(
-      buckets.length - 1,
-      Math.floor(relative / stride),
-    );
+    const idx = Math.min(buckets.length - 1, Math.floor(relative / stride));
     const bucket = buckets[idx];
     const severityCounts = { ...bucket.severityCount };
     severityCounts[marker.severity] += 1;

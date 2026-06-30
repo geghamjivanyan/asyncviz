@@ -66,9 +66,7 @@ describe("projectFreezeRegion", () => {
 
   it("maps emitter state to lifecycle bucket", () => {
     expect(projectFreezeRegion(makeGroup({ state: "active" }))!.lifecycle).toBe("active");
-    expect(projectFreezeRegion(makeGroup({ state: "recovered" }))!.lifecycle).toBe(
-      "recovered",
-    );
+    expect(projectFreezeRegion(makeGroup({ state: "recovered" }))!.lifecycle).toBe("recovered");
   });
 });
 

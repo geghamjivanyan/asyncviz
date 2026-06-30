@@ -34,9 +34,7 @@ export function isFreezeRegionTraceEnabled(): boolean {
   return enabled;
 }
 
-export function recordFreezeRegionTrace(
-  entry: Omit<FreezeRegionTraceEntry, "atMs">,
-): void {
+export function recordFreezeRegionTrace(entry: Omit<FreezeRegionTraceEntry, "atMs">): void {
   if (!enabled) return;
   const atMs = typeof performance !== "undefined" ? performance.now() : Date.now();
   ring.push({ ...entry, atMs });

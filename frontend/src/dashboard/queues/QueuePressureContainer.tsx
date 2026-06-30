@@ -35,15 +35,9 @@ export function QueuePressureContainer({
   const status = useQueuePressureStatus();
   const errorMessage = useQueuePressureErrorMessage();
 
-  const handleSelect = useCallback(
-    (queueId: string | null) => selectQueue(queueId),
-    [selectQueue],
-  );
+  const handleSelect = useCallback((queueId: string | null) => selectQueue(queueId), [selectQueue]);
 
-  const statusProps = useMemo(
-    () => ({ status, errorMessage }),
-    [status, errorMessage],
-  );
+  const statusProps = useMemo(() => ({ status, errorMessage }), [status, errorMessage]);
 
   return (
     <QueuePressurePanel

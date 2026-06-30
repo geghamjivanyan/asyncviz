@@ -43,10 +43,7 @@ function AwaitDependencyGraphImpl({
   status,
   className,
 }: AwaitDependencyGraphProps): JSX.Element {
-  const announcement = useMemo(
-    () => describeTopologyAnnouncement(nodes, edges),
-    [nodes, edges],
-  );
+  const announcement = useMemo(() => describeTopologyAnnouncement(nodes, edges), [nodes, edges]);
   const renderCount = useRef(0);
 
   useEffect(() => {
@@ -62,10 +59,7 @@ function AwaitDependencyGraphImpl({
       aria-labelledby="await-dependency-graph-heading"
     >
       <header className="await-dependency-graph__header">
-        <h2
-          id="await-dependency-graph-heading"
-          className="await-dependency-graph__title"
-        >
+        <h2 id="await-dependency-graph-heading" className="await-dependency-graph__title">
           Await dependencies
         </h2>
         <span
@@ -76,23 +70,16 @@ function AwaitDependencyGraphImpl({
           {alarmCount} alarm{alarmCount === 1 ? "" : "s"}
         </span>
         <span className="await-dependency-graph__count">
-          {nodes.length} node{nodes.length === 1 ? "" : "s"}, {edges.length}{" "}
-          edge{edges.length === 1 ? "" : "s"}
+          {nodes.length} node{nodes.length === 1 ? "" : "s"}, {edges.length} edge
+          {edges.length === 1 ? "" : "s"}
         </span>
         {status.status === "loading" && (
-          <span
-            className="await-dependency-graph__status"
-            data-status="loading"
-          >
+          <span className="await-dependency-graph__status" data-status="loading">
             loading…
           </span>
         )}
         {status.status === "error" && (
-          <span
-            className="await-dependency-graph__status"
-            data-status="error"
-            role="alert"
-          >
+          <span className="await-dependency-graph__status" data-status="error" role="alert">
             {status.errorMessage ?? "failed to build dependency graph"}
           </span>
         )}
@@ -107,12 +94,9 @@ function AwaitDependencyGraphImpl({
       </div>
 
       {nodes.length === 0 ? (
-        <p
-          className="await-dependency-graph__empty"
-          data-testid="await-dependency-empty"
-        >
-          No await dependencies tracked yet. Dependency edges will appear
-          here as the runtime emits <code>asyncio.gather</code> events.
+        <p className="await-dependency-graph__empty" data-testid="await-dependency-empty">
+          No await dependencies tracked yet. Dependency edges will appear here as the runtime emits{" "}
+          <code>asyncio.gather</code> events.
         </p>
       ) : (
         <div className="await-dependency-graph__viewport">

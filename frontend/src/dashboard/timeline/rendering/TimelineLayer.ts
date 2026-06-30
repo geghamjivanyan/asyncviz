@@ -41,13 +41,7 @@ export interface RenderContext {
 
 /** Coarse lifecycle bucket the row renderer uses for styling. */
 export type TimelineRowState =
-  | "created"
-  | "running"
-  | "waiting"
-  | "completed"
-  | "cancelled"
-  | "failed"
-  | "unknown";
+  "created" | "running" | "waiting" | "completed" | "cancelled" | "failed" | "unknown";
 
 /** Warning severity tier surfaced on a row. */
 export type TimelineRowWarningSeverity = "info" | "warning" | "error" | "critical";

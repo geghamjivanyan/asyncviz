@@ -1,10 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { layoutDependencies } from "@/dashboard/dependencies/layout/AwaitDependencyLayout";
 import { projectDependencies } from "@/dashboard/dependencies/AwaitDependencyProjection";
-import {
-  makeEdge,
-  makeNode,
-} from "@/dashboard/dependencies/__fixtures__/awaitDependencyFixtures";
+import { makeEdge, makeNode } from "@/dashboard/dependencies/__fixtures__/awaitDependencyFixtures";
 
 function viewsOf(nodes: ReturnType<typeof makeNode>[], edges: ReturnType<typeof makeEdge>[]) {
   return projectDependencies({ nodes, edges });
@@ -30,9 +27,7 @@ describe("layoutDependencies", () => {
     ];
     const { nodes: views, edges: edgeViews } = viewsOf(records, edges);
     const frame = layoutDependencies({ nodes: views, edges: edgeViews });
-    const layerByNode = Object.fromEntries(
-      frame.laidNodes.map((n) => [n.node.id, n.layer]),
-    );
+    const layerByNode = Object.fromEntries(frame.laidNodes.map((n) => [n.node.id, n.layer]));
     expect(layerByNode["root"]).toBe(0);
     expect(layerByNode["g-1"]).toBe(1);
     expect(layerByNode["leaf"]).toBe(2);
@@ -68,10 +63,7 @@ describe("layoutDependencies", () => {
   });
 
   it("detects cycles + still produces a layout", () => {
-    const records = [
-      makeNode({ id: "a", kind: "task" }),
-      makeNode({ id: "b", kind: "task" }),
-    ];
+    const records = [makeNode({ id: "a", kind: "task" }), makeNode({ id: "b", kind: "task" })];
     const edges = [
       makeEdge({ id: "fanout:a->b", fromId: "a", toId: "b" }),
       makeEdge({ id: "fanout:b->a", fromId: "b", toId: "a" }),
@@ -84,9 +76,7 @@ describe("layoutDependencies", () => {
 
   it("flags dangling edges (missing endpoint nodes)", () => {
     const records = [makeNode({ id: "a", kind: "task" })];
-    const edges = [
-      makeEdge({ id: "fanout:a->missing", fromId: "a", toId: "missing" }),
-    ];
+    const edges = [makeEdge({ id: "fanout:a->missing", fromId: "a", toId: "missing" })];
     const { nodes: views, edges: edgeViews } = viewsOf(records, edges);
     const frame = layoutDependencies({ nodes: views, edges: edgeViews });
     // Adjacency builder skips the edge for layering, but layout still

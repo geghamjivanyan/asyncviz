@@ -13,13 +13,7 @@
  * selection state, the filtered bookmark list, and the inspector.
  */
 
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-  type JSX,
-} from "react";
+import { useCallback, useEffect, useMemo, useState, type JSX } from "react";
 import { cn } from "@/lib/cn";
 import { Card } from "@/ui/primitives/Card";
 import { Badge } from "@/ui/primitives/Badge";
@@ -66,10 +60,7 @@ import type {
 
 export function ReplayPage(): JSX.Element {
   const client = useWebSocketClient();
-  const bridge = useMemo(
-    () => new WebSocketReplayEngineBridge({ client }),
-    [client],
-  );
+  const bridge = useMemo(() => new WebSocketReplayEngineBridge({ client }), [client]);
   useEffect(() => () => bridge.dispose(), [bridge]);
   useReplayEngineBridge({ bridge });
 
@@ -86,8 +77,7 @@ export function ReplayPage(): JSX.Element {
   const bookmarks = useReplayBookmarks();
   const removeBookmark = useReplayTimelineStore((s) => s.removeBookmark);
 
-  const hasRecording =
-    window.maxSequence > window.minSequence || markers.length > 0;
+  const hasRecording = window.maxSequence > window.minSequence || markers.length > 0;
 
   // Visible window for the timeline + minimap. The lane timeline owns
   // the zoom toolbar / wheel / dblclick interactions and updates this
@@ -123,21 +113,15 @@ export function ReplayPage(): JSX.Element {
     };
   }, [window, visibleRange.start, visibleRange.end]);
 
-  const handleVisibleWindowChange = useCallback(
-    (start: number, end: number) => {
-      setVisibleStart(start);
-      setVisibleEnd(end);
-    },
-    [],
-  );
+  const handleVisibleWindowChange = useCallback((start: number, end: number) => {
+    setVisibleStart(start);
+    setVisibleEnd(end);
+  }, []);
 
   // Drag-selection on the lane timeline.
-  const [selection, setSelection] =
-    useState<ReplayLaneTimelinePanelSelection | null>(null);
+  const [selection, setSelection] = useState<ReplayLaneTimelinePanelSelection | null>(null);
   const [selectedMarkerId, setSelectedMarkerId] = useState<string | null>(null);
-  const [selectedBookmarkId, setSelectedBookmarkId] = useState<string | null>(
-    null,
-  );
+  const [selectedBookmarkId, setSelectedBookmarkId] = useState<string | null>(null);
 
   const handleSelectMarker = useCallback((marker: ReplayTimelineMarker) => {
     setSelectedMarkerId(marker.id);
@@ -150,16 +134,14 @@ export function ReplayPage(): JSX.Element {
 
   const selectedMarker = useMemo(
     () =>
-      selectedMarkerId === null
-        ? null
-        : markers.find((m) => m.id === selectedMarkerId) ?? null,
+      selectedMarkerId === null ? null : (markers.find((m) => m.id === selectedMarkerId) ?? null),
     [markers, selectedMarkerId],
   );
   const selectedBookmark = useMemo(
     () =>
       selectedBookmarkId === null
         ? null
-        : bookmarks.find((b) => b.id === selectedBookmarkId) ?? null,
+        : (bookmarks.find((b) => b.id === selectedBookmarkId) ?? null),
     [bookmarks, selectedBookmarkId],
   );
 
@@ -192,9 +174,7 @@ export function ReplayPage(): JSX.Element {
     return (
       <div className="flex h-full min-h-0 w-full flex-col gap-4 px-4 py-4">
         <header className="flex items-center gap-3">
-          <h1 className="font-mono text-sm uppercase tracking-widest text-text">
-            Replay
-          </h1>
+          <h1 className="font-mono text-sm uppercase tracking-widest text-text">Replay</h1>
         </header>
         <div className="flex flex-1 items-center justify-center">
           <EmptyState
@@ -213,9 +193,7 @@ export function ReplayPage(): JSX.Element {
     >
       <header className="flex items-center justify-between gap-3">
         <div className="flex items-baseline gap-3">
-          <h1 className="font-mono text-sm uppercase tracking-widest text-text">
-            Replay
-          </h1>
+          <h1 className="font-mono text-sm uppercase tracking-widest text-text">Replay</h1>
           <span className="font-mono text-[10px] uppercase tracking-widest text-subtle">
             sequence #{window.minSequence} – #{window.maxSequence}
           </span>
@@ -229,25 +207,15 @@ export function ReplayPage(): JSX.Element {
           style={{ gridTemplateColumns: "repeat(auto-fit, minmax(11rem, 1fr))" }}
         >
           <SummaryCell label="Status" value={statusLabel(playback)} />
-          <SummaryCell
-            label="Recording loaded"
-            value="Yes"
-            intent="success"
-          />
+          <SummaryCell label="Recording loaded" value="Yes" intent="success" />
           <SummaryCell
             label="Current position"
             value={`${formatCount(playback.lastSequence)} / ${formatCount(window.maxSequence)}`}
             sub={`${(summary.positionFraction * 100).toFixed(1)}%`}
           />
-          <SummaryCell
-            label="Total duration"
-            value={formatNs(summary.totalDurationNs)}
-          />
+          <SummaryCell label="Total duration" value={formatNs(summary.totalDurationNs)} />
           <SummaryCell label="Playback speed" value={`${playback.speed}×`} />
-          <SummaryCell
-            label="Buffered events"
-            value={formatCount(summary.bufferedEvents)}
-          />
+          <SummaryCell label="Buffered events" value={formatCount(summary.bufferedEvents)} />
           <SummaryCell label="Replay mode" value={playback.state.toUpperCase()} />
         </div>
       </Section>
@@ -305,11 +273,7 @@ export function ReplayPage(): JSX.Element {
       <Section title="Recording">
         <div className="flex min-h-0 flex-1 gap-2">
           <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-2">
-            <RecordingInfoCard
-              window={window}
-              playback={playback}
-              markers={markers}
-            />
+            <RecordingInfoCard window={window} playback={playback} markers={markers} />
             <BookmarksCard
               bookmarks={bookmarks}
               dispatch={dispatch}
@@ -362,15 +326,7 @@ function buildSummary(
 ): ReplaySummary {
   const span = window.maxSequence - window.minSequence;
   const positionFraction =
-    span > 0
-      ? Math.max(
-          0,
-          Math.min(
-            1,
-            (playback.lastSequence - window.minSequence) / span,
-          ),
-        )
-      : 0;
+    span > 0 ? Math.max(0, Math.min(1, (playback.lastSequence - window.minSequence) / span)) : 0;
   let warningCount = 0;
   let blockingCount = 0;
   let snapshotCount = 0;
@@ -454,9 +410,7 @@ function PlaybackControls({
           title="Jump to start"
         />
         <ControlButton
-          onClick={() =>
-            dispatch(stepCursor(playback.lastSequence, -1, window))
-          }
+          onClick={() => dispatch(stepCursor(playback.lastSequence, -1, window))}
           disabled={atStart}
           label="◀"
           title="Step backward"
@@ -487,25 +441,19 @@ function PlaybackControls({
           title="Jump to end"
         />
         <ControlButton
-          onClick={() =>
-            dispatch(jumpByFraction(playback.lastSequence, -0.1, window))
-          }
+          onClick={() => dispatch(jumpByFraction(playback.lastSequence, -0.1, window))}
           disabled={atStart}
           label="-10%"
           title="Skip back 10%"
         />
         <ControlButton
-          onClick={() =>
-            dispatch(jumpByFraction(playback.lastSequence, 0.1, window))
-          }
+          onClick={() => dispatch(jumpByFraction(playback.lastSequence, 0.1, window))}
           disabled={atEnd}
           label="+10%"
           title="Skip ahead 10%"
         />
         <label className="ml-auto flex items-center gap-2">
-          <span className="font-mono text-[10px] uppercase tracking-widest text-muted">
-            Speed
-          </span>
+          <span className="font-mono text-[10px] uppercase tracking-widest text-muted">Speed</span>
           <select
             value={playback.speed}
             onChange={(e) =>
@@ -531,9 +479,7 @@ function PlaybackControls({
         aria-label="Navigation"
         className="flex flex-wrap items-center gap-2 border-t border-line/40 pt-2"
       >
-        <span className="font-mono text-[10px] uppercase tracking-widest text-muted">
-          Navigate
-        </span>
+        <span className="font-mono text-[10px] uppercase tracking-widest text-muted">Navigate</span>
         <NavButton
           target={prevMarker}
           dispatch={dispatch}
@@ -617,9 +563,7 @@ function NavBookmarkButton({
       onClick={() => bookmark !== null && dispatch(seekToBookmark(bookmark))}
       disabled={bookmark === null}
       label={labelPrefix}
-      title={
-        bookmark !== null ? `${labelPrefix}: ${bookmark.label}` : missingTitle
-      }
+      title={bookmark !== null ? `${labelPrefix}: ${bookmark.label}` : missingTitle}
     />
   );
 }
@@ -768,9 +712,7 @@ function SelectionStatsBar({
 
   return (
     <div className="flex flex-wrap items-center gap-3 rounded border border-accent/40 bg-accent/5 px-3 py-2 font-mono text-xs">
-      <span className="text-[10px] uppercase tracking-widest text-accent">
-        Selection
-      </span>
+      <span className="text-[10px] uppercase tracking-widest text-accent">Selection</span>
       <Stat label="Range" value={`#${stats.start} – #${stats.end}`} />
       <Stat label="Events" value={formatCount(stats.eventCount)} />
       <Stat
@@ -801,26 +743,12 @@ function SelectionStatsBar({
   );
 }
 
-function Stat({
-  label,
-  value,
-  intent,
-}: {
-  label: string;
-  value: string;
-  intent?: Intent;
-}) {
+function Stat({ label, value, intent }: { label: string; value: string; intent?: Intent }) {
   const valueColor =
-    intent === "danger"
-      ? "text-danger"
-      : intent === "warning"
-        ? "text-warning"
-        : "text-text";
+    intent === "danger" ? "text-danger" : intent === "warning" ? "text-warning" : "text-text";
   return (
     <span className="flex items-baseline gap-1.5">
-      <span className="text-[10px] uppercase tracking-widest text-muted">
-        {label}
-      </span>
+      <span className="text-[10px] uppercase tracking-widest text-muted">{label}</span>
       <span className={cn("tabular-nums", valueColor)}>{value}</span>
     </span>
   );
@@ -1101,12 +1029,7 @@ function ReplayInspector({
 }) {
   const span = window.maxSequence - window.minSequence;
   const fraction =
-    span > 0
-      ? Math.max(
-          0,
-          Math.min(1, (playback.lastSequence - window.minSequence) / span),
-        )
-      : 0;
+    span > 0 ? Math.max(0, Math.min(1, (playback.lastSequence - window.minSequence) / span)) : 0;
 
   const nearbyMarkers = useMemo(() => {
     const out: { marker: ReplayTimelineMarker; delta: number }[] = [];
@@ -1125,9 +1048,7 @@ function ReplayInspector({
           <span className="font-mono text-[10px] uppercase tracking-widest text-muted">
             Replay inspector
           </span>
-          <span className="truncate font-mono text-sm text-text">
-            #{playback.lastSequence}
-          </span>
+          <span className="truncate font-mono text-sm text-text">#{playback.lastSequence}</span>
           <span className="font-mono text-[10px] uppercase tracking-widest text-subtle">
             {Math.round(fraction * 100)}% through recording
           </span>
@@ -1154,10 +1075,7 @@ function ReplayInspector({
 
       <InspectorSection title="Position">
         <InspectorKV label="Sequence" value={`#${playback.lastSequence}`} />
-        <InspectorKV
-          label="Timestamp"
-          value={formatNs(playback.lastMonotonicNs)}
-        />
+        <InspectorKV label="Timestamp" value={formatNs(playback.lastMonotonicNs)} />
         <InspectorKV label="Progress" value={`${Math.round(fraction * 100)}%`} />
         <InspectorKV label="Speed" value={`${playback.speed}×`} />
       </InspectorSection>
@@ -1165,24 +1083,14 @@ function ReplayInspector({
       <InspectorSection title="Engine">
         <InspectorKV label="State" value={statusLabel(playback)} />
         <InspectorKV label="Paused" value={playback.paused ? "Yes" : "No"} />
-        <InspectorKV
-          label="Frames dispatched"
-          value={String(playback.framesDispatched)}
-        />
+        <InspectorKV label="Frames dispatched" value={String(playback.framesDispatched)} />
         {playback.errorDetail !== undefined && playback.errorDetail.length > 0 && (
-          <InspectorKV
-            label="Error"
-            value={playback.errorDetail}
-            intent="danger"
-          />
+          <InspectorKV label="Error" value={playback.errorDetail} intent="danger" />
         )}
       </InspectorSection>
 
       <InspectorSection title="Recording">
-        <InspectorKV
-          label="Range"
-          value={`#${window.minSequence} – #${window.maxSequence}`}
-        />
+        <InspectorKV label="Range" value={`#${window.minSequence} – #${window.maxSequence}`} />
         <InspectorKV
           label="Total"
           value={`${Math.max(0, window.maxSequence - window.minSequence + 1)} events`}
@@ -1203,9 +1111,7 @@ function ReplayInspector({
                 title={marker.description ?? marker.label}
               >
                 <span className="flex min-w-0 items-baseline gap-2">
-                  <Badge intent={markerSeverityIntent(marker.severity)}>
-                    {marker.kind}
-                  </Badge>
+                  <Badge intent={markerSeverityIntent(marker.severity)}>{marker.kind}</Badge>
                   <span className="truncate text-muted">{marker.label}</span>
                 </span>
                 <span className="shrink-0 tabular-nums text-subtle">
@@ -1254,13 +1160,14 @@ function SelectedMarkerSection({
       </div>
       <dl className="grid grid-cols-2 gap-x-3 gap-y-1 font-mono text-[11px]">
         <KV label="Type" value={marker.kind} />
-        <KV label="Severity" value={marker.severity} intent={markerSeverityIntent(marker.severity)} />
+        <KV
+          label="Severity"
+          value={marker.severity}
+          intent={markerSeverityIntent(marker.severity)}
+        />
         <KV label="Sequence" value={`#${marker.sequence}`} />
         <KV label="Timestamp" value={formatNs(tRel)} />
-        <KV
-          label="Related to"
-          value={KIND_RELATED_OBJECT[marker.kind] ?? marker.kind}
-        />
+        <KV label="Related to" value={KIND_RELATED_OBJECT[marker.kind] ?? marker.kind} />
         <KV label="ID" value={marker.id} />
       </dl>
       {marker.description !== undefined && marker.description.length > 0 && (
@@ -1340,9 +1247,7 @@ function RelatedLinks({ marker }: { marker: ReplayTimelineMarker }) {
   if (links.length === 0) return null;
   return (
     <div className="flex flex-wrap items-baseline gap-2">
-      <span className="font-mono text-[10px] uppercase tracking-widest text-muted">
-        Related
-      </span>
+      <span className="font-mono text-[10px] uppercase tracking-widest text-muted">Related</span>
       {links.map((link) => (
         <a
           key={link.href}
@@ -1356,9 +1261,7 @@ function RelatedLinks({ marker }: { marker: ReplayTimelineMarker }) {
   );
 }
 
-function relatedLinksFor(
-  marker: ReplayTimelineMarker,
-): readonly { href: string; label: string }[] {
+function relatedLinksFor(marker: ReplayTimelineMarker): readonly { href: string; label: string }[] {
   const out: { href: string; label: string }[] = [];
   switch (marker.kind) {
     case "warning":
@@ -1403,9 +1306,7 @@ function markerSeverityIntent(severity: ReplayMarkerSeverity): Intent {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="flex flex-col gap-2">
-      <h2 className="font-mono text-[10px] uppercase tracking-widest text-muted">
-        {title}
-      </h2>
+      <h2 className="font-mono text-[10px] uppercase tracking-widest text-muted">{title}</h2>
       {children}
     </section>
   );
@@ -1435,15 +1336,7 @@ function SummaryCell({
   );
 }
 
-function KV({
-  label,
-  value,
-  intent,
-}: {
-  label: string;
-  value: string;
-  intent?: Intent;
-}) {
+function KV({ label, value, intent }: { label: string; value: string; intent?: Intent }) {
   const valueColor =
     intent === "danger"
       ? "text-danger"
@@ -1464,32 +1357,16 @@ function KV({
   );
 }
 
-function InspectorSection({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
+function InspectorSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="flex flex-col gap-1.5 border-t border-line/40 pt-2">
-      <span className="font-mono text-[10px] uppercase tracking-widest text-subtle">
-        {title}
-      </span>
+      <span className="font-mono text-[10px] uppercase tracking-widest text-subtle">{title}</span>
       <div className="flex flex-col gap-1">{children}</div>
     </section>
   );
 }
 
-function InspectorKV({
-  label,
-  value,
-  intent,
-}: {
-  label: string;
-  value: string;
-  intent?: Intent;
-}) {
+function InspectorKV({ label, value, intent }: { label: string; value: string; intent?: Intent }) {
   const valueColor =
     intent === "danger"
       ? "text-danger"
@@ -1522,13 +1399,7 @@ const STATE_INTENT: Record<ReplayPlaybackState, Intent> = {
   failed: "danger",
 };
 
-function PlaybackStateBadge({
-  state,
-  paused,
-}: {
-  state: ReplayPlaybackState;
-  paused: boolean;
-}) {
+function PlaybackStateBadge({ state, paused }: { state: ReplayPlaybackState; paused: boolean }) {
   const intent = STATE_INTENT[state];
   const label = paused && state !== "paused" ? "PAUSED" : state.toUpperCase();
   return <Badge intent={intent}>{label}</Badge>;

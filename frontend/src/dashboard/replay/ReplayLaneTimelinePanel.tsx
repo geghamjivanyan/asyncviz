@@ -41,10 +41,7 @@ import {
   useReplayViewport,
 } from "@/dashboard/replay/ReplayTimelineSelectors";
 import { useReplayTimelineStore } from "@/dashboard/replay/ReplayTimelineStore";
-import {
-  seekToBookmark,
-  seekToMarker,
-} from "@/dashboard/replay/ReplayTimelineSeek";
+import { seekToBookmark, seekToMarker } from "@/dashboard/replay/ReplayTimelineSeek";
 import type {
   ReplayBookmark,
   ReplayControlIntent,
@@ -61,12 +58,7 @@ interface LaneSpec {
   readonly label: string;
 }
 
-type LaneKey =
-  | "bookmark"
-  | "warning"
-  | "blocking"
-  | "snapshot"
-  | "health";
+type LaneKey = "bookmark" | "warning" | "blocking" | "snapshot" | "health";
 
 const LANES: readonly LaneSpec[] = [
   { key: "bookmark", label: "Bookmarks" },
@@ -80,10 +72,8 @@ const LANE_HEIGHT_PX = 28;
 const LANE_GAP_PX = 5;
 const SCRUBBER_HEIGHT_PX = 20;
 const LABEL_COL_PX = 84;
-const TOTAL_LANES_HEIGHT_PX =
-  LANE_HEIGHT_PX * LANES.length + LANE_GAP_PX * (LANES.length - 1);
-const TOTAL_TIMELINE_HEIGHT_PX =
-  TOTAL_LANES_HEIGHT_PX + LANE_GAP_PX * 2 + SCRUBBER_HEIGHT_PX;
+const TOTAL_LANES_HEIGHT_PX = LANE_HEIGHT_PX * LANES.length + LANE_GAP_PX * (LANES.length - 1);
+const TOTAL_TIMELINE_HEIGHT_PX = TOTAL_LANES_HEIGHT_PX + LANE_GAP_PX * 2 + SCRUBBER_HEIGHT_PX;
 
 // ── lane classification ──────────────────────────────────────────────────
 
@@ -142,9 +132,7 @@ export interface ReplayLaneTimelinePanelProps {
   readonly bookmarks: readonly ReplayBookmark[];
   readonly dispatch: (intent: ReplayControlIntent) => void;
   readonly selection: ReplayLaneTimelinePanelSelection | null;
-  readonly onSelectionChange: (
-    selection: ReplayLaneTimelinePanelSelection | null,
-  ) => void;
+  readonly onSelectionChange: (selection: ReplayLaneTimelinePanelSelection | null) => void;
   readonly onSelectMarker: (marker: ReplayTimelineMarker) => void;
   readonly onSelectBookmark: (bookmark: ReplayBookmark) => void;
   readonly selectedMarkerId: string | null;
@@ -153,9 +141,7 @@ export interface ReplayLaneTimelinePanelProps {
 
 // ── component ────────────────────────────────────────────────────────────
 
-export function ReplayLaneTimelinePanel(
-  props: ReplayLaneTimelinePanelProps,
-): JSX.Element {
+export function ReplayLaneTimelinePanel(props: ReplayLaneTimelinePanelProps): JSX.Element {
   const {
     playback,
     fullWindow,
@@ -199,10 +185,7 @@ export function ReplayLaneTimelinePanel(
   }, []);
 
   const fullSpan = Math.max(0, fullWindow.maxSequence - fullWindow.minSequence);
-  const visibleSpan = Math.max(
-    0,
-    visibleWindow.maxSequence - visibleWindow.minSequence,
-  );
+  const visibleSpan = Math.max(0, visibleWindow.maxSequence - visibleWindow.minSequence);
 
   // Per-lane bucketed columns over the *visible* range. Memoizes on
   // (markers, bookmarks, visibleWindow, width) so the playback ticker
@@ -327,10 +310,7 @@ export function ReplayLaneTimelinePanel(
 
   const zoomAroundSequence = useCallback(
     (newVisibleSpan: number, pivotSequence: number) => {
-      const span = Math.max(
-        MIN_VISIBLE_EVENTS,
-        Math.min(fullSpan, Math.round(newVisibleSpan)),
-      );
+      const span = Math.max(MIN_VISIBLE_EVENTS, Math.min(fullSpan, Math.round(newVisibleSpan)));
       if (span >= fullSpan) {
         fit();
         return;
@@ -347,13 +327,7 @@ export function ReplayLaneTimelinePanel(
       }
       onVisibleWindowChange(start, end);
     },
-    [
-      fit,
-      fullSpan,
-      fullWindow.maxSequence,
-      fullWindow.minSequence,
-      onVisibleWindowChange,
-    ],
+    [fit, fullSpan, fullWindow.maxSequence, fullWindow.minSequence, onVisibleWindowChange],
   );
 
   const applyPreset = useCallback(
@@ -416,8 +390,7 @@ export function ReplayLaneTimelinePanel(
   const dragFractions = useMemo(() => {
     if (dragging === null || !dragging.moved || visibleSpan <= 0) return null;
     const a = (dragging.startSequence - visibleWindow.minSequence) / visibleSpan;
-    const b =
-      (dragging.currentSequence - visibleWindow.minSequence) / visibleSpan;
+    const b = (dragging.currentSequence - visibleWindow.minSequence) / visibleSpan;
     return {
       start: Math.max(0, Math.min(1, Math.min(a, b))),
       end: Math.max(0, Math.min(1, Math.max(a, b))),
@@ -439,22 +412,13 @@ export function ReplayLaneTimelinePanel(
   }, [trackWidth, visibleSpan, fullSpan]);
 
   return (
-    <div
-      className="flex flex-col gap-2"
-      data-replay-lane-timeline="true"
-    >
+    <div className="flex flex-col gap-2" data-replay-lane-timeline="true">
       <TimelineCursorReadout
         playback={playback}
         window={fullWindow}
         cursorFraction={
           fullSpan > 0
-            ? Math.max(
-                0,
-                Math.min(
-                  1,
-                  (playback.lastSequence - fullWindow.minSequence) / fullSpan,
-                ),
-              )
+            ? Math.max(0, Math.min(1, (playback.lastSequence - fullWindow.minSequence) / fullSpan))
             : 0
         }
       />
@@ -466,10 +430,7 @@ export function ReplayLaneTimelinePanel(
         fullSpan={fullSpan}
       />
 
-      <div
-        className="relative grid"
-        style={{ gridTemplateColumns: `${LABEL_COL_PX}px 1fr` }}
-      >
+      <div className="relative grid" style={{ gridTemplateColumns: `${LABEL_COL_PX}px 1fr` }}>
         <div className="flex flex-col gap-[5px] py-1 pr-2">
           {LANES.map((lane) => (
             <div
@@ -589,10 +550,7 @@ export function ReplayLaneTimelinePanel(
               aria-label={m.marker.label}
             >
               <span
-                className={cn(
-                  "block h-3 w-3 rounded-full",
-                  severityClass(m.marker.severity),
-                )}
+                className={cn("block h-3 w-3 rounded-full", severityClass(m.marker.severity))}
                 aria-hidden="true"
                 style={{ margin: "auto" }}
               />
@@ -712,9 +670,7 @@ const TimelineCursorReadout = memo(function TimelineCursorReadout({
   return (
     <div className="flex items-baseline justify-between gap-3 font-mono">
       <div className="flex items-baseline gap-3">
-        <span className="text-[10px] uppercase tracking-widest text-muted">
-          Cursor
-        </span>
+        <span className="text-[10px] uppercase tracking-widest text-muted">Cursor</span>
         <span className="text-sm tabular-nums text-accent">
           #{formatCount(playback.lastSequence)}
         </span>
@@ -740,21 +696,10 @@ interface LaneRowProps {
   readonly top: number;
 }
 
-const LaneRow = memo(function LaneRow({
-  lane,
-  columns,
-  width,
-  top,
-}: LaneRowProps) {
+const LaneRow = memo(function LaneRow({ lane, columns, width, top }: LaneRowProps) {
   return (
-    <div
-      className="absolute left-0 right-0"
-      style={{ top, height: LANE_HEIGHT_PX, width: "100%" }}
-    >
-      <div
-        className="absolute inset-0 rounded-sm bg-canvas/40"
-        aria-hidden="true"
-      />
+    <div className="absolute left-0 right-0" style={{ top, height: LANE_HEIGHT_PX, width: "100%" }}>
+      <div className="absolute inset-0 rounded-sm bg-canvas/40" aria-hidden="true" />
       <svg
         className="relative block h-full w-full"
         width={Math.max(1, width)}
@@ -767,22 +712,10 @@ const LaneRow = memo(function LaneRow({
           const fill = severityColor(col.severity);
           // log-scaled height — keeps moderate bursts visible without
           // saturation collapsing every cell to the same height.
-          const ratio = Math.min(
-            1,
-            Math.log10(col.count + 1) / Math.log10(50),
-          );
+          const ratio = Math.min(1, Math.log10(col.count + 1) / Math.log10(50));
           const barH = Math.max(3, ratio * (LANE_HEIGHT_PX - 6));
           const y = LANE_HEIGHT_PX - barH - 2;
-          return (
-            <rect
-              key={col.pixelX}
-              x={col.pixelX}
-              y={y}
-              width={1}
-              height={barH}
-              fill={fill}
-            />
-          );
+          return <rect key={col.pixelX} x={col.pixelX} y={y} width={1} height={barH} fill={fill} />;
         })}
       </svg>
     </div>
@@ -803,8 +736,7 @@ const CursorOverlay = memo(function CursorOverlay({
   const style: CSSProperties = {
     left: `${(fraction * 100).toFixed(3)}%`,
     width: 2,
-    boxShadow:
-      "0 0 6px var(--color-accent, #60a5fa), 0 0 14px rgba(96,165,250,0.6)",
+    boxShadow: "0 0 6px var(--color-accent, #60a5fa), 0 0 14px rgba(96,165,250,0.6)",
   };
   // Anchor the label on the opposite side when the cursor is near
   // the right edge, so the pill doesn't get clipped.
@@ -831,8 +763,7 @@ const CursorOverlay = memo(function CursorOverlay({
           style={{
             width: 12,
             height: 12,
-            boxShadow:
-              "0 0 6px var(--color-accent, #60a5fa), 0 0 12px rgba(96,165,250,0.5)",
+            boxShadow: "0 0 6px var(--color-accent, #60a5fa), 0 0 12px rgba(96,165,250,0.5)",
           }}
         />
       </div>
@@ -842,8 +773,7 @@ const CursorOverlay = memo(function CursorOverlay({
         style={{
           left: `${(fraction * 100).toFixed(3)}%`,
           top: -22,
-          transform:
-            anchor === "left" ? "translateX(8px)" : "translateX(calc(-100% - 8px))",
+          transform: anchor === "left" ? "translateX(8px)" : "translateX(calc(-100% - 8px))",
         }}
         aria-hidden="true"
       >
@@ -871,9 +801,7 @@ function SelectionOverlay({
     <div
       className={cn(
         "pointer-events-none absolute top-0 bottom-0 z-20 border-l border-r",
-        variant === "active"
-          ? "border-accent bg-accent/15"
-          : "border-accent/70 bg-accent/10",
+        variant === "active" ? "border-accent bg-accent/15" : "border-accent/70 bg-accent/10",
       )}
       style={{ left, width }}
       aria-hidden="true"
@@ -927,12 +855,7 @@ function ScrubberLane({
 
   const span = Math.max(0, window.maxSequence - window.minSequence);
   const cursorFraction =
-    span > 0
-      ? Math.max(
-          0,
-          Math.min(1, (playback.lastSequence - window.minSequence) / span),
-        )
-      : 0;
+    span > 0 ? Math.max(0, Math.min(1, (playback.lastSequence - window.minSequence) / span)) : 0;
   const previewFraction =
     preview === null || span <= 0
       ? null
@@ -996,29 +919,17 @@ function HoverTooltip({
   fullWindow: ReplaySessionWindow;
   onJump: (intent: ReplayControlIntent) => void;
 }) {
-  const sequence =
-    hover.kind === "marker" ? hover.marker.sequence : hover.bookmark.sequence;
+  const sequence = hover.kind === "marker" ? hover.marker.sequence : hover.bookmark.sequence;
   const monotonicNs =
-    hover.kind === "marker"
-      ? hover.marker.monotonicNs
-      : hover.bookmark.monotonicNs;
-  const title =
-    hover.kind === "marker" ? hover.marker.label : hover.bookmark.label;
+    hover.kind === "marker" ? hover.marker.monotonicNs : hover.bookmark.monotonicNs;
+  const title = hover.kind === "marker" ? hover.marker.label : hover.bookmark.label;
   const intent: Intent =
-    hover.kind === "marker"
-      ? markerSeverityIntent(hover.marker.severity)
-      : "accent";
+    hover.kind === "marker" ? markerSeverityIntent(hover.marker.severity) : "accent";
   const kindLabel = hover.kind === "marker" ? hover.marker.kind : "bookmark";
-  const payloadText =
-    hover.kind === "marker"
-      ? hover.marker.description
-      : hover.bookmark.note;
+  const payloadText = hover.kind === "marker" ? hover.marker.description : hover.bookmark.note;
 
   const visibleSpan = Math.max(1, visibleWindow.maxSequence - visibleWindow.minSequence);
-  const fraction = Math.max(
-    0,
-    Math.min(1, (sequence - visibleWindow.minSequence) / visibleSpan),
-  );
+  const fraction = Math.max(0, Math.min(1, (sequence - visibleWindow.minSequence) / visibleSpan));
   const anchorRight = fraction > 0.7;
 
   return (
@@ -1027,9 +938,7 @@ function HoverTooltip({
       style={{
         left: `${(fraction * 100).toFixed(3)}%`,
         top: -10,
-        transform: anchorRight
-          ? "translate(calc(-100% - 4px), -100%)"
-          : "translate(4px, -100%)",
+        transform: anchorRight ? "translate(calc(-100% - 4px), -100%)" : "translate(4px, -100%)",
       }}
       role="tooltip"
     >
@@ -1041,15 +950,11 @@ function HoverTooltip({
       </div>
       <div className="flex flex-wrap items-baseline gap-3 text-[10px] uppercase tracking-widest text-subtle">
         <span>seq #{formatCount(sequence)}</span>
-        <span>
-          t = {formatNs(Math.max(0, monotonicNs - fullWindow.minMonotonicNs))}
-        </span>
+        <span>t = {formatNs(Math.max(0, monotonicNs - fullWindow.minMonotonicNs))}</span>
       </div>
       {payloadText !== undefined && payloadText.length > 0 && (
         <div className="flex flex-col gap-0.5">
-          <span className="text-[9px] uppercase tracking-widest text-muted">
-            Payload
-          </span>
+          <span className="text-[9px] uppercase tracking-widest text-muted">Payload</span>
           <p className="whitespace-normal break-words text-muted">{payloadText}</p>
         </div>
       )}
@@ -1135,10 +1040,7 @@ function bucketLanes(
     };
   }
 
-  const span = Math.max(
-    0,
-    visibleWindow.maxSequence - visibleWindow.minSequence,
-  );
+  const span = Math.max(0, visibleWindow.maxSequence - visibleWindow.minSequence);
 
   const xOf = (sequence: number): number => {
     if (span <= 0) return 0;
@@ -1146,9 +1048,7 @@ function bucketLanes(
       visibleWindow.minSequence,
       Math.min(visibleWindow.maxSequence, sequence),
     );
-    return Math.round(
-      ((clamped - visibleWindow.minSequence) / span) * widthPx,
-    );
+    return Math.round(((clamped - visibleWindow.minSequence) / span) * widthPx);
   };
 
   // Count visible markers to decide between per-marker dots vs.
@@ -1164,8 +1064,7 @@ function bucketLanes(
     if (laneForMarker(marker) === null) continue;
     markersInVisibleRange.push(marker);
   }
-  const useIndividualMarkers =
-    markersInVisibleRange.length <= INDIVIDUAL_MARKER_THRESHOLD;
+  const useIndividualMarkers = markersInVisibleRange.length <= INDIVIDUAL_MARKER_THRESHOLD;
 
   for (const marker of markersInVisibleRange) {
     const lane = laneForMarker(marker);
@@ -1198,10 +1097,7 @@ function bucketLanes(
   }
 
   for (const b of bookmarks) {
-    if (
-      b.sequence < visibleWindow.minSequence ||
-      b.sequence > visibleWindow.maxSequence
-    ) {
+    if (b.sequence < visibleWindow.minSequence || b.sequence > visibleWindow.maxSequence) {
       continue;
     }
     const px = xOf(b.sequence);

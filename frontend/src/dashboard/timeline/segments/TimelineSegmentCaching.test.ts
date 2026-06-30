@@ -58,7 +58,9 @@ describe("cameraKey / layoutKey", () => {
   it("are deterministic per identical inputs", () => {
     const camera = { timeStart: 0, timeEnd: 1, rowStart: 0, rowHeight: 20 };
     expect(cameraKey(camera)).toBe(cameraKey(camera));
-    expect(layoutKey({ timelineColumnX: 0, timelineColumnWidthPx: 100, rowPaddingPx: 2, minWidthPx: 1 })).toBe(
+    expect(
+      layoutKey({ timelineColumnX: 0, timelineColumnWidthPx: 100, rowPaddingPx: 2, minWidthPx: 1 }),
+    ).toBe(
       layoutKey({ timelineColumnX: 0, timelineColumnWidthPx: 100, rowPaddingPx: 2, minWidthPx: 1 }),
     );
   });

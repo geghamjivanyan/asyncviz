@@ -21,9 +21,7 @@ import type {
   BlockingWarningGroupModel,
 } from "@/dashboard/warnings/blocking/models/BlockingWarningModels";
 import { projectFreezeRegions } from "@/dashboard/timeline/freeze_regions/selectors/projectFreezeRegions";
-import type {
-  FreezeRegionView,
-} from "@/dashboard/timeline/freeze_regions/models/FreezeRegionModels";
+import type { FreezeRegionView } from "@/dashboard/timeline/freeze_regions/models/FreezeRegionModels";
 import { getFreezeRegionMetrics } from "@/dashboard/timeline/freeze_regions/diagnostics/FreezeRegionMetricsCollector";
 
 export interface FreezeRegionProjection {

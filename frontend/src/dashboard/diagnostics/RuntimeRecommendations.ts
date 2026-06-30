@@ -45,9 +45,9 @@ export function deriveRuntimeRecommendations(
   // ── executor advice ────────────────────────────────────────────────
   const executorOverflow = inputs.executors.filter(
     (e) =>
-      e.maxWorkers !== null
-      && e.activeWorkers >= e.maxWorkers
-      && (e.severity === "saturated" || e.severity === "critical"),
+      e.maxWorkers !== null &&
+      e.activeWorkers >= e.maxWorkers &&
+      (e.severity === "saturated" || e.severity === "critical"),
   );
   if (executorOverflow.length > 0) {
     out.push({
@@ -77,9 +77,7 @@ export function deriveRuntimeRecommendations(
     (q) => q.severity === "saturated" || q.severity === "critical",
   );
   if (queuePressure.length > 0) {
-    const skewedProducers = queuePressure.filter(
-      (q) => q.producerConsumerDelta > 0,
-    );
+    const skewedProducers = queuePressure.filter((q) => q.producerConsumerDelta > 0);
     if (skewedProducers.length > 0) {
       out.push({
         id: "rec-reduce-producer-throughput",
@@ -122,9 +120,7 @@ export function deriveRuntimeRecommendations(
 
   // ── gather / dependency advice ─────────────────────────────────────
   const gatherTrouble = inputs.dependencyNodes.filter(
-    (n) =>
-      n.kind === "gather"
-      && (n.state === "failed" || n.state === "cancelled"),
+    (n) => n.kind === "gather" && (n.state === "failed" || n.state === "cancelled"),
   );
   if (gatherTrouble.length > 0) {
     out.push({
@@ -151,7 +147,8 @@ export function deriveRuntimeRecommendations(
       out.push({
         id: "rec-split-long-coroutine",
         title: "Split long-running coroutines",
-        rationale: "Multiple blocking warnings suggest a single coroutine is doing too much synchronous work. Breaking it into smaller `await` points lets the loop schedule other tasks.",
+        rationale:
+          "Multiple blocking warnings suggest a single coroutine is doing too much synchronous work. Breaking it into smaller `await` points lets the loop schedule other tasks.",
         severity: "warning",
         jumpTarget: "/warnings",
         jumpLabel: "Open Warnings",

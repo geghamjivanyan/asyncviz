@@ -17,10 +17,7 @@ import { recordSemaphoreContentionTrace } from "@/dashboard/semaphores/diagnosti
 export interface UseSemaphoreContentionSelectionResult {
   selectedSemaphoreId: string | null;
   selectSemaphore: (semaphoreId: string | null) => void;
-  revealSemaphore: (
-    semaphoreId: string,
-    options?: { taskId?: string | null },
-  ) => boolean;
+  revealSemaphore: (semaphoreId: string, options?: { taskId?: string | null }) => boolean;
 }
 
 export function useSemaphoreContentionSelection(): UseSemaphoreContentionSelectionResult {

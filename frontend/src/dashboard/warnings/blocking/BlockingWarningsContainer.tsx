@@ -98,11 +98,9 @@ export function BlockingWarningsContainer({
   );
 
   const renderStartRef = useRef<number>(0);
-  renderStartRef.current =
-    typeof performance !== "undefined" ? performance.now() : Date.now();
+  renderStartRef.current = typeof performance !== "undefined" ? performance.now() : Date.now();
   useEffect(() => {
-    const end =
-      typeof performance !== "undefined" ? performance.now() : Date.now();
+    const end = typeof performance !== "undefined" ? performance.now() : Date.now();
     const duration = end - renderStartRef.current;
     getBlockingWarningPanelMetrics().recordRenderDuration(duration);
     recordBlockingWarningTrace({
@@ -129,4 +127,3 @@ export function BlockingWarningsContainer({
     />
   );
 }
-

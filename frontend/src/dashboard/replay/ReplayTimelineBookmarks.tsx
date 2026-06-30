@@ -8,17 +8,13 @@
  */
 
 import type { JSX } from "react";
-import {
-  describeBookmarkForAccessibility,
-} from "@/dashboard/replay/ReplayTimelineAccessibility";
+import { describeBookmarkForAccessibility } from "@/dashboard/replay/ReplayTimelineAccessibility";
 import {
   recordBookmarkAdded,
   recordBookmarkRemoved,
   recordFocusChange,
 } from "@/dashboard/replay/diagnostics/ReplayTimelineMetrics";
-import {
-  recordReplayTimelineTrace,
-} from "@/dashboard/replay/diagnostics/ReplayTimelineTracing";
+import { recordReplayTimelineTrace } from "@/dashboard/replay/diagnostics/ReplayTimelineTracing";
 import {
   useReplayBookmarks,
   useReplayFocusedBookmarkId,
@@ -66,14 +62,9 @@ export function ReplayTimelineBookmarks({
   };
 
   return (
-    <section
-      aria-label="Replay bookmarks"
-      className={"flex flex-col gap-2 " + (className ?? "")}
-    >
+    <section aria-label="Replay bookmarks" className={"flex flex-col gap-2 " + (className ?? "")}>
       <header className="flex items-center justify-between">
-        <h2 className="font-mono text-xs uppercase tracking-widest text-textMuted">
-          Bookmarks
-        </h2>
+        <h2 className="font-mono text-xs uppercase tracking-widest text-textMuted">Bookmarks</h2>
         <button
           type="button"
           aria-label="Add bookmark at current playhead"
@@ -84,9 +75,7 @@ export function ReplayTimelineBookmarks({
         </button>
       </header>
       <ul role="list" className="flex flex-col gap-1 text-sm text-text">
-        {bookmarks.length === 0 && (
-          <li className="text-xs text-textMuted">No bookmarks yet.</li>
-        )}
+        {bookmarks.length === 0 && <li className="text-xs text-textMuted">No bookmarks yet.</li>}
         {bookmarks.map((bookmark) => {
           const ariaLabel = describeBookmarkForAccessibility(bookmark, window);
           const focused = bookmark.id === focusedId;
@@ -111,9 +100,7 @@ export function ReplayTimelineBookmarks({
                 }}
                 className="flex-1 text-left"
               >
-                <span className="font-mono text-xs text-textMuted">
-                  {bookmark.sequence}
-                </span>
+                <span className="font-mono text-xs text-textMuted">{bookmark.sequence}</span>
                 <span className="ml-2">{bookmark.label}</span>
               </button>
               <button

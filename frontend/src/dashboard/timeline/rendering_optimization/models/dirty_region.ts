@@ -20,14 +20,7 @@ export interface DirtyRegion {
 }
 
 export type DirtyRegionReason =
-  | "data"
-  | "camera"
-  | "viewport"
-  | "selection"
-  | "overlay"
-  | "cursor"
-  | "replay"
-  | "manual";
+  "data" | "camera" | "viewport" | "selection" | "overlay" | "cursor" | "replay" | "manual";
 
 export const FULL_REGION_SENTINEL: DirtyRegion = {
   x: 0,
@@ -48,12 +41,7 @@ export function regionArea(region: DirtyRegion): number {
 
 export function regionsOverlap(a: DirtyRegion, b: DirtyRegion): boolean {
   if (isFullRegion(a) || isFullRegion(b)) return true;
-  return (
-    a.x < b.x + b.width &&
-    b.x < a.x + a.width &&
-    a.y < b.y + b.height &&
-    b.y < a.y + a.height
-  );
+  return a.x < b.x + b.width && b.x < a.x + a.width && a.y < b.y + b.height && b.y < a.y + a.height;
 }
 
 export function mergeRegions(a: DirtyRegion, b: DirtyRegion): DirtyRegion {

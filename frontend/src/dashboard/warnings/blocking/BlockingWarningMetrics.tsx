@@ -19,9 +19,7 @@ import type {
   BlockingWarningEmitterMetricsModel,
   BlockingWarningEmitterStatisticsModel,
 } from "@/dashboard/warnings/blocking/models/BlockingWarningModels";
-import type {
-  BlockingWarningCounts,
-} from "@/dashboard/warnings/blocking/selectors/BlockingWarningSelectors";
+import type { BlockingWarningCounts } from "@/dashboard/warnings/blocking/selectors/BlockingWarningSelectors";
 
 export interface BlockingWarningMetricsHeaderProps {
   counts: BlockingWarningCounts;
@@ -78,9 +76,7 @@ function BlockingWarningMetricsHeaderImpl({
       {statistics !== null && (
         <span className="text-subtle" data-testid="blocking-warning-peak-lag">
           peak lag:{" "}
-          <span className="text-text">
-            {formatDurationMs(statistics.peak_lag_ns / 1_000_000)}
-          </span>
+          <span className="text-text">{formatDurationMs(statistics.peak_lag_ns / 1_000_000)}</span>
         </span>
       )}
       {metrics !== null && (

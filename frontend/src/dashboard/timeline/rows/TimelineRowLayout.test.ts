@@ -19,9 +19,7 @@ describe("TimelineRowLayout", () => {
     const snapshot = layout.resolve(coords(120));
     expect(snapshot.labelColumnWidthPx).toBeGreaterThanOrEqual(80);
     expect(snapshot.labelColumnWidthPx).toBeLessThanOrEqual(200);
-    expect(snapshot.timelineColumnX).toBe(
-      snapshot.labelColumnWidthPx + snapshot.columnGutterPx,
-    );
+    expect(snapshot.timelineColumnX).toBe(snapshot.labelColumnWidthPx + snapshot.columnGutterPx);
   });
 
   it("places the timeline column right of the label column", () => {

@@ -18,10 +18,7 @@
 
 /** Strategy for degrading work under frame-budget pressure. */
 export type RenderDegradationStrategy =
-  | "skip-low-priority"
-  | "drop-overlays"
-  | "coalesce-cursor"
-  | "keyframe-only";
+  "skip-low-priority" | "drop-overlays" | "coalesce-cursor" | "keyframe-only";
 
 export interface RenderOptimizationConfig {
   /** Soft frame budget in ms. Frames that exceed it are flagged. */

@@ -22,11 +22,7 @@
 export type QueuePressureLevel = "calm" | "warning" | "critical";
 
 /** Visual severity bucket — overlays + cards key colors off this. */
-export type QueuePressureSeverity =
-  | "calm"
-  | "warning"
-  | "critical"
-  | "saturated";
+export type QueuePressureSeverity = "calm" | "warning" | "critical" | "saturated";
 
 /** Kind reported by ``asyncio.queue.contention.detected``. */
 export type QueueContentionKind = "producers" | "consumers" | "both";
@@ -260,10 +256,7 @@ export interface QueuePressureView {
 
 // ── timeline marker view-shape ──────────────────────────────────────────
 
-export type QueuePressureMarkerKind =
-  | "pressure-change"
-  | "contention"
-  | "saturation";
+export type QueuePressureMarkerKind = "pressure-change" | "contention" | "saturation";
 
 /**
  * A timeline-overlay marker emitted when the engine reported a notable

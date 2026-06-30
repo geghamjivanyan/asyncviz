@@ -22,12 +22,10 @@ export interface VisibleWindow {
 
 /** Pure: ``true`` when the selection range sits fully inside the
  *  visible window. */
-export function selectionFullyVisible(
-  selection: FocusBounds,
-  visible: VisibleWindow,
-): boolean {
-  return selection.startSeconds >= visible.startSeconds &&
-    selection.endSeconds <= visible.endSeconds;
+export function selectionFullyVisible(selection: FocusBounds, visible: VisibleWindow): boolean {
+  return (
+    selection.startSeconds >= visible.startSeconds && selection.endSeconds <= visible.endSeconds
+  );
 }
 
 /** Pure: ``true`` when the selection range overlaps the visible
@@ -36,16 +34,14 @@ export function selectionAtLeastPartiallyVisible(
   selection: FocusBounds,
   visible: VisibleWindow,
 ): boolean {
-  return selection.endSeconds >= visible.startSeconds &&
-    selection.startSeconds <= visible.endSeconds;
+  return (
+    selection.endSeconds >= visible.startSeconds && selection.startSeconds <= visible.endSeconds
+  );
 }
 
 /** Pure: compute the new ``timeStart`` that would center the
  *  selection inside a visible window of ``durationSeconds``. */
-export function centerWindowOnSelection(
-  selection: FocusBounds,
-  durationSeconds: number,
-): number {
+export function centerWindowOnSelection(selection: FocusBounds, durationSeconds: number): number {
   const mid = (selection.startSeconds + selection.endSeconds) / 2;
   return mid - durationSeconds / 2;
 }

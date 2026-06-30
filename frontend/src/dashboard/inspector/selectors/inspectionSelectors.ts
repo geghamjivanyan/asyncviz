@@ -86,9 +86,7 @@ export function buildLifecycleSummary(
     state: normalizeState(task.state),
     createdAtSeconds: Number.isFinite(task.created_at) ? task.created_at : null,
     completedAtSeconds:
-      task.completed_at !== null && Number.isFinite(task.completed_at)
-        ? task.completed_at
-        : null,
+      task.completed_at !== null && Number.isFinite(task.completed_at) ? task.completed_at : null,
     durationSeconds: finalizedDuration ?? liveDuration,
     terminal,
     active,
@@ -188,9 +186,7 @@ export function buildRelationships(
 }
 
 /** Pure: build the warnings slice. */
-export function buildWarningsSummary(
-  active: readonly ActiveWarning[],
-): InspectorWarningsSummary {
+export function buildWarningsSummary(active: readonly ActiveWarning[]): InspectorWarningsSummary {
   let highest: ActiveWarning["severity"] | null = null;
   for (const warning of active) {
     if (warning.resolved || warning.expired) continue;
@@ -220,11 +216,7 @@ export function buildMetricsSummary(args: {
         : null;
   const observed = timeline.totalRunSeconds + timeline.totalWaitSeconds;
   const denominator =
-    liveSeconds !== null && liveSeconds > 0
-      ? liveSeconds
-      : observed > 0
-        ? observed
-        : null;
+    liveSeconds !== null && liveSeconds > 0 ? liveSeconds : observed > 0 ? observed : null;
   // Without any closed or active segments we have no signal about how
   // the task split its lifetime between run and wait. The earlier code
   // computed ``0 / duration = 0`` and surfaced "Run ratio: 0%" — a
@@ -308,9 +300,7 @@ export function buildTaskInspection(args: BuildInspectionArgs): TaskInspection {
   // refreshes ``updated_at`` on every event applied to the task, so it
   // tracks the live cursor without dragging a clock into the projection.
   const nowWallSeconds =
-    Number.isFinite(args.task.updated_at) && args.task.updated_at > 0
-      ? args.task.updated_at
-      : null;
+    Number.isFinite(args.task.updated_at) && args.task.updated_at > 0 ? args.task.updated_at : null;
   const timeline = buildTimelineSummary({
     segments: args.segments ?? [],
     activeSegment,
@@ -327,9 +317,7 @@ export function buildTaskInspection(args: BuildInspectionArgs): TaskInspection {
     lifecycle,
     coroutineThroughputPerSecond: args.coroutineThroughputPerSecond ?? null,
   });
-  const replay = args.replay
-    ? buildReplaySummary(args.replay)
-    : EMPTY_TASK_INSPECTION.replay;
+  const replay = args.replay ? buildReplaySummary(args.replay) : EMPTY_TASK_INSPECTION.replay;
   return {
     task: args.task,
     state: lifecycle.state,

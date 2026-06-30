@@ -10,9 +10,7 @@ import type {
   GatherWaitStartedPayload,
 } from "@/dashboard/dependencies/models/AwaitDependencyModels";
 
-export function makeNode(
-  overrides: Partial<AwaitNodeRecord> = {},
-): AwaitNodeRecord {
+export function makeNode(overrides: Partial<AwaitNodeRecord> = {}): AwaitNodeRecord {
   return {
     id: "t-1",
     kind: "task",
@@ -32,9 +30,7 @@ export function makeNode(
   };
 }
 
-export function makeEdge(
-  overrides: Partial<AwaitEdgeRecord> = {},
-): AwaitEdgeRecord {
+export function makeEdge(overrides: Partial<AwaitEdgeRecord> = {}): AwaitEdgeRecord {
   return {
     id: "fanout:g-1->t-1",
     kind: "fanout",

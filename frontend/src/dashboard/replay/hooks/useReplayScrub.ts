@@ -18,9 +18,7 @@ import {
   recordScrubStart,
   recordScrubUpdate,
 } from "@/dashboard/replay/diagnostics/ReplayTimelineMetrics";
-import {
-  recordReplayTimelineTrace,
-} from "@/dashboard/replay/diagnostics/ReplayTimelineTracing";
+import { recordReplayTimelineTrace } from "@/dashboard/replay/diagnostics/ReplayTimelineTracing";
 import type {
   ReplayControlIntent,
   ReplaySessionWindow,
@@ -46,9 +44,7 @@ export function useReplayScrub({
   const beginScrub = useReplayTimelineStore((s) => s.beginScrub);
   const updateScrub = useReplayTimelineStore((s) => s.updateScrub);
   const endScrub = useReplayTimelineStore((s) => s.endScrub);
-  const recordSeekRequested = useReplayTimelineStore(
-    (s) => s.recordSeekRequested,
-  );
+  const recordSeekRequested = useReplayTimelineStore((s) => s.recordSeekRequested);
   const [dragging, setDragging] = useState(false);
   const elementRef = useRef<HTMLElement | null>(null);
 
@@ -123,14 +119,7 @@ export function useReplayScrub({
       element.removeEventListener("pointerup", handleUp);
       element.removeEventListener("pointercancel", handleUp);
     };
-  }, [
-    dragging,
-    buildPreview,
-    updateScrub,
-    endScrub,
-    dispatch,
-    recordSeekRequested,
-  ]);
+  }, [dragging, buildPreview, updateScrub, endScrub, dispatch, recordSeekRequested]);
 
   return { onPointerDown, isDragging: dragging };
 }

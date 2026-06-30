@@ -8,12 +8,8 @@
  */
 
 import { useEffect, useMemo, type JSX } from "react";
-import {
-  describeMarkerForAccessibility,
-} from "@/dashboard/replay/ReplayTimelineAccessibility";
-import {
-  recordMarkerRenderPass,
-} from "@/dashboard/replay/diagnostics/ReplayTimelineMetrics";
+import { describeMarkerForAccessibility } from "@/dashboard/replay/ReplayTimelineAccessibility";
+import { recordMarkerRenderPass } from "@/dashboard/replay/diagnostics/ReplayTimelineMetrics";
 import {
   useReplayFocusedMarkerId,
   useReplayMarkers,
@@ -56,10 +52,7 @@ export function ReplayTimelineMarkers({
   const focusedId = useReplayFocusedMarkerId();
   const setFocused = useReplayTimelineStore((s) => s.setFocusedMarker);
 
-  const clusters = useMemo(
-    () => virtualizeMarkers(markers, viewport),
-    [markers, viewport],
-  );
+  const clusters = useMemo(() => virtualizeMarkers(markers, viewport), [markers, viewport]);
 
   useEffect(() => {
     recordMarkerRenderPass();
@@ -69,17 +62,11 @@ export function ReplayTimelineMarkers({
     <div
       role="list"
       aria-label="Replay markers"
-      className={
-        "relative w-full overflow-hidden " + (className ?? "")
-      }
+      className={"relative w-full overflow-hidden " + (className ?? "")}
       style={{ height: heightPx }}
       onPointerDown={(event) => {
         const bounds = event.currentTarget.getBoundingClientRect();
-        const cluster = pickClusterAt(
-          clusters,
-          event.clientX - bounds.left,
-          6,
-        );
+        const cluster = pickClusterAt(clusters, event.clientX - bounds.left, 6);
         if (cluster !== null) {
           setFocused(cluster.primary.id);
           dispatch(seekToMarker(cluster.primary));
@@ -104,20 +91,12 @@ interface MarkerGlyphProps {
   readonly window: ReplaySessionWindow;
 }
 
-function MarkerGlyph({
-  cluster,
-  focused,
-  window,
-}: MarkerGlyphProps): JSX.Element {
+function MarkerGlyph({ cluster, focused, window }: MarkerGlyphProps): JSX.Element {
   const ariaLabel = describeMarkerForAccessibility(cluster.primary, window);
   return (
     <div
       role="listitem"
-      aria-label={
-        cluster.count > 1
-          ? `${ariaLabel} (group of ${cluster.count})`
-          : ariaLabel
-      }
+      aria-label={cluster.count > 1 ? `${ariaLabel} (group of ${cluster.count})` : ariaLabel}
       className={
         "absolute top-1/2 -translate-x-1/2 -translate-y-1/2 h-2.5 w-2.5 rounded-full " +
         SEVERITY_CLASS[cluster.severity] +

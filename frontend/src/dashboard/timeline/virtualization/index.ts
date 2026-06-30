@@ -35,9 +35,7 @@ export {
   type OverscanPolicyOptions,
 } from "@/dashboard/timeline/virtualization/TimelineOverscan";
 
-export {
-  TimelineVirtualizationCache,
-} from "@/dashboard/timeline/virtualization/TimelineVirtualizationCache";
+export { TimelineVirtualizationCache } from "@/dashboard/timeline/virtualization/TimelineVirtualizationCache";
 
 export {
   TimelineWindowMetrics,

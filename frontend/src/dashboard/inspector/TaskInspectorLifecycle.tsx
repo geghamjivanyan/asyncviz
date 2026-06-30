@@ -6,10 +6,7 @@
 import { memo } from "react";
 import { Card } from "@/ui/primitives/Card";
 import { cn } from "@/lib/cn";
-import {
-  formatLifecycleState,
-  formatWallTime,
-} from "@/dashboard/inspector/utils/formatting";
+import { formatLifecycleState, formatWallTime } from "@/dashboard/inspector/utils/formatting";
 import type { TaskInspection } from "@/dashboard/inspector/models/TaskInspectionModels";
 
 export interface TaskInspectorLifecycleProps {

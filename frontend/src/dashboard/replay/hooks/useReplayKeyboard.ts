@@ -26,12 +26,8 @@ import {
   seekToMarker,
   stepCursor,
 } from "@/dashboard/replay/ReplayTimelineSeek";
-import {
-  recordKeyboardEvent,
-} from "@/dashboard/replay/diagnostics/ReplayTimelineMetrics";
-import {
-  recordReplayTimelineTrace,
-} from "@/dashboard/replay/diagnostics/ReplayTimelineTracing";
+import { recordKeyboardEvent } from "@/dashboard/replay/diagnostics/ReplayTimelineMetrics";
+import { recordReplayTimelineTrace } from "@/dashboard/replay/diagnostics/ReplayTimelineTracing";
 import type {
   ReplayBookmark,
   ReplayControlIntent,
@@ -96,26 +92,12 @@ export function useReplayKeyboard({
     };
     node.addEventListener("keydown", handler);
     return () => node.removeEventListener("keydown", handler);
-  }, [
-    enabled,
-    target,
-    replayWindow,
-    playback,
-    markers,
-    bookmarks,
-    dispatch,
-    onBookmark,
-  ]);
+  }, [enabled, target, replayWindow, playback, markers, bookmarks, dispatch, onBookmark]);
 }
 
 function isEditableTarget(el: HTMLElement): boolean {
   const tag = el.tagName;
-  return (
-    tag === "INPUT" ||
-    tag === "TEXTAREA" ||
-    tag === "SELECT" ||
-    el.isContentEditable === true
-  );
+  return tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || el.isContentEditable === true;
 }
 
 export interface MapKeyToIntentOptions {
@@ -148,37 +130,21 @@ export function mapKeyToIntent(
       return playback.paused ? { type: "play" } : { type: "pause" };
     case "ArrowLeft":
       if (markerJump) {
-        const prev = adjacentMarker(
-          options.markers,
-          playback.lastSequence,
-          "prev",
-        );
+        const prev = adjacentMarker(options.markers, playback.lastSequence, "prev");
         return prev !== null ? seekToMarker(prev) : null;
       }
       if (bookmarkJump) {
-        const prev = adjacentBookmark(
-          options.bookmarks,
-          playback.lastSequence,
-          "prev",
-        );
+        const prev = adjacentBookmark(options.bookmarks, playback.lastSequence, "prev");
         return prev !== null ? seekToBookmark(prev) : null;
       }
       return stepCursor(playback.lastSequence, -SMALL_STEP, window);
     case "ArrowRight":
       if (markerJump) {
-        const next = adjacentMarker(
-          options.markers,
-          playback.lastSequence,
-          "next",
-        );
+        const next = adjacentMarker(options.markers, playback.lastSequence, "next");
         return next !== null ? seekToMarker(next) : null;
       }
       if (bookmarkJump) {
-        const next = adjacentBookmark(
-          options.bookmarks,
-          playback.lastSequence,
-          "next",
-        );
+        const next = adjacentBookmark(options.bookmarks, playback.lastSequence, "next");
         return next !== null ? seekToBookmark(next) : null;
       }
       return stepCursor(playback.lastSequence, SMALL_STEP, window);
@@ -212,10 +178,7 @@ function adjacentMarker(
       if (m.sequence < pivot && (best === null || m.sequence > best.sequence)) {
         best = m;
       }
-    } else if (
-      m.sequence > pivot &&
-      (best === null || m.sequence < best.sequence)
-    ) {
+    } else if (m.sequence > pivot && (best === null || m.sequence < best.sequence)) {
       best = m;
     }
   }
@@ -234,10 +197,7 @@ function adjacentBookmark(
       if (b.sequence < pivot && (best === null || b.sequence > best.sequence)) {
         best = b;
       }
-    } else if (
-      b.sequence > pivot &&
-      (best === null || b.sequence < best.sequence)
-    ) {
+    } else if (b.sequence > pivot && (best === null || b.sequence < best.sequence)) {
       best = b;
     }
   }

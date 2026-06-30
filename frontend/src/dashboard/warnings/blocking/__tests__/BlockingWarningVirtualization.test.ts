@@ -4,9 +4,7 @@ import { projectGroup } from "@/dashboard/warnings/blocking/selectors/BlockingWa
 import { makeGroup } from "@/dashboard/warnings/blocking/__fixtures__/makeBlockingWarningFixtures";
 
 const buildViews = (count: number) =>
-  Array.from({ length: count }, (_, i) =>
-    projectGroup(makeGroup({ group_id: `g-${i}` })),
-  );
+  Array.from({ length: count }, (_, i) => projectGroup(makeGroup({ group_id: `g-${i}` })));
 
 describe("clampViews", () => {
   it("returns full list when under the cap", () => {

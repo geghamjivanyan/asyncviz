@@ -17,29 +17,25 @@ describe("projectRecord", () => {
   });
 
   it("escalates to saturated when permits are exhausted with waiters", () => {
-    const view = projectRecord(
-      makeRecord({ currentValue: 0, waiterCount: 1 }),
-    );
+    const view = projectRecord(makeRecord({ currentValue: 0, waiterCount: 1 }));
     expect(view.severity).toBe("saturated");
     expect(view.saturated).toBe(true);
     expect(view.permitsInUse).toBe(4);
   });
 
   it("warns on high utilization without waiters", () => {
-    const view = projectRecord(
-      makeRecord({ currentValue: 1, waiterCount: 0 }),
-    );
+    const view = projectRecord(makeRecord({ currentValue: 1, waiterCount: 0 }));
     expect(view.severity).toBe("warning");
   });
 
   it("falls back to record.name then id when no display name", () => {
     expect(projectRecord(makeRecord({ semaphoreId: "s-42" })).displayName).toBe("s-42");
-    expect(
-      projectRecord(makeRecord({ semaphoreId: "s-42", name: "db-pool" })).displayName,
-    ).toBe("db-pool");
-    expect(
-      projectRecord(makeRecord({ semaphoreId: "s-42" }), "override").displayName,
-    ).toBe("override");
+    expect(projectRecord(makeRecord({ semaphoreId: "s-42", name: "db-pool" })).displayName).toBe(
+      "db-pool",
+    );
+    expect(projectRecord(makeRecord({ semaphoreId: "s-42" }), "override").displayName).toBe(
+      "override",
+    );
   });
 
   it("clamps permitsInUse to [0, initialValue]", () => {
@@ -67,11 +63,7 @@ describe("projectSemaphoreContention", () => {
     const { bySeverityDescending, alarmCount } = projectSemaphoreContention({
       records,
     });
-    expect(bySeverityDescending.map((v) => v.semaphoreId)).toEqual([
-      "s-sat",
-      "s-warn",
-      "s-calm",
-    ]);
+    expect(bySeverityDescending.map((v) => v.semaphoreId)).toEqual(["s-sat", "s-warn", "s-calm"]);
     expect(alarmCount).toBe(2);
   });
 

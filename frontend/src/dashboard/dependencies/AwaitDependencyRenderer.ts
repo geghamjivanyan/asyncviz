@@ -6,7 +6,10 @@
  * consumes the output; tests exercise the same surface.
  */
 
-import { virtualize, type VirtualizationOutput } from "@/dashboard/dependencies/AwaitDependencyVirtualization";
+import {
+  virtualize,
+  type VirtualizationOutput,
+} from "@/dashboard/dependencies/AwaitDependencyVirtualization";
 import {
   layoutDependencies,
   type LayoutFrame,
@@ -26,9 +29,7 @@ export interface DependencyFrame extends VirtualizationOutput {
   layout: LayoutFrame;
 }
 
-export function buildDependencyFrame(
-  inputs: DependencyFrameInputs,
-): DependencyFrame {
+export function buildDependencyFrame(inputs: DependencyFrameInputs): DependencyFrame {
   const layout = layoutDependencies(inputs);
   getAwaitDependencyPanelMetrics().recordLayoutComputed();
   recordAwaitDependencyTrace({

@@ -23,12 +23,8 @@ export interface WheelEventInput extends WheelGestureInput {
 
 /** Pure: dispatch a wheel event into the controller, anchoring the
  *  zoom at the pointer location when supplied. */
-export function dispatchWheel(
-  controller: TimelineZoomController,
-  event: WheelEventInput,
-): void {
-  const anchor: ZoomAnchor =
-    event.xCss !== undefined ? xAnchor(event.xCss) : cursorAnchor();
+export function dispatchWheel(controller: TimelineZoomController, event: WheelEventInput): void {
+  const anchor: ZoomAnchor = event.xCss !== undefined ? xAnchor(event.xCss) : cursorAnchor();
   controller.applyWheelGesture(event, anchor);
 }
 

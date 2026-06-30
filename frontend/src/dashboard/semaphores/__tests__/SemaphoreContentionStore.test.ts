@@ -40,10 +40,7 @@ describe("reduceEventPayload", () => {
   });
 
   it("applies acquired as snapshot + acquire count bump", () => {
-    const reduced = reduceEventPayload(
-      {},
-      makeAcquired({ blocked: true, wait_seconds: 0.4 }),
-    );
+    const reduced = reduceEventPayload({}, makeAcquired({ blocked: true, wait_seconds: 0.4 }));
     expect(reduced!["s-1"]?.acquireCount).toBe(1);
     expect(reduced!["s-1"]?.blockedAcquireCount).toBe(1);
     expect(reduced!["s-1"]?.meanWaitSeconds).toBeCloseTo(0.4);
@@ -56,10 +53,7 @@ describe("reduceEventPayload", () => {
   });
 
   it("applies contention.detected with flat fields preferred over snapshot", () => {
-    const reduced = reduceEventPayload(
-      {},
-      makeContention({ waiter_count: 3, current_value: 0 }),
-    );
+    const reduced = reduceEventPayload({}, makeContention({ waiter_count: 3, current_value: 0 }));
     expect(reduced!["s-1"]?.waiterCount).toBe(3);
     expect(reduced!["s-1"]?.currentValue).toBe(0);
     expect(reduced!["s-1"]?.peakWaiterCount).toBe(3);
@@ -71,14 +65,8 @@ describe("reduceEventPayload", () => {
   });
 
   it("tracks running mean wait seconds across multiple blocked acquires", () => {
-    let records = reduceEventPayload(
-      {},
-      makeAcquired({ blocked: true, wait_seconds: 0.2 }),
-    )!;
-    records = reduceEventPayload(
-      records,
-      makeAcquired({ blocked: true, wait_seconds: 0.6 }),
-    )!;
+    let records = reduceEventPayload({}, makeAcquired({ blocked: true, wait_seconds: 0.2 }))!;
+    records = reduceEventPayload(records, makeAcquired({ blocked: true, wait_seconds: 0.6 }))!;
     expect(records["s-1"]?.blockedAcquireCount).toBe(2);
     expect(records["s-1"]?.meanWaitSeconds).toBeCloseTo(0.4);
     expect(records["s-1"]?.maxWaitSeconds).toBeCloseTo(0.6);
@@ -145,9 +133,9 @@ describe("appendMarker", () => {
 
 describe("useSemaphoreContentionStore actions", () => {
   it("hydrateSnapshot bumps stats + flips status to ready", () => {
-    useSemaphoreContentionStore.getState().hydrateSnapshot(
-      makeHydration({ semaphores: [makeIdentity({ semaphore_id: "s-a" })] }),
-    );
+    useSemaphoreContentionStore
+      .getState()
+      .hydrateSnapshot(makeHydration({ semaphores: [makeIdentity({ semaphore_id: "s-a" })] }));
     const state = useSemaphoreContentionStore.getState();
     expect(state.status).toBe("ready");
     expect(state.semaphoreIds).toEqual(["s-a"]);
@@ -155,9 +143,9 @@ describe("useSemaphoreContentionStore actions", () => {
   });
 
   it("applyEventPayload registers a marker on contention.detected", () => {
-    useSemaphoreContentionStore.getState().hydrateSnapshot(
-      makeHydration({ semaphores: [makeIdentity({ semaphore_id: "s-1" })] }),
-    );
+    useSemaphoreContentionStore
+      .getState()
+      .hydrateSnapshot(makeHydration({ semaphores: [makeIdentity({ semaphore_id: "s-1" })] }));
     useSemaphoreContentionStore.getState().applyEventPayload(makeContention());
     const state = useSemaphoreContentionStore.getState();
     expect(state.markers).toHaveLength(1);
@@ -166,9 +154,9 @@ describe("useSemaphoreContentionStore actions", () => {
 
   it("lazily scaffolds a new semaphore from a streamed event after hydration", () => {
     useSemaphoreContentionStore.getState().hydrateSnapshot(makeHydration());
-    useSemaphoreContentionStore.getState().applyEventPayload(
-      makeAcquired({ semaphore_id: "s-late" }),
-    );
+    useSemaphoreContentionStore
+      .getState()
+      .applyEventPayload(makeAcquired({ semaphore_id: "s-late" }));
     const state = useSemaphoreContentionStore.getState();
     expect(state.semaphoreIds).toContain("s-late");
   });

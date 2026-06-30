@@ -110,9 +110,7 @@ export function reduceAppendMarker(
 ): Partial<ReplayTimelineStoreState> {
   // Keep markers sorted by sequence so projections + nearest-search
   // are cheap.
-  const next = [...state.markers, marker].sort(
-    (a, b) => a.sequence - b.sequence,
-  );
+  const next = [...state.markers, marker].sort((a, b) => a.sequence - b.sequence);
   return {
     markers: next,
     stats: { ...state.stats, markersAppended: state.stats.markersAppended + 1 },
@@ -165,9 +163,7 @@ export function reduceUpdateScrub(
   };
 }
 
-export function reduceEndScrub(
-  state: ReplayTimelineStoreState,
-): Partial<ReplayTimelineStoreState> {
+export function reduceEndScrub(state: ReplayTimelineStoreState): Partial<ReplayTimelineStoreState> {
   if (state.scrubPhase === "idle") {
     return {};
   }
@@ -179,53 +175,51 @@ export function reduceEndScrub(
 
 // ── store implementation ───────────────────────────────────────────────
 
-export const useReplayTimelineStore = create<ReplayTimelineStoreState>(
-  (set) => ({
-    playback: INITIAL_PLAYBACK,
-    window: EMPTY_WINDOW,
-    viewport: EMPTY_VIEWPORT,
-    markers: [],
-    bookmarks: [],
-    scrubPhase: "idle",
-    scrubPreview: null,
-    focusedMarkerId: null,
-    focusedBookmarkId: null,
-    stats: INITIAL_STATS,
+export const useReplayTimelineStore = create<ReplayTimelineStoreState>((set) => ({
+  playback: INITIAL_PLAYBACK,
+  window: EMPTY_WINDOW,
+  viewport: EMPTY_VIEWPORT,
+  markers: [],
+  bookmarks: [],
+  scrubPhase: "idle",
+  scrubPreview: null,
+  focusedMarkerId: null,
+  focusedBookmarkId: null,
+  stats: INITIAL_STATS,
 
-    setPlayback: (playback) => set((s) => reducePlayback(s, playback)),
-    setWindow: (window) => set({ window }),
-    setViewport: (viewport) => set({ viewport }),
-    setMarkers: (markers) =>
-      set({
-        markers: [...markers].sort((a, b) => a.sequence - b.sequence),
-      }),
-    appendMarker: (marker) => set((s) => reduceAppendMarker(s, marker)),
-    addBookmark: (bookmark) => set((s) => reduceAddBookmark(s, bookmark)),
-    removeBookmark: (id) => set((s) => reduceRemoveBookmark(s, id)),
-    beginScrub: (preview) => set((s) => reduceBeginScrub(s, preview)),
-    updateScrub: (preview) => set((s) => reduceUpdateScrub(s, preview)),
-    endScrub: () => set((s) => reduceEndScrub(s)),
-    setFocusedMarker: (id) => set({ focusedMarkerId: id }),
-    setFocusedBookmark: (id) => set({ focusedBookmarkId: id }),
-    recordSeekRequested: () =>
-      set((s) => ({
-        stats: { ...s.stats, seeksRequested: s.stats.seeksRequested + 1 },
-      })),
-    reset: () =>
-      set({
-        playback: INITIAL_PLAYBACK,
-        window: EMPTY_WINDOW,
-        viewport: EMPTY_VIEWPORT,
-        markers: [],
-        bookmarks: [],
-        scrubPhase: "idle",
-        scrubPreview: null,
-        focusedMarkerId: null,
-        focusedBookmarkId: null,
-        stats: INITIAL_STATS,
-      }),
-  }),
-);
+  setPlayback: (playback) => set((s) => reducePlayback(s, playback)),
+  setWindow: (window) => set({ window }),
+  setViewport: (viewport) => set({ viewport }),
+  setMarkers: (markers) =>
+    set({
+      markers: [...markers].sort((a, b) => a.sequence - b.sequence),
+    }),
+  appendMarker: (marker) => set((s) => reduceAppendMarker(s, marker)),
+  addBookmark: (bookmark) => set((s) => reduceAddBookmark(s, bookmark)),
+  removeBookmark: (id) => set((s) => reduceRemoveBookmark(s, id)),
+  beginScrub: (preview) => set((s) => reduceBeginScrub(s, preview)),
+  updateScrub: (preview) => set((s) => reduceUpdateScrub(s, preview)),
+  endScrub: () => set((s) => reduceEndScrub(s)),
+  setFocusedMarker: (id) => set({ focusedMarkerId: id }),
+  setFocusedBookmark: (id) => set({ focusedBookmarkId: id }),
+  recordSeekRequested: () =>
+    set((s) => ({
+      stats: { ...s.stats, seeksRequested: s.stats.seeksRequested + 1 },
+    })),
+  reset: () =>
+    set({
+      playback: INITIAL_PLAYBACK,
+      window: EMPTY_WINDOW,
+      viewport: EMPTY_VIEWPORT,
+      markers: [],
+      bookmarks: [],
+      scrubPhase: "idle",
+      scrubPreview: null,
+      focusedMarkerId: null,
+      focusedBookmarkId: null,
+      stats: INITIAL_STATS,
+    }),
+}));
 
 // ── initial-state factory for unit tests ───────────────────────────────
 

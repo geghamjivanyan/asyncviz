@@ -48,11 +48,7 @@ export interface TimelineZoomState {
 
 /** Stable preset focus targets. */
 export type ZoomPresetKind =
-  | "fit-all"
-  | "fit-selection"
-  | "fit-active"
-  | "fit-replay"
-  | "fit-default";
+  "fit-all" | "fit-selection" | "fit-active" | "fit-replay" | "fit-default";
 
 export interface ZoomPreset {
   kind: ZoomPresetKind;

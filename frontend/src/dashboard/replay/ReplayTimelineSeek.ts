@@ -45,16 +45,12 @@ export function seekFromFraction(
 }
 
 /** Map a marker activation to a seek intent. */
-export function seekToMarker(
-  marker: ReplayTimelineMarker,
-): ReplayControlIntent {
+export function seekToMarker(marker: ReplayTimelineMarker): ReplayControlIntent {
   return { type: "seek-sequence", sequence: marker.sequence };
 }
 
 /** Map a bookmark activation to a seek intent. */
-export function seekToBookmark(
-  bookmark: ReplayBookmark,
-): ReplayControlIntent {
+export function seekToBookmark(bookmark: ReplayBookmark): ReplayControlIntent {
   return { type: "jump-to-bookmark", bookmarkId: bookmark.id };
 }
 
@@ -66,11 +62,7 @@ export function stepCursor(
 ): ReplayControlIntent {
   return {
     type: "seek-sequence",
-    sequence: clamp(
-      currentSequence + delta,
-      window.minSequence,
-      window.maxSequence,
-    ),
+    sequence: clamp(currentSequence + delta, window.minSequence, window.maxSequence),
   };
 }
 

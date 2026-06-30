@@ -10,9 +10,7 @@ import type {
   ExecutorSaturationChangedPayload,
 } from "@/dashboard/executors/models/ExecutorActivityModels";
 
-function makeLatency(
-  overrides: Partial<ExecutorLatencyRecord> = {},
-): ExecutorLatencyRecord {
+function makeLatency(overrides: Partial<ExecutorLatencyRecord> = {}): ExecutorLatencyRecord {
   return {
     count: 0,
     mean_seconds: 0,
@@ -24,9 +22,7 @@ function makeLatency(
   };
 }
 
-export function makeRecord(
-  overrides: Partial<ExecutorMetricsRecord> = {},
-): ExecutorMetricsRecord {
+export function makeRecord(overrides: Partial<ExecutorMetricsRecord> = {}): ExecutorMetricsRecord {
   return {
     executor_id: "e-1",
     executor_kind: "Thread",

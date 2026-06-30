@@ -8,9 +8,7 @@ export {
   type ZoomStateListener,
 } from "@/dashboard/timeline/zoom/TimelineZoomController";
 
-export {
-  buildZoomState,
-} from "@/dashboard/timeline/zoom/TimelineZoomState";
+export { buildZoomState } from "@/dashboard/timeline/zoom/TimelineZoomState";
 
 export {
   centerAnchor,

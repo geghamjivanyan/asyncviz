@@ -69,10 +69,7 @@ function pointerTime(
   xCss: number,
 ): number {
   if (layout.timelineColumnWidthPx <= 0) return coords.camera.timeStart;
-  const duration = Math.max(
-    Number.EPSILON,
-    coords.camera.timeEnd - coords.camera.timeStart,
-  );
+  const duration = Math.max(Number.EPSILON, coords.camera.timeEnd - coords.camera.timeStart);
   const columnPixelsPerSecond = layout.timelineColumnWidthPx / duration;
   if (columnPixelsPerSecond <= 0) return coords.camera.timeStart;
   const localX = xCss - layout.timelineColumnX;

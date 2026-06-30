@@ -1,9 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  isUsableRange,
-  mergeRanges,
-  padRange,
-} from "@/dashboard/timeline/zoom/TimelineZoomFocus";
+import { isUsableRange, mergeRanges, padRange } from "@/dashboard/timeline/zoom/TimelineZoomFocus";
 
 describe("focus helpers", () => {
   it("padRange widens the range by the configured fraction", () => {

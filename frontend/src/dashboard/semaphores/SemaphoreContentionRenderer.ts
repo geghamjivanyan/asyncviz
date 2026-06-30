@@ -25,9 +25,7 @@ export interface SemaphoreContentionFrame extends MarkerVirtualizationOutput {
   windowedMarkerCount: number;
 }
 
-export function layoutFrame(
-  inputs: SemaphoreContentionFrameInputs,
-): SemaphoreContentionFrame {
+export function layoutFrame(inputs: SemaphoreContentionFrameInputs): SemaphoreContentionFrame {
   const layouts = layoutMarkers(inputs.markers, inputs);
   const virtualized = virtualizeMarkers({
     layouts,

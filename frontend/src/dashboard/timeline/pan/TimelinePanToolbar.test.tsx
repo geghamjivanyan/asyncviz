@@ -14,12 +14,7 @@ describe("TimelinePanToolbar", () => {
   it("renders left + right buttons", () => {
     const engine = buildEngine();
     const controller = new TimelinePanController({ engine });
-    render(
-      <TimelinePanToolbar
-        controller={controller}
-        state={controller.currentState()}
-      />,
-    );
+    render(<TimelinePanToolbar controller={controller} state={controller.currentState()} />);
     expect(screen.getByLabelText("Pan left")).toBeInTheDocument();
     expect(screen.getByLabelText("Pan right")).toBeInTheDocument();
   });
@@ -42,12 +37,7 @@ describe("TimelinePanToolbar", () => {
     const engine = buildEngine();
     const controller = new TimelinePanController({ engine });
     const user = userEvent.setup();
-    render(
-      <TimelinePanToolbar
-        controller={controller}
-        state={controller.currentState()}
-      />,
-    );
+    render(<TimelinePanToolbar controller={controller} state={controller.currentState()} />);
     const before = engine.currentScale().timeStart;
     await user.click(screen.getByLabelText("Pan right"));
     expect(engine.currentScale().timeStart).toBeGreaterThan(before);
@@ -59,12 +49,7 @@ describe("TimelinePanToolbar", () => {
       engine,
       bounds: { minTimeSeconds: 0, maxTimeSeconds: 100 },
     });
-    render(
-      <TimelinePanToolbar
-        controller={controller}
-        state={controller.currentState()}
-      />,
-    );
+    render(<TimelinePanToolbar controller={controller} state={controller.currentState()} />);
     expect(screen.getByLabelText("Pan left")).toBeDisabled();
   });
 });

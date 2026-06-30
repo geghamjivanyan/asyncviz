@@ -47,9 +47,7 @@ describe("<SemaphoreContentionPanel />", () => {
       ],
     });
     expect(screen.getAllByTestId("semaphore-contention-card")).toHaveLength(2);
-    expect(screen.getByTestId("semaphore-contention-alarm-count")).toHaveTextContent(
-      /1 alarm/,
-    );
+    expect(screen.getByTestId("semaphore-contention-alarm-count")).toHaveTextContent(/1 alarm/);
   });
 
   it("invokes onSelectSemaphore with the clicked semaphore id", async () => {
@@ -74,9 +72,9 @@ describe("<SemaphoreContentionPanel />", () => {
         }),
       ],
     });
-    expect(
-      screen.getByTestId("semaphore-contention-live-region"),
-    ).toHaveTextContent(/2 semaphores/);
+    expect(screen.getByTestId("semaphore-contention-live-region")).toHaveTextContent(
+      /2 semaphores/,
+    );
   });
 
   it("shows waiter + cancelled badges on contended semaphores", () => {

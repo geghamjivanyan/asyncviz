@@ -82,10 +82,7 @@ function TimelineZoomToolbarImpl({
     return (
       <div
         data-timeline-zoom-toolbar="true"
-        className={cn(
-          "flex items-center gap-2 px-3 py-1 text-xs text-muted",
-          className,
-        )}
+        className={cn("flex items-center gap-2 px-3 py-1 text-xs text-muted", className)}
       >
         <span className="font-mono">Zoom controls unavailable</span>
       </div>
@@ -127,7 +124,9 @@ function TimelineZoomToolbarImpl({
       {fitAll ? (
         <ZoomButton
           label="Reset"
-          onClick={() => controller.zoomToRange(fitAll.startSeconds, fitAll.endSeconds, "fit-default")}
+          onClick={() =>
+            controller.zoomToRange(fitAll.startSeconds, fitAll.endSeconds, "fit-default")
+          }
           ariaLabel="Reset zoom"
           description="Reset the zoom level to the default view"
           shortcut={shortcuts["zoom-reset"]}

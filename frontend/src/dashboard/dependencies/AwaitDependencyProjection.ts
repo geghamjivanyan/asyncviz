@@ -69,10 +69,7 @@ export function projectDependencies(
   let alarmCount = 0;
   for (const node of nodes) {
     nodesById[node.id] = node;
-    if (
-      node.kind === "gather"
-      && (node.state === "cancelled" || node.state === "failed")
-    ) {
+    if (node.kind === "gather" && (node.state === "cancelled" || node.state === "failed")) {
       alarmCount += 1;
     }
   }

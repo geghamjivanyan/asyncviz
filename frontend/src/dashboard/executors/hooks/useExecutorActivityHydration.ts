@@ -23,9 +23,7 @@ export function executorActivitySnapshotUrl(apiBaseUrl: string): string {
   return `${base}/api/executor/metrics`;
 }
 
-export function useExecutorActivityHydration(
-  options: ExecutorActivityHydrationOptions = {},
-): void {
+export function useExecutorActivityHydration(options: ExecutorActivityHydrationOptions = {}): void {
   const { enabled = true, fetcher = typeof fetch === "function" ? fetch : undefined } = options;
   const config = useRuntimeConfig();
   const clientMetrics = useClientMetrics();

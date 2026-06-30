@@ -7,21 +7,15 @@
  */
 
 import { useEffect, useMemo, useRef, useState, type JSX } from "react";
-import {
-  bucketMarkers,
-} from "@/dashboard/replay/ReplayTimelineProjection";
-import {
-  recordBucketRenderPass,
-} from "@/dashboard/replay/diagnostics/ReplayTimelineMetrics";
+import { bucketMarkers } from "@/dashboard/replay/ReplayTimelineProjection";
+import { recordBucketRenderPass } from "@/dashboard/replay/diagnostics/ReplayTimelineMetrics";
 import {
   useReplayMarkers,
   useReplayPlayback,
   useReplayWindow,
 } from "@/dashboard/replay/ReplayTimelineSelectors";
 import { seekFromFraction } from "@/dashboard/replay/ReplayTimelineSeek";
-import {
-  sequenceToFraction,
-} from "@/dashboard/replay/ReplayTimelineGeometry";
+import { sequenceToFraction } from "@/dashboard/replay/ReplayTimelineGeometry";
 import type {
   ReplayControlIntent,
   ReplayMarkerSeverity,
@@ -86,9 +80,10 @@ export function ReplayTimelineMiniMap({
       style={{ height: heightPx }}
       onPointerDown={(event) => {
         const bounds = event.currentTarget.getBoundingClientRect();
-        const fraction = bounds.width > 0
-          ? Math.min(1, Math.max(0, (event.clientX - bounds.left) / bounds.width))
-          : 0;
+        const fraction =
+          bounds.width > 0
+            ? Math.min(1, Math.max(0, (event.clientX - bounds.left) / bounds.width))
+            : 0;
         dispatch(seekFromFraction(fraction, window));
       }}
     >

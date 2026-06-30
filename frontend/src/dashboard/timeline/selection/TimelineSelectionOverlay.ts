@@ -7,9 +7,7 @@
  * tooltip) can read without subscribing to the renderer.
  */
 
-import type {
-  TimelineSelectionState,
-} from "@/dashboard/timeline/selection/models/TimelineSelectionModels";
+import type { TimelineSelectionState } from "@/dashboard/timeline/selection/models/TimelineSelectionModels";
 
 export interface SelectionOverlayPayload {
   /** Currently-selected task id. */
@@ -48,8 +46,7 @@ export function buildSelectionOverlay(args: BuildOverlayArgs): SelectionOverlayP
     };
   }
   const insideViewport =
-    state.selectedRowIndex >= visibleStartRowIndex &&
-    state.selectedRowIndex < visibleEndRowIndex;
+    state.selectedRowIndex >= visibleStartRowIndex && state.selectedRowIndex < visibleEndRowIndex;
   const bandTopYCss = (state.selectedRowIndex - rowStart) * rowHeightPx;
   const bandBottomYCss = bandTopYCss + rowHeightPx;
   return {

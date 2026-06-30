@@ -25,9 +25,7 @@ import { useTimelineLiveEngine } from "@/dashboard/timeline/live/hooks/useTimeli
 import { useActiveSegmentCount } from "@/dashboard/timeline/live/selectors/storeLiveSelectors";
 import { useTimelineVirtualization } from "@/dashboard/timeline/virtualization/hooks/useTimelineVirtualization";
 import { useTimelineScaleEngine } from "@/dashboard/timeline/scaling/hooks/useTimelineScaleEngine";
-import {
-  useTimelineDataRange,
-} from "@/dashboard/timeline/scaling/selectors/storeScaleSelectors";
+import { useTimelineDataRange } from "@/dashboard/timeline/scaling/selectors/storeScaleSelectors";
 import { useTimelineZoomController } from "@/dashboard/timeline/zoom/hooks/useTimelineZoomController";
 import { useTimelineZoomShortcuts } from "@/dashboard/timeline/zoom/hooks/useTimelineZoomShortcuts";
 import { useSelectedTaskSegmentRange } from "@/dashboard/timeline/zoom/selectors/storeZoomSelectors";
@@ -50,9 +48,7 @@ import {
   useFreezeRegionInteractions,
   useFreezeRegionLayer,
 } from "@/dashboard/timeline/freeze_regions";
-import type {
-  FreezeRegionView,
-} from "@/dashboard/timeline/freeze_regions";
+import type { FreezeRegionView } from "@/dashboard/timeline/freeze_regions";
 
 export interface TimelineContainerProps {
   className?: string;
@@ -82,10 +78,9 @@ export function TimelineContainer({
   // The virtualization engine owns visible-window calculation,
   // row/segment culling, and cache reuse. Wired into the renderer so
   // it bypasses the inline cull on every frame.
-  const { engine: virtualization } = useTimelineVirtualization<
-    TimelineRow,
-    TimelineRenderSegment
-  >({ liveEngine });
+  const { engine: virtualization } = useTimelineVirtualization<TimelineRow, TimelineRenderSegment>({
+    liveEngine,
+  });
   useEffect(() => {
     if (renderer === null) return;
     renderer.setVirtualizer(virtualization);
@@ -159,8 +154,7 @@ export function TimelineContainer({
       const cur = cameraWindowRef.current;
       const epsilon = Math.max(1e-6, Math.abs(cur.end - cur.start) * 1e-6);
       const isCameraEcho =
-        Math.abs(s.timeStart - cur.start) <= epsilon &&
-        Math.abs(s.timeEnd - cur.end) <= epsilon;
+        Math.abs(s.timeStart - cur.start) <= epsilon && Math.abs(s.timeEnd - cur.end) <= epsilon;
       camera.fitTo(s.timeStart, s.timeEnd);
       if (!isCameraEcho) camera.disableAutoFit();
     });
@@ -206,8 +200,7 @@ export function TimelineContainer({
     if (panController === null && zoomController === null) return null;
     return {
       panToTimeStart: (start: number) => panController?.panToTime(start),
-      fitToRange: (s: number, e: number) =>
-        zoomController?.zoomToRange(s, e, "fit-selection"),
+      fitToRange: (s: number, e: number) => zoomController?.zoomToRange(s, e, "fit-selection"),
     };
   }, [panController, zoomController]);
   const selectionViewportSource = useMemo(() => {
@@ -219,13 +212,14 @@ export function TimelineContainer({
       }),
     };
   }, [timeScale]);
-  const { controller: selectionController, state: selectionState } =
-    useTimelineSelectionController({
+  const { controller: selectionController, state: selectionState } = useTimelineSelectionController(
+    {
       store: selectionStore,
       rows: selectionRowSource,
       focus: selectionFocusAdapter,
       viewport: selectionViewportSource,
-    });
+    },
+  );
   useTimelineSelectionShortcuts({ controller: selectionController });
 
   // Publish the controller's focus actions to upstream consumers
@@ -328,15 +322,8 @@ export function TimelineContainer({
         fitAll={dataRange}
         presets={presets}
       />
-      <TimelinePanToolbar
-        controller={panController}
-        state={panState}
-        dataRange={dataRange}
-      />
-      <TimelineSelectionToolbar
-        controller={selectionController}
-        state={selectionState}
-      />
+      <TimelinePanToolbar controller={panController} state={panState} dataRange={dataRange} />
+      <TimelineSelectionToolbar controller={selectionController} state={selectionState} />
       <div className="relative flex min-h-0 flex-1">
         <TimelineLiveBadge activeSegmentCount={activeSegmentCount} />
         <TimelineCanvas
@@ -390,10 +377,7 @@ function TimelineLiveBadge({ activeSegmentCount }: { activeSegmentCount: number 
     >
       <span
         aria-hidden="true"
-        className={cn(
-          "h-1.5 w-1.5 rounded-full",
-          isLive ? "animate-pulse bg-success" : "bg-muted",
-        )}
+        className={cn("h-1.5 w-1.5 rounded-full", isLive ? "animate-pulse bg-success" : "bg-muted")}
       />
       {isLive ? `Live · ${activeSegmentCount} active` : "Idle"}
     </div>

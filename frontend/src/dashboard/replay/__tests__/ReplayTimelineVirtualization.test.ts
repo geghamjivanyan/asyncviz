@@ -1,9 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import {
-  pickClusterAt,
-  virtualizeMarkers,
-} from "@/dashboard/replay/ReplayTimelineVirtualization";
+import { pickClusterAt, virtualizeMarkers } from "@/dashboard/replay/ReplayTimelineVirtualization";
 import type {
   ReplayMarkerSeverity,
   ReplayTimelineMarker,
@@ -36,11 +33,7 @@ describe("virtualizeMarkers", () => {
   });
 
   it("clusters markers that fall within the cluster radius", () => {
-    const out = virtualizeMarkers(
-      [marker(100), marker(101), marker(102)],
-      viewport,
-      4,
-    );
+    const out = virtualizeMarkers([marker(100), marker(101), marker(102)], viewport, 4);
     expect(out).toHaveLength(1);
     expect(out[0].count).toBe(3);
     expect(out[0].members).toHaveLength(3);
@@ -69,10 +62,7 @@ describe("virtualizeMarkers", () => {
 
 describe("pickClusterAt", () => {
   it("returns the closest cluster within the radius", () => {
-    const clusters = virtualizeMarkers(
-      [marker(100), marker(500), marker(900)],
-      viewport,
-    );
+    const clusters = virtualizeMarkers([marker(100), marker(500), marker(900)], viewport);
     expect(pickClusterAt(clusters, 100, 5)?.primary.sequence).toBe(100);
     expect(pickClusterAt(clusters, 500, 5)?.primary.sequence).toBe(500);
     expect(pickClusterAt(clusters, 700, 5)).toBeNull();

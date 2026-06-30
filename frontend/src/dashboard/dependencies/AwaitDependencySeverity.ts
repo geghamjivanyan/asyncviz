@@ -14,11 +14,7 @@ import type {
 } from "@/dashboard/dependencies/models/AwaitDependencyModels";
 
 /** Visual severity bucket — cards + nodes key colors off this. */
-export type AwaitNodeSeverity =
-  | "calm"
-  | "active"
-  | "warning"
-  | "critical";
+export type AwaitNodeSeverity = "calm" | "active" | "warning" | "critical";
 
 const STATE_SEVERITY: Record<AwaitNodeState, AwaitNodeSeverity> = {
   pending: "calm",
@@ -70,8 +66,6 @@ const SEVERITY_RANK: Record<AwaitNodeSeverity, number> = {
   critical: 3,
 };
 
-export function compareSeverityDesc(
-  a: AwaitNodeSeverity, b: AwaitNodeSeverity,
-): number {
+export function compareSeverityDesc(a: AwaitNodeSeverity, b: AwaitNodeSeverity): number {
   return SEVERITY_RANK[b] - SEVERITY_RANK[a];
 }

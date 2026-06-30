@@ -64,12 +64,7 @@ function BlockingWarningOverlayMarkerImpl({
         padding: 0,
       }}
     >
-      <svg
-        width="100%"
-        height={heightPx}
-        role="presentation"
-        aria-hidden="true"
-      >
+      <svg width="100%" height={heightPx} role="presentation" aria-hidden="true">
         <rect
           x={0}
           y={2}

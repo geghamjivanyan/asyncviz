@@ -41,10 +41,7 @@ function ExecutorActivityPanelImpl({
     [views, visibleCap],
   );
   const overflow = views.length - visibleViews.length;
-  const announcement = useMemo(
-    () => describeExecutorCountsAnnouncement(views),
-    [views],
-  );
+  const announcement = useMemo(() => describeExecutorCountsAnnouncement(views), [views]);
   const renderedRef = useRef(0);
 
   useEffect(() => {
@@ -64,10 +61,7 @@ function ExecutorActivityPanelImpl({
       aria-labelledby="executor-activity-panel-heading"
     >
       <header className="executor-activity-panel__header">
-        <h2
-          id="executor-activity-panel-heading"
-          className="executor-activity-panel__title"
-        >
+        <h2 id="executor-activity-panel-heading" className="executor-activity-panel__title">
           Executor activity
         </h2>
         <span
@@ -81,19 +75,12 @@ function ExecutorActivityPanelImpl({
           {views.length} executor{views.length === 1 ? "" : "s"}
         </span>
         {status.status === "loading" && (
-          <span
-            className="executor-activity-panel__status"
-            data-status="loading"
-          >
+          <span className="executor-activity-panel__status" data-status="loading">
             loading…
           </span>
         )}
         {status.status === "error" && (
-          <span
-            className="executor-activity-panel__status"
-            data-status="error"
-            role="alert"
-          >
+          <span className="executor-activity-panel__status" data-status="error" role="alert">
             {status.errorMessage ?? "failed to load executor metrics"}
           </span>
         )}
@@ -108,13 +95,9 @@ function ExecutorActivityPanelImpl({
       </div>
 
       {views.length === 0 ? (
-        <p
-          className="executor-activity-panel__empty"
-          data-testid="executor-activity-empty"
-        >
-          No executors tracked yet. Executor activity will appear here as
-          soon as the runtime instruments any{" "}
-          <code>loop.run_in_executor</code> call.
+        <p className="executor-activity-panel__empty" data-testid="executor-activity-empty">
+          No executors tracked yet. Executor activity will appear here as soon as the runtime
+          instruments any <code>loop.run_in_executor</code> call.
         </p>
       ) : (
         <ul className="executor-activity-panel__list" role="list">
@@ -132,8 +115,7 @@ function ExecutorActivityPanelImpl({
               className="executor-activity-panel__item executor-activity-panel__overflow"
               data-testid="executor-activity-panel-overflow"
             >
-              +{overflow} more executor{overflow === 1 ? "" : "s"} (raise
-              visible cap to inspect)
+              +{overflow} more executor{overflow === 1 ? "" : "s"} (raise visible cap to inspect)
             </li>
           )}
         </ul>

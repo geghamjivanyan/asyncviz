@@ -23,16 +23,16 @@ export interface ExecutorActivityTraceEntry {
 let _enabled = false;
 const _ring: ExecutorActivityTraceEntry[] = [];
 
-export function isExecutorActivityTraceEnabled(): boolean { return _enabled; }
+export function isExecutorActivityTraceEnabled(): boolean {
+  return _enabled;
+}
 
 export function setExecutorActivityTraceEnabled(enabled: boolean): void {
   _enabled = enabled;
   if (!enabled) _ring.length = 0;
 }
 
-export function recordExecutorActivityTrace(
-  entry: Omit<ExecutorActivityTraceEntry, "at">,
-): void {
+export function recordExecutorActivityTrace(entry: Omit<ExecutorActivityTraceEntry, "at">): void {
   if (!_enabled) return;
   _ring.push({ ...entry, at: Date.now() });
   if (_ring.length > CAPACITY) _ring.splice(0, _ring.length - CAPACITY);
@@ -42,4 +42,6 @@ export function getExecutorActivityTrace(): ReadonlyArray<ExecutorActivityTraceE
   return [..._ring];
 }
 
-export function clearExecutorActivityTrace(): void { _ring.length = 0; }
+export function clearExecutorActivityTrace(): void {
+  _ring.length = 0;
+}

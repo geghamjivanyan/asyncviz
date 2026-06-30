@@ -36,10 +36,7 @@ export {
   neighborSemaphoreId,
 } from "@/dashboard/semaphores/SemaphoreContentionHitTesting";
 
-export {
-  layoutFrame,
-  markerLayoutKey,
-} from "@/dashboard/semaphores/SemaphoreContentionRenderer";
+export { layoutFrame, markerLayoutKey } from "@/dashboard/semaphores/SemaphoreContentionRenderer";
 
 export {
   resetForReplay,

@@ -13,9 +13,7 @@ export function replayEventPayload(payload: ExecutorActivityEventPayload): void 
   useExecutorActivityStore.getState().applyEventPayload(payload);
 }
 
-export function replayEventStream(
-  payloads: Iterable<ExecutorActivityEventPayload>,
-): void {
+export function replayEventStream(payloads: Iterable<ExecutorActivityEventPayload>): void {
   const apply = useExecutorActivityStore.getState().applyEventPayload;
   for (const payload of payloads) apply(payload);
 }

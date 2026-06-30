@@ -25,10 +25,7 @@ import {
   centerAnchor,
 } from "@/dashboard/timeline/zoom/TimelineZoomAnchoring";
 import { wouldBreachConstraints } from "@/dashboard/timeline/zoom/TimelineZoomConstraints";
-import {
-  factorFromLevelDelta,
-  levelToDuration,
-} from "@/dashboard/timeline/zoom/utils/levelMath";
+import { factorFromLevelDelta, levelToDuration } from "@/dashboard/timeline/zoom/utils/levelMath";
 import { buildZoomState } from "@/dashboard/timeline/zoom/TimelineZoomState";
 import {
   getTimelineZoomMetrics,
@@ -205,14 +202,10 @@ export class TimelineZoomController {
   applyLevelDelta(levelDelta: number, anchor: ZoomAnchor = cursorAnchor()): void {
     if (this.disposed) return;
     const constraints = this.engine.currentConstraints();
-    const factor = factorFromLevelDelta(
-      this.engine.currentScale().durationSeconds,
-      levelDelta,
-      {
-        minDurationSeconds: constraints.minDurationSeconds,
-        maxDurationSeconds: constraints.maxDurationSeconds,
-      },
-    );
+    const factor = factorFromLevelDelta(this.engine.currentScale().durationSeconds, levelDelta, {
+      minDurationSeconds: constraints.minDurationSeconds,
+      maxDurationSeconds: constraints.maxDurationSeconds,
+    });
     this.zoomBy(factor, anchor);
   }
 

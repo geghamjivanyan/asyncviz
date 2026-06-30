@@ -107,8 +107,7 @@ export function projectGroup(group: BlockingWarningGroupModel): BlockingWarningV
     recoveredNs: group.recovered_ns,
     expiredNs: group.expired_ns,
     freezeDurationNs: group.freeze_duration_ns,
-    freezeDurationMs:
-      group.freeze_duration_ms ?? group.freeze_duration_ns / NS_PER_MS,
+    freezeDurationMs: group.freeze_duration_ms ?? group.freeze_duration_ns / NS_PER_MS,
     peakLagNs: group.peak_lag_ns,
     peakLagMs: group.peak_lag_ns / NS_PER_MS,
     lastLagNs: group.last_lag_ns,

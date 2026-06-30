@@ -6,9 +6,7 @@
  * selection changes through these pure helpers.
  */
 
-import type {
-  FreezeRegionView,
-} from "@/dashboard/timeline/freeze_regions/models/FreezeRegionModels";
+import type { FreezeRegionView } from "@/dashboard/timeline/freeze_regions/models/FreezeRegionModels";
 
 function formatSeconds(seconds: number): string {
   if (!Number.isFinite(seconds) || seconds <= 0) return "0 s";
@@ -26,9 +24,7 @@ export function describeFreezeForAccessibility(region: FreezeRegionView): string
   if (region.windowId !== null) parts.push(`window ${region.windowId}`);
   parts.push(`duration ${formatSeconds(region.durationSeconds)}`);
   if (region.captureCount > 0) {
-    parts.push(
-      `${region.captureCount} correlated capture${region.captureCount === 1 ? "" : "s"}`,
-    );
+    parts.push(`${region.captureCount} correlated capture${region.captureCount === 1 ? "" : "s"}`);
   }
   if (region.taskName !== null) parts.push(`task ${region.taskName}`);
   if (region.peakSeverity !== region.severity) {

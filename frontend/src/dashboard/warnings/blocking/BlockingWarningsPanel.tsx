@@ -23,9 +23,7 @@ import { BlockingWarningFilters } from "@/dashboard/warnings/blocking/BlockingWa
 import { BlockingWarningGrouping } from "@/dashboard/warnings/blocking/BlockingWarningGrouping";
 import { BlockingWarningMetricsHeader } from "@/dashboard/warnings/blocking/BlockingWarningMetrics";
 import { BlockingWarningReplayBadge } from "@/dashboard/warnings/blocking/BlockingWarningReplay";
-import {
-  describeCountsAnnouncement,
-} from "@/dashboard/warnings/blocking/BlockingWarningAccessibility";
+import { describeCountsAnnouncement } from "@/dashboard/warnings/blocking/BlockingWarningAccessibility";
 import {
   DEFAULT_ACTIVE_VISIBLE_CAP,
   DEFAULT_RECENT_VISIBLE_CAP,
@@ -104,17 +102,11 @@ function BlockingWarningsPanelImpl({
 
   const filtered = filterMode !== "all";
   const announcement = useMemo(
-    () =>
-      describeCountsAnnouncement(
-        filteredCounts.active,
-        filteredCounts.recovered,
-        filtered,
-      ),
+    () => describeCountsAnnouncement(filteredCounts.active, filteredCounts.recovered, filtered),
     [filteredCounts.active, filteredCounts.recovered, filtered],
   );
 
-  const emptyOverall =
-    buckets.active.length === 0 && buckets.recent.length === 0;
+  const emptyOverall = buckets.active.length === 0 && buckets.recent.length === 0;
 
   return (
     <section
@@ -130,10 +122,7 @@ function BlockingWarningsPanelImpl({
         <h1 className="font-mono text-base uppercase tracking-widest text-text">
           Blocking Warnings
         </h1>
-        <BlockingWarningReplayBadge
-          status={status.status}
-          errorMessage={status.errorMessage}
-        />
+        <BlockingWarningReplayBadge status={status.status} errorMessage={status.errorMessage} />
         <span
           className="sr-only"
           role="status"
@@ -150,10 +139,7 @@ function BlockingWarningsPanelImpl({
         metrics={metrics}
       />
 
-      <BlockingWarningFilters
-        mode={filterMode}
-        onChange={onChangeFilterMode}
-      />
+      <BlockingWarningFilters mode={filterMode} onChange={onChangeFilterMode} />
 
       {status.status === "error" && status.errorMessage !== null && (
         <p

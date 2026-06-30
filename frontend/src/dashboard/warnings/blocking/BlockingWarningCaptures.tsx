@@ -39,13 +39,8 @@ function BlockingWarningCapturesImpl({
 
   if (view.captureIds.length === 0) {
     return (
-      <p
-        className={className}
-        data-testid="blocking-warning-captures-empty"
-      >
-        <span className="text-subtle text-xs">
-          No captures correlated yet.
-        </span>
+      <p className={className} data-testid="blocking-warning-captures-empty">
+        <span className="text-subtle text-xs">No captures correlated yet.</span>
       </p>
     );
   }

@@ -63,12 +63,8 @@ describe("compareViews", () => {
   });
 
   it("orders by severity rank within a bucket", () => {
-    const critical = projectGroup(
-      makeGroup({ group_id: "a", severity: "CRITICAL" }),
-    );
-    const freeze = projectGroup(
-      makeGroup({ group_id: "b", severity: "FREEZE" }),
-    );
+    const critical = projectGroup(makeGroup({ group_id: "a", severity: "CRITICAL" }));
+    const freeze = projectGroup(makeGroup({ group_id: "b", severity: "FREEZE" }));
     expect(compareViews(freeze, critical)).toBeLessThan(0);
   });
 });
@@ -82,9 +78,7 @@ describe("filtering", () => {
 
   it("applyFilter respects activeOnly", () => {
     const open = projectGroup(makeGroup({ group_id: "a", state: "active" }));
-    const recovered = projectGroup(
-      makeGroup({ group_id: "b", state: "recovered" }),
-    );
+    const recovered = projectGroup(makeGroup({ group_id: "b", state: "recovered" }));
     const result = applyFilter([open, recovered], filterFromMode("active"));
     expect(result.map((v) => v.groupId)).toEqual(["a"]);
   });

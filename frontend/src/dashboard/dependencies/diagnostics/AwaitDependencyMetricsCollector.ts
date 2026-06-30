@@ -23,13 +23,27 @@ class AwaitDependencyPanelMetrics {
   private _selectionChanges = 0;
   private _inspectorReveals = 0;
 
-  recordWebsocketEvent(): void { this._websocketEvents += 1; }
-  recordFrameRendered(): void { this._framesRendered += 1; }
-  recordNodesRendered(n: number): void { if (n > 0) this._nodesRendered += n; }
-  recordEdgesRendered(n: number): void { if (n > 0) this._edgesRendered += n; }
-  recordLayoutComputed(): void { this._layoutsComputed += 1; }
-  recordSelectionChange(): void { this._selectionChanges += 1; }
-  recordInspectorReveal(): void { this._inspectorReveals += 1; }
+  recordWebsocketEvent(): void {
+    this._websocketEvents += 1;
+  }
+  recordFrameRendered(): void {
+    this._framesRendered += 1;
+  }
+  recordNodesRendered(n: number): void {
+    if (n > 0) this._nodesRendered += n;
+  }
+  recordEdgesRendered(n: number): void {
+    if (n > 0) this._edgesRendered += n;
+  }
+  recordLayoutComputed(): void {
+    this._layoutsComputed += 1;
+  }
+  recordSelectionChange(): void {
+    this._selectionChanges += 1;
+  }
+  recordInspectorReveal(): void {
+    this._inspectorReveals += 1;
+  }
 
   snapshot(): AwaitDependencyMetricsSnapshot {
     return {

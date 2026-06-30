@@ -41,9 +41,7 @@ export function blockingWarningSnapshotUrl(apiBaseUrl: string): string {
  * Failures land in :class:`ClientMetrics` (``snapshotHydrationFailures``)
  * + the store's error slot.
  */
-export function useBlockingWarningHydration(
-  options: BlockingWarningHydrationOptions = {},
-): void {
+export function useBlockingWarningHydration(options: BlockingWarningHydrationOptions = {}): void {
   const { enabled = true, fetcher = typeof fetch === "function" ? fetch : undefined } = options;
   const config = useRuntimeConfig();
   const clientMetrics = useClientMetrics();
@@ -88,13 +86,5 @@ export function useBlockingWarningHydration(
       }
     })();
     return () => controller.abort();
-  }, [
-    enabled,
-    fetcher,
-    config.apiBaseUrl,
-    hydrateSnapshot,
-    markLoading,
-    markError,
-    clientMetrics,
-  ]);
+  }, [enabled, fetcher, config.apiBaseUrl, hydrateSnapshot, markLoading, markError, clientMetrics]);
 }

@@ -46,9 +46,7 @@ describe("<ExecutorActivityPanel />", () => {
       ],
     });
     expect(screen.getAllByTestId("executor-activity-card")).toHaveLength(2);
-    expect(screen.getByTestId("executor-activity-alarm-count")).toHaveTextContent(
-      /1 alarm/,
-    );
+    expect(screen.getByTestId("executor-activity-alarm-count")).toHaveTextContent(/1 alarm/);
   });
 
   it("invokes onSelectExecutor with the clicked executor id", async () => {
@@ -72,9 +70,7 @@ describe("<ExecutorActivityPanel />", () => {
         }),
       ],
     });
-    expect(
-      screen.getByTestId("executor-activity-live-region"),
-    ).toHaveTextContent(/2 executors/);
+    expect(screen.getByTestId("executor-activity-live-region")).toHaveTextContent(/2 executors/);
   });
 
   it("shows backlog + failures badges on contended executors", () => {

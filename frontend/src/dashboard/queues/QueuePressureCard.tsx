@@ -10,9 +10,7 @@
 import { memo, useCallback } from "react";
 import { cn } from "@/lib/cn";
 import type { QueuePressureView } from "@/dashboard/queues/models/QueuePressureModels";
-import {
-  describeQueueForAccessibility,
-} from "@/dashboard/queues/QueuePressureAccessibility";
+import { describeQueueForAccessibility } from "@/dashboard/queues/QueuePressureAccessibility";
 import { severityLabel } from "@/dashboard/queues/QueuePressureSeverity";
 
 export interface QueuePressureCardProps {
@@ -53,17 +51,11 @@ function QueuePressureCardImpl({
       onClick={handleClick}
       aria-pressed={selected}
       aria-label={describeQueueForAccessibility(view)}
-      className={cn(
-        "queue-pressure-card",
-        selected && "queue-pressure-card--selected",
-        className,
-      )}
+      className={cn("queue-pressure-card", selected && "queue-pressure-card--selected", className)}
     >
       <div className="queue-pressure-card__header">
         <span className="queue-pressure-card__name">{view.displayName}</span>
-        <span className="queue-pressure-card__severity">
-          {severityLabel(view.severity)}
-        </span>
+        <span className="queue-pressure-card__severity">{severityLabel(view.severity)}</span>
       </div>
       <div className="queue-pressure-card__row">
         <span className="queue-pressure-card__metric">
@@ -71,9 +63,7 @@ function QueuePressureCardImpl({
           <span className="queue-pressure-card__metric-value">
             {view.currentSize}
             {view.maxsize > 0 && (
-              <span className="queue-pressure-card__metric-divisor">
-                /{view.maxsize}
-              </span>
+              <span className="queue-pressure-card__metric-divisor">/{view.maxsize}</span>
             )}
           </span>
         </span>
@@ -85,29 +75,21 @@ function QueuePressureCardImpl({
         </span>
         <span className="queue-pressure-card__metric">
           <span className="queue-pressure-card__metric-label">pressure</span>
-          <span className="queue-pressure-card__metric-value">
-            {view.pressureScore.toFixed(2)}
-          </span>
+          <span className="queue-pressure-card__metric-value">{view.pressureScore.toFixed(2)}</span>
         </span>
       </div>
       <div className="queue-pressure-card__row queue-pressure-card__row--throughput">
         <span className="queue-pressure-card__metric">
           <span className="queue-pressure-card__metric-label">put</span>
-          <span className="queue-pressure-card__metric-value">
-            {formatRate(view.putRate)}
-          </span>
+          <span className="queue-pressure-card__metric-value">{formatRate(view.putRate)}</span>
         </span>
         <span className="queue-pressure-card__metric">
           <span className="queue-pressure-card__metric-label">get</span>
-          <span className="queue-pressure-card__metric-value">
-            {formatRate(view.getRate)}
-          </span>
+          <span className="queue-pressure-card__metric-value">{formatRate(view.getRate)}</span>
         </span>
         <span className="queue-pressure-card__metric">
           <span className="queue-pressure-card__metric-label">Δ p−c</span>
-          <span className="queue-pressure-card__metric-value">
-            {view.producerConsumerDelta}
-          </span>
+          <span className="queue-pressure-card__metric-value">{view.producerConsumerDelta}</span>
         </span>
       </div>
       {(view.blockedProducers > 0 || view.blockedConsumers > 0) && (

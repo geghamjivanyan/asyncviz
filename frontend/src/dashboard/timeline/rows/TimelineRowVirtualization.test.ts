@@ -9,9 +9,7 @@ import { TimelineCoordinateSystem } from "@/dashboard/timeline/viewport/Timeline
 function buildRows(count: number) {
   const rows = [];
   for (let i = 0; i < count; i += 1) {
-    rows.push(
-      normalizeRow({ rowIndex: i, taskId: `t${i}`, label: `Row ${i}`, state: "running" }),
-    );
+    rows.push(normalizeRow({ rowIndex: i, taskId: `t${i}`, label: `Row ${i}`, state: "running" }));
   }
   return rows;
 }

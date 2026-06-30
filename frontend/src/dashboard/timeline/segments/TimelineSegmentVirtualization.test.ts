@@ -55,9 +55,7 @@ describe("resolveVisibleSegments", () => {
 
   it("keeps active segments visible even when their end is in the past", () => {
     const coords = buildCoords({ timeStart: 5, timeEnd: 10 });
-    const entries = [
-      makeProjectionEntry("active", 0, 4, 4, { isActive: true }),
-    ];
+    const entries = [makeProjectionEntry("active", 0, 4, 4, { isActive: true })];
     const result = resolveVisibleSegments(entries, coords, 50);
     expect(result.entries).toHaveLength(1);
   });

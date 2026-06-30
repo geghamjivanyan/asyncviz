@@ -13,9 +13,7 @@
 
 import { memo, useCallback } from "react";
 import { cn } from "@/lib/cn";
-import type {
-  BlockingWarningFilterMode,
-} from "@/dashboard/warnings/blocking/models/BlockingWarningModels";
+import type { BlockingWarningFilterMode } from "@/dashboard/warnings/blocking/models/BlockingWarningModels";
 import { recordBlockingWarningTrace } from "@/dashboard/warnings/blocking/diagnostics/BlockingWarningTracing";
 import { getBlockingWarningPanelMetrics } from "@/dashboard/warnings/blocking/diagnostics/BlockingWarningMetricsCollector";
 
@@ -37,11 +35,7 @@ export interface BlockingWarningFiltersProps {
   className?: string;
 }
 
-function BlockingWarningFiltersImpl({
-  mode,
-  onChange,
-  className,
-}: BlockingWarningFiltersProps) {
+function BlockingWarningFiltersImpl({ mode, onChange, className }: BlockingWarningFiltersProps) {
   const handleChange = useCallback(
     (next: BlockingWarningFilterMode) => {
       if (next === mode) return;

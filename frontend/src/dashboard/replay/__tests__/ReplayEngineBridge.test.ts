@@ -57,9 +57,7 @@ describe("InMemoryReplayEngineBridge", () => {
     bridge.subscribeBookmarks((bookmarks) => {
       (received as ReplayBookmark[][]).push([...bookmarks]);
     });
-    bridge.setBookmarks([
-      { id: "b1", label: "x", sequence: 5, monotonicNs: 5, createdAtMs: 1 },
-    ]);
+    bridge.setBookmarks([{ id: "b1", label: "x", sequence: 5, monotonicNs: 5, createdAtMs: 1 }]);
     expect(received[0]).toHaveLength(1);
   });
 
@@ -67,9 +65,6 @@ describe("InMemoryReplayEngineBridge", () => {
     const bridge = new InMemoryReplayEngineBridge();
     bridge.dispatch({ type: "play" });
     bridge.dispatch({ type: "seek-sequence", sequence: 10 });
-    expect(bridge.intents).toEqual([
-      { type: "play" },
-      { type: "seek-sequence", sequence: 10 },
-    ]);
+    expect(bridge.intents).toEqual([{ type: "play" }, { type: "seek-sequence", sequence: 10 }]);
   });
 });

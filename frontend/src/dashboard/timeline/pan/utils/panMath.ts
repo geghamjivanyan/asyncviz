@@ -53,8 +53,7 @@ export function atBoundEdge(
   maxTimeSeconds: number | null,
 ): { atMin: boolean; atMax: boolean } {
   const tolerance = SCALE_EPSILON_SECONDS;
-  const atMin =
-    minTimeSeconds !== null && timeStart <= minTimeSeconds + tolerance;
+  const atMin = minTimeSeconds !== null && timeStart <= minTimeSeconds + tolerance;
   const atMax =
     maxTimeSeconds !== null && timeStart + durationSeconds >= maxTimeSeconds - tolerance;
   return { atMin, atMax };
@@ -73,9 +72,6 @@ export function deltaToCenter(
 
 /** Pure: compute the ``deltaSeconds`` that would move the viewport's
  *  left edge to ``targetTimeStartSeconds``. */
-export function deltaToTimeStart(
-  targetTimeStartSeconds: number,
-  timeStart: number,
-): number {
+export function deltaToTimeStart(targetTimeStartSeconds: number, timeStart: number): number {
   return targetTimeStartSeconds - timeStart;
 }

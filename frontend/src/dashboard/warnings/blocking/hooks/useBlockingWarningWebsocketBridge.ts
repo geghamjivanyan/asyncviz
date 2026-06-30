@@ -16,12 +16,8 @@
 import { useEffect, useMemo } from "react";
 import { useWebSocketClient } from "@/app/providers/RuntimeProvider";
 import type { RuntimeEnvelope } from "@/types/runtime";
-import type {
-  BlockingWarningEventPayload,
-} from "@/dashboard/warnings/blocking/models/BlockingWarningModels";
-import type {
-  BlockingWarningSubscribeFactory,
-} from "@/dashboard/warnings/blocking/hooks/useBlockingWarningLiveUpdates";
+import type { BlockingWarningEventPayload } from "@/dashboard/warnings/blocking/models/BlockingWarningModels";
+import type { BlockingWarningSubscribeFactory } from "@/dashboard/warnings/blocking/hooks/useBlockingWarningLiveUpdates";
 import { useBlockingWarningLiveUpdates } from "@/dashboard/warnings/blocking/hooks/useBlockingWarningLiveUpdates";
 import { BLOCKING_WARNING_EVENT_TYPES } from "@/dashboard/warnings/blocking/BlockingWarningStore";
 
@@ -47,8 +43,7 @@ export function blockingPayloadFromEnvelope(
   envelope: RuntimeEnvelope,
 ): BlockingWarningEventPayload | null {
   const outer = envelope.payload as
-    | { event_type?: string; payload?: BlockingWarningEventPayload }
-    | undefined;
+    { event_type?: string; payload?: BlockingWarningEventPayload } | undefined;
   if (outer === undefined) return null;
   const eventType = outer.event_type;
   if (typeof eventType !== "string") return null;

@@ -12,9 +12,7 @@ import { QueuePressureCard } from "@/dashboard/queues/QueuePressureCard";
 import { describeQueueCountsAnnouncement } from "@/dashboard/queues/QueuePressureAccessibility";
 import { getQueuePressurePanelMetrics } from "@/dashboard/queues/diagnostics/QueuePressureMetricsCollector";
 import { recordQueuePressureTrace } from "@/dashboard/queues/diagnostics/QueuePressureTracing";
-import type {
-  QueuePressureView,
-} from "@/dashboard/queues/models/QueuePressureModels";
+import type { QueuePressureView } from "@/dashboard/queues/models/QueuePressureModels";
 
 export interface QueuePressurePanelStatusProps {
   status: "idle" | "loading" | "ready" | "error";
@@ -89,24 +87,24 @@ function QueuePressurePanelImpl({
           </span>
         )}
         {status.status === "error" && (
-          <span
-            className="queue-pressure-panel__status"
-            data-status="error"
-            role="alert"
-          >
+          <span className="queue-pressure-panel__status" data-status="error" role="alert">
             {status.errorMessage ?? "failed to load queue metrics"}
           </span>
         )}
       </header>
 
-      <div className="queue-pressure-panel__sr-only" aria-live="polite" data-testid="queue-pressure-live-region">
+      <div
+        className="queue-pressure-panel__sr-only"
+        aria-live="polite"
+        data-testid="queue-pressure-live-region"
+      >
         {announcement}
       </div>
 
       {views.length === 0 ? (
         <p className="queue-pressure-panel__empty" data-testid="queue-pressure-empty">
-          No queues tracked yet. Queue activity will appear here as soon as the
-          runtime instruments any <code>asyncio.Queue</code>.
+          No queues tracked yet. Queue activity will appear here as soon as the runtime instruments
+          any <code>asyncio.Queue</code>.
         </p>
       ) : (
         <ul className="queue-pressure-panel__list" role="list">

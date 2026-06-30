@@ -79,10 +79,7 @@ function RuntimeSummarySection({
             value={formatRate(aggregate.throughput.tasks_per_second)}
             sub={throughputWindowLabel(aggregate.throughput)}
           />
-          <SummaryCell
-            label="Last aggregate"
-            value={formatWallTime(aggregate.generated_at)}
-          />
+          <SummaryCell label="Last aggregate" value={formatWallTime(aggregate.generated_at)} />
         </div>
       )}
     </Section>
@@ -98,11 +95,7 @@ function throughputWindowLabel(throughput: ThroughputModel): string {
 
 // ── Section 2 — Duration Statistics ───────────────────────────────────────
 
-function DurationStatisticsSection({
-  durations,
-}: {
-  durations: DurationsByStateModel | null;
-}) {
+function DurationStatisticsSection({ durations }: { durations: DurationsByStateModel | null }) {
   if (durations === null) {
     return (
       <Section title="Duration statistics">
@@ -217,13 +210,7 @@ function TopCoroutinesSection({ coroutines }: { coroutines: CoroutineRowModel[] 
 
 // ── Sections 4 & 5 — Longest / Shortest Tasks ─────────────────────────────
 
-function TopTasksSection({
-  title,
-  tasks,
-}: {
-  title: string;
-  tasks: TopTaskModel[] | null;
-}) {
+function TopTasksSection({ title, tasks }: { title: string; tasks: TopTaskModel[] | null }) {
   const rows = tasks ?? [];
   return (
     <Section title={title}>
@@ -309,11 +296,7 @@ function RuntimeTopologySection({ lineage }: { lineage: LineageMetricsModel | nu
         />
         <SummaryCell
           label="Average fan-out"
-          value={
-            Number.isFinite(lineage.average_fanout)
-              ? lineage.average_fanout.toFixed(2)
-              : "—"
-          }
+          value={Number.isFinite(lineage.average_fanout) ? lineage.average_fanout.toFixed(2) : "—"}
           sub={`${formatCount(lineage.root_count)} roots`}
         />
         <SummaryCell
@@ -333,11 +316,7 @@ function shortId(id: string): string {
 
 // ── Section 7 — Cancellation Origins ──────────────────────────────────────
 
-function CancellationOriginsSection({
-  origins,
-}: {
-  origins: Record<string, number> | null;
-}) {
+function CancellationOriginsSection({ origins }: { origins: Record<string, number> | null }) {
   const entries = useMemo(() => {
     if (origins === null) return [];
     return Object.entries(origins)
@@ -499,10 +478,7 @@ function DataTable({ headers, align, gridTemplate, rows }: DataTableProps) {
             <div
               key={header}
               role="columnheader"
-              className={cn(
-                "truncate",
-                align[i] === "right" ? "text-right" : "text-left",
-              )}
+              className={cn("truncate", align[i] === "right" ? "text-right" : "text-left")}
             >
               {header}
             </div>
@@ -537,12 +513,6 @@ function DataTable({ headers, align, gridTemplate, rows }: DataTableProps) {
   );
 }
 
-function Mono({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
+function Mono({ children, className }: { children: React.ReactNode; className?: string }) {
   return <span className={cn("font-mono text-text", className)}>{children}</span>;
 }

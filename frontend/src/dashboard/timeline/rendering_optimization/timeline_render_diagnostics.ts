@@ -17,12 +17,8 @@ import type { LayerManagerStats } from "@/dashboard/timeline/rendering_optimizat
 import type { OverlayStats } from "@/dashboard/timeline/rendering_optimization/timeline_overlay_scheduler";
 import type { ReplayCoordinatorStats } from "@/dashboard/timeline/rendering_optimization/timeline_replay_rendering";
 import type { ViewportCullingStats } from "@/dashboard/timeline/rendering_optimization/timeline_viewport_culling";
-import type {
-  RenderOptimizationMetricsSnapshot,
-} from "@/dashboard/timeline/rendering_optimization/timeline_render_observability";
-import type {
-  RenderOptimizationTraceEntry,
-} from "@/dashboard/timeline/rendering_optimization/timeline_render_tracing";
+import type { RenderOptimizationMetricsSnapshot } from "@/dashboard/timeline/rendering_optimization/timeline_render_observability";
+import type { RenderOptimizationTraceEntry } from "@/dashboard/timeline/rendering_optimization/timeline_render_tracing";
 import { getRenderOptimizationTrace } from "@/dashboard/timeline/rendering_optimization/timeline_render_tracing";
 
 export interface RenderOptimizationDiagnostics {

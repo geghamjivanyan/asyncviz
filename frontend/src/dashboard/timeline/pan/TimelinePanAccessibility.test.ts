@@ -31,9 +31,9 @@ describe("pan a11y helpers", () => {
   });
 
   it("formats sub-second times in ms", () => {
-    expect(
-      describePanState({ ...baseState, timeStartSeconds: 0, timeEndSeconds: 0.5 }),
-    ).toContain("ms");
+    expect(describePanState({ ...baseState, timeStartSeconds: 0, timeEndSeconds: 0.5 })).toContain(
+      "ms",
+    );
   });
 
   it("describes pan actions in human language", () => {

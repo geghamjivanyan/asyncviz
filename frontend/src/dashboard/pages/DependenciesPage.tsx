@@ -18,14 +18,7 @@
  * is well past the typical await-graph size.
  */
 
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/cn";
 import { Card } from "@/ui/primitives/Card";
 import { Badge } from "@/ui/primitives/Badge";
@@ -91,17 +84,12 @@ export function DependenciesPage(): JSX.Element {
   }, [filtered]);
 
   const selectedView = useMemo<AwaitNodeView | null>(
-    () =>
-      selectedNodeId === null
-        ? null
-        : nodes.find((n) => n.id === selectedNodeId) ?? null,
+    () => (selectedNodeId === null ? null : (nodes.find((n) => n.id === selectedNodeId) ?? null)),
     [nodes, selectedNodeId],
   );
   const selectedRecord = useMemo<AwaitNodeRecord | null>(
     () =>
-      selectedNodeId === null
-        ? null
-        : nodeRecords.find((r) => r.id === selectedNodeId) ?? null,
+      selectedNodeId === null ? null : (nodeRecords.find((r) => r.id === selectedNodeId) ?? null),
     [nodeRecords, selectedNodeId],
   );
   // For task nodes, ``node.id`` IS the task_id — look up the global
@@ -156,8 +144,7 @@ export function DependenciesPage(): JSX.Element {
         outgoing: [] as string[],
       };
     }
-    const parent =
-      selectedTaskSnapshot?.parent_task_id ?? selectedView.parentTaskId ?? null;
+    const parent = selectedTaskSnapshot?.parent_task_id ?? selectedView.parentTaskId ?? null;
     const incoming = topology.incoming.get(selectedView.id) ?? [];
     const outgoing = topology.outgoing.get(selectedView.id) ?? [];
     // Children: gather → its fanout edges; task → none in this graph.
@@ -413,8 +400,7 @@ function DependencyGraphView({
         const dx = t.panX - prev.panX;
         const dy = t.panY - prev.panY;
         const dz = t.zoom - prev.zoom;
-        const close =
-          Math.abs(dx) < 0.4 && Math.abs(dy) < 0.4 && Math.abs(dz) < 0.0008;
+        const close = Math.abs(dx) < 0.4 && Math.abs(dy) < 0.4 && Math.abs(dz) < 0.0008;
         if (close) {
           animFrameRef.current = null;
           return t;
@@ -549,8 +535,7 @@ function DependencyGraphView({
 
   const onPointerDown = (event: React.PointerEvent<SVGSVGElement>) => {
     if (event.button !== 0 && event.button !== 1) return;
-    const onNode =
-      (event.target as SVGElement).closest("[data-node-id]") !== null;
+    const onNode = (event.target as SVGElement).closest("[data-node-id]") !== null;
     // Track every down so we can distinguish a click on empty canvas
     // (→ clear selection on up) from a click + drag (→ pan only).
     downRef.current = {
@@ -632,9 +617,7 @@ function DependencyGraphView({
       <div ref={containerRef} className="relative flex-1 bg-canvas" data-graph-viewport="true">
         {layout.nodes.length === 0 ? (
           <div className="absolute inset-0 flex items-center justify-center px-6 text-center">
-            <p className="font-mono text-xs text-subtle">
-              No nodes match the current filters.
-            </p>
+            <p className="font-mono text-xs text-subtle">No nodes match the current filters.</p>
           </div>
         ) : (
           <svg
@@ -676,12 +659,8 @@ function DependencyGraphView({
                   edge={edge}
                   selectedNodeId={selectedNodeId}
                   hoveredId={hoveredId}
-                  highlighted={
-                    highlightedIds !== null && highlightedIds.edges.has(edge.id)
-                  }
-                  dim={
-                    highlightedIds !== null && !highlightedIds.edges.has(edge.id)
-                  }
+                  highlighted={highlightedIds !== null && highlightedIds.edges.has(edge.id)}
+                  dim={highlightedIds !== null && !highlightedIds.edges.has(edge.id)}
                 />
               ))}
               {layout.nodes.map((node) => (
@@ -691,9 +670,7 @@ function DependencyGraphView({
                   topology={topology}
                   selected={node.id === selectedNodeId}
                   selectionPulseKey={selectionPulseKey}
-                  highlighted={
-                    highlightedIds !== null && highlightedIds.nodes.has(node.id)
-                  }
+                  highlighted={highlightedIds !== null && highlightedIds.nodes.has(node.id)}
                   dim={highlightedIds !== null && !highlightedIds.nodes.has(node.id)}
                   showLabel={transform.zoom >= LABEL_HIDE_BELOW_ZOOM}
                   onHover={setHoveredId}
@@ -1023,18 +1000,14 @@ function EdgeShape({
   dim: boolean;
 }): JSX.Element {
   const intent = edgeIntent(edge);
-  const fillVar =
-    ARROW_INTENTS.find((a) => a.intent === intent)?.fill ?? ARROW_INTENTS[0].fill;
+  const fillVar = ARROW_INTENTS.find((a) => a.intent === intent)?.fill ?? ARROW_INTENTS[0].fill;
   const baseOpacity = edge.completed ? 0.45 : 0.85;
   const opacity = dim ? 0.08 : highlighted ? 1 : baseOpacity;
   const touches =
-    selectedNodeId !== null &&
-    (edge.fromId === selectedNodeId || edge.toId === selectedNodeId);
-  const hovered =
-    hoveredId !== null && (edge.fromId === hoveredId || edge.toId === hoveredId);
+    selectedNodeId !== null && (edge.fromId === selectedNodeId || edge.toId === selectedNodeId);
+  const hovered = hoveredId !== null && (edge.fromId === hoveredId || edge.toId === hoveredId);
   const strokeWidth = touches || hovered ? 2 : 1.25;
-  const dash =
-    edge.kind === "fanout" ? undefined : edge.completed ? "4 3" : undefined;
+  const dash = edge.kind === "fanout" ? undefined : edge.completed ? "4 3" : undefined;
   // Top-down layout: bend along the y-axis so edges read as smooth
   // vertical S-curves rather than horizontal zig-zags.
   const dy = (edge.toY - edge.fromY) / 2;
@@ -1201,10 +1174,7 @@ function DependencyInspector({
             value={`${Math.round(view.progressRatio * 100)}%`}
             intent={view.progressRatio >= 1 ? "default" : "accent"}
           />
-          <KV
-            label="Completed"
-            value={`${view.completedCount} / ${view.childCount}`}
-          />
+          <KV label="Completed" value={`${view.completedCount} / ${view.childCount}`} />
           <KV
             label="Cancelled"
             value={String(view.cancelledCount)}
@@ -1222,21 +1192,12 @@ function DependencyInspector({
         <TimeRow label="Created" wallSeconds={createdSeconds} nowSeconds={nowSeconds} />
         <TimeRow label="Started" wallSeconds={startedSeconds} nowSeconds={nowSeconds} />
         <TimeRow label="Completed" wallSeconds={completedSeconds} nowSeconds={nowSeconds} />
-        <KV
-          label="Duration"
-          value={duration !== null ? formatDurationFriendly(duration) : "—"}
-        />
+        <KV label="Duration" value={duration !== null ? formatDurationFriendly(duration) : "—"} />
         {record !== null && record.firstSeenNs > 0 && (
-          <KV
-            label="First observed"
-            value={formatDurationFriendly(record.firstSeenNs / 1e9)}
-          />
+          <KV label="First observed" value={formatDurationFriendly(record.firstSeenNs / 1e9)} />
         )}
         {record !== null && record.lastSeenNs > 0 && (
-          <KV
-            label="Last observed"
-            value={formatDurationFriendly(record.lastSeenNs / 1e9)}
-          />
+          <KV label="Last observed" value={formatDurationFriendly(record.lastSeenNs / 1e9)} />
         )}
       </Section2>
     </Card>
@@ -1297,7 +1258,8 @@ function RelatedRow({
         {visible.map((id) => {
           const node = nodesById.get(id);
           const display = node?.label ?? id;
-          const kindLabel = node?.kind === "gather" ? "gather" : node?.kind === "task" ? "task" : "?";
+          const kindLabel =
+            node?.kind === "gather" ? "gather" : node?.kind === "task" ? "task" : "?";
           return (
             <li key={id}>
               <button
@@ -1315,9 +1277,7 @@ function RelatedRow({
           );
         })}
         {!expanded && hasMore && (
-          <li className="font-mono text-[11px] text-subtle">
-            +{ids.length - PREVIEW} more
-          </li>
+          <li className="font-mono text-[11px] text-subtle">+{ids.length - PREVIEW} more</li>
         )}
       </ul>
     </div>
@@ -1395,39 +1355,21 @@ function Field({ label, value, mono }: { label: string; value: string; mono?: bo
   return (
     <div className="flex flex-col gap-0.5">
       <span className="font-mono text-[10px] uppercase tracking-widest text-muted">{label}</span>
-      <span className={cn("text-xs text-text", mono ? "break-all font-mono" : "")}>
-        {value}
-      </span>
+      <span className={cn("text-xs text-text", mono ? "break-all font-mono" : "")}>{value}</span>
     </div>
   );
 }
 
-function Section2({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
+function Section2({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="flex flex-col gap-1.5 border-t border-line/40 pt-2">
-      <span className="font-mono text-[10px] uppercase tracking-widest text-subtle">
-        {title}
-      </span>
+      <span className="font-mono text-[10px] uppercase tracking-widest text-subtle">{title}</span>
       <div className="flex flex-col gap-1">{children}</div>
     </section>
   );
 }
 
-function KV({
-  label,
-  value,
-  intent,
-}: {
-  label: string;
-  value: string;
-  intent?: Intent;
-}) {
+function KV({ label, value, intent }: { label: string; value: string; intent?: Intent }) {
   const valueColor =
     intent === "danger"
       ? "text-danger"
@@ -1609,10 +1551,7 @@ function buildStats(
       if (outDeg > maxFanout) maxFanout = outDeg;
     }
   }
-  const largestComponent = topology.componentSizes.reduce(
-    (a, b) => (b > a ? b : a),
-    0,
-  );
+  const largestComponent = topology.componentSizes.reduce((a, b) => (b > a ? b : a), 0);
   return {
     totalNodes: nodes.length,
     totalEdges: edges.length,
@@ -1649,11 +1588,7 @@ function applyFilters(
   }
   if (filters.hideTerminal) {
     for (const node of nodes) {
-      if (
-        node.state === "completed" ||
-        node.state === "cancelled" ||
-        node.state === "failed"
-      )
+      if (node.state === "completed" || node.state === "cancelled" || node.state === "failed")
         visible.delete(node.id);
     }
   }
@@ -1676,10 +1611,7 @@ function applyFilters(
   if (term.length > 0) {
     const matched = new Set<string>();
     for (const node of nodes) {
-      if (
-        node.label.toLowerCase().includes(term) ||
-        node.id.toLowerCase().includes(term)
-      ) {
+      if (node.label.toLowerCase().includes(term) || node.id.toLowerCase().includes(term)) {
         matched.add(node.id);
       }
     }
@@ -1694,9 +1626,7 @@ function applyFilters(
   }
 
   const filteredNodes = nodes.filter((n) => visible.has(n.id));
-  const filteredEdges = edges.filter(
-    (e) => visible.has(e.fromId) && visible.has(e.toId),
-  );
+  const filteredEdges = edges.filter((e) => visible.has(e.fromId) && visible.has(e.toId));
   return { nodes: filteredNodes, edges: filteredEdges };
 }
 
@@ -1811,10 +1741,7 @@ function layoutDependencyGraph(
     totalCellArea += w * h;
   }
   const minRowWidth = NODE_SPACING * 4;
-  const targetRowWidth = Math.max(
-    minRowWidth,
-    Math.sqrt(totalCellArea * TARGET_ASPECT),
-  );
+  const targetRowWidth = Math.max(minRowWidth, Math.sqrt(totalCellArea * TARGET_ASPECT));
 
   const positions = new Map<string, { x: number; y: number }>();
   const laidOut: LaidOutNode[] = [];
@@ -2035,10 +1962,7 @@ function layoutComponentBlock(
         const subCol = i % PER_ROW;
         // Each sub-row may be shorter than ``PER_ROW`` on its last
         // line — center the partial row inside the wrapped span.
-        const inRowCount =
-          subRow === span.subRows - 1
-            ? bucket.length - PER_ROW * subRow
-            : PER_ROW;
+        const inRowCount = subRow === span.subRows - 1 ? bucket.length - PER_ROW * subRow : PER_ROW;
         const inRowWidth = Math.max(0, inRowCount - 1) * NODE_SPACING;
         const offsetX = (widestWidth - inRowWidth) / 2;
         laidOut.push({

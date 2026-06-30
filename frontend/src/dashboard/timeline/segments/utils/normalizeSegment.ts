@@ -45,9 +45,7 @@ function inferLifecycle(segment: TimelineRenderSegment): TimelineSegmentLifecycl
   }
 }
 
-export function normalizeSegment(
-  segment: TimelineRenderSegment,
-): TimelineSegmentProjectionEntry {
+export function normalizeSegment(segment: TimelineRenderSegment): TimelineSegmentProjectionEntry {
   const lifecycleState = inferLifecycle(segment);
   const durationSeconds = Math.max(0, segment.endSeconds - segment.startSeconds);
   return {

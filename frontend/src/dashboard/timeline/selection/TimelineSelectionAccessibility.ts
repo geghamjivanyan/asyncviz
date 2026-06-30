@@ -2,9 +2,7 @@
  * Pure helpers that build screen-reader announcements for selection.
  */
 
-import type {
-  TimelineSelectionState,
-} from "@/dashboard/timeline/selection/models/TimelineSelectionModels";
+import type { TimelineSelectionState } from "@/dashboard/timeline/selection/models/TimelineSelectionModels";
 
 /** Pure: build a concise human-readable announcement for the
  *  current selection state. */
@@ -13,9 +11,7 @@ export function describeSelectionState(state: TimelineSelectionState): string {
     return state.rowCount === 0 ? "No tasks tracked." : "No row selected.";
   }
   const label =
-    state.selectedTask?.task_name ??
-    state.selectedTask?.coroutine_name ??
-    state.selectedTaskId;
+    state.selectedTask?.task_name ?? state.selectedTask?.coroutine_name ?? state.selectedTaskId;
   const position =
     state.selectedRowIndex >= 0
       ? `row ${state.selectedRowIndex + 1} of ${state.rowCount}`

@@ -56,13 +56,7 @@ export interface ConnectionMeta {
  *  duplicated here so the runtime store stays free of replay-package
  *  imports. */
 export type RuntimeReplayPlaybackState =
-  | "idle"
-  | "playing"
-  | "paused"
-  | "seeking"
-  | "buffering"
-  | "stopped"
-  | "failed";
+  "idle" | "playing" | "paused" | "seeking" | "buffering" | "stopped" | "failed";
 
 export interface RuntimeMeta {
   /** ``runtime_id`` from the most recent snapshot. */

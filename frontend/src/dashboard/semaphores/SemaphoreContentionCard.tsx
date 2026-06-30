@@ -58,18 +58,14 @@ function SemaphoreContentionCardImpl({
     >
       <div className="semaphore-contention-card__header">
         <span className="semaphore-contention-card__name">{view.displayName}</span>
-        <span className="semaphore-contention-card__severity">
-          {severityLabel(view.severity)}
-        </span>
+        <span className="semaphore-contention-card__severity">{severityLabel(view.severity)}</span>
       </div>
       <div className="semaphore-contention-card__row">
         <span className="semaphore-contention-card__metric">
           <span className="semaphore-contention-card__metric-label">permits</span>
           <span className="semaphore-contention-card__metric-value">
             {view.permitsInUse}
-            <span className="semaphore-contention-card__metric-divisor">
-              /{view.initialValue}
-            </span>
+            <span className="semaphore-contention-card__metric-divisor">/{view.initialValue}</span>
           </span>
         </span>
         <span className="semaphore-contention-card__metric">
@@ -93,15 +89,11 @@ function SemaphoreContentionCardImpl({
       <div className="semaphore-contention-card__row semaphore-contention-card__row--throughput">
         <span className="semaphore-contention-card__metric">
           <span className="semaphore-contention-card__metric-label">acq</span>
-          <span className="semaphore-contention-card__metric-value">
-            {view.acquireCount}
-          </span>
+          <span className="semaphore-contention-card__metric-value">{view.acquireCount}</span>
         </span>
         <span className="semaphore-contention-card__metric">
           <span className="semaphore-contention-card__metric-label">rel</span>
-          <span className="semaphore-contention-card__metric-value">
-            {view.releaseCount}
-          </span>
+          <span className="semaphore-contention-card__metric-value">{view.releaseCount}</span>
         </span>
         <span className="semaphore-contention-card__metric">
           <span className="semaphore-contention-card__metric-label">blocked</span>

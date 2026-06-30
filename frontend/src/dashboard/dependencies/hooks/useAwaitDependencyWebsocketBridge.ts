@@ -67,9 +67,7 @@ export function useAwaitDependencyWebsocketBridge(
   const applyEventPayload = useAwaitDependencyStore((s) => s.applyEventPayload);
   const factory = useMemo<AwaitDependencySubscribeFactory | undefined>(
     () =>
-      enabled
-        ? (subscribeOverride ?? makeAwaitDependencySubscribeFactory(client))
-        : undefined,
+      enabled ? (subscribeOverride ?? makeAwaitDependencySubscribeFactory(client)) : undefined,
     [enabled, subscribeOverride, client],
   );
 

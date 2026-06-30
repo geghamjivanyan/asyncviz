@@ -77,9 +77,9 @@ describe("mapKeyToIntent", () => {
     expect(mapKeyToIntent(keyEvent(" "), window, playback)).toEqual({
       type: "pause",
     });
-    expect(
-      mapKeyToIntent(keyEvent(" "), window, { ...playback, paused: true }),
-    ).toEqual({ type: "play" });
+    expect(mapKeyToIntent(keyEvent(" "), window, { ...playback, paused: true })).toEqual({
+      type: "play",
+    });
   });
 
   it("ArrowRight steps one event forward", () => {
@@ -98,23 +98,13 @@ describe("mapKeyToIntent", () => {
 
   it("Shift+ArrowRight jumps to the next marker", () => {
     expect(
-      mapKeyToIntent(
-        keyEvent("ArrowRight", { shiftKey: true }),
-        window,
-        playback,
-        { markers },
-      ),
+      mapKeyToIntent(keyEvent("ArrowRight", { shiftKey: true }), window, playback, { markers }),
     ).toEqual({ type: "seek-sequence", sequence: 70 });
   });
 
   it("Shift+ArrowLeft jumps to the previous marker", () => {
     expect(
-      mapKeyToIntent(
-        keyEvent("ArrowLeft", { shiftKey: true }),
-        window,
-        playback,
-        { markers },
-      ),
+      mapKeyToIntent(keyEvent("ArrowLeft", { shiftKey: true }), window, playback, { markers }),
     ).toEqual({ type: "seek-sequence", sequence: 30 });
   });
 
@@ -131,23 +121,13 @@ describe("mapKeyToIntent", () => {
 
   it("Ctrl+ArrowRight jumps to the next bookmark", () => {
     expect(
-      mapKeyToIntent(
-        keyEvent("ArrowRight", { ctrlKey: true }),
-        window,
-        playback,
-        { bookmarks },
-      ),
+      mapKeyToIntent(keyEvent("ArrowRight", { ctrlKey: true }), window, playback, { bookmarks }),
     ).toEqual({ type: "jump-to-bookmark", bookmarkId: "bm-80" });
   });
 
   it("Cmd+ArrowLeft jumps to the previous bookmark", () => {
     expect(
-      mapKeyToIntent(
-        keyEvent("ArrowLeft", { metaKey: true }),
-        window,
-        playback,
-        { bookmarks },
-      ),
+      mapKeyToIntent(keyEvent("ArrowLeft", { metaKey: true }), window, playback, { bookmarks }),
     ).toEqual({ type: "jump-to-bookmark", bookmarkId: "bm-20" });
   });
 

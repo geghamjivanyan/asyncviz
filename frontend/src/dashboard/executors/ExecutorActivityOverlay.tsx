@@ -94,9 +94,7 @@ function ExecutorActivityOverlayImpl({
           widthPx={layout.width}
           heightPx={heightPx}
           onActivate={
-            onActivate
-              ? () => onActivate(layout.marker.id, layout.marker.executorId)
-              : undefined
+            onActivate ? () => onActivate(layout.marker.id, layout.marker.executorId) : undefined
           }
         />
       ))}

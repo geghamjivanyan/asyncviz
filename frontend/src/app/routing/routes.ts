@@ -36,9 +36,21 @@ export const NAVIGABLE_ROUTES: readonly RouteDefinition[] = [
   { path: ROUTES.metrics, label: "Metrics", description: "Aggregate runtime metrics" },
   { path: ROUTES.warnings, label: "Warnings", description: "Active runtime warnings" },
   { path: ROUTES.queues, label: "Queues", description: "asyncio.Queue pressure + throughput" },
-  { path: ROUTES.semaphores, label: "Semaphores", description: "asyncio.Semaphore contention + permits" },
-  { path: ROUTES.dependencies, label: "Dependencies", description: "asyncio.gather await topology" },
-  { path: ROUTES.executors, label: "Executors", description: "run_in_executor activity + utilization" },
+  {
+    path: ROUTES.semaphores,
+    label: "Semaphores",
+    description: "asyncio.Semaphore contention + permits",
+  },
+  {
+    path: ROUTES.dependencies,
+    label: "Dependencies",
+    description: "asyncio.gather await topology",
+  },
+  {
+    path: ROUTES.executors,
+    label: "Executors",
+    description: "run_in_executor activity + utilization",
+  },
   { path: ROUTES.replay, label: "Replay", description: "Replay buffer + checkpoints" },
   { path: ROUTES.diagnostics, label: "Diagnostics", description: "Backend + frontend diagnostics" },
 ] as const;

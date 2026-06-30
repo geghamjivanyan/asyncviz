@@ -97,9 +97,7 @@ function SemaphoreContentionOverlayImpl({
           widthPx={layout.width}
           heightPx={heightPx}
           onActivate={
-            onActivate
-              ? () => onActivate(layout.marker.id, layout.marker.semaphoreId)
-              : undefined
+            onActivate ? () => onActivate(layout.marker.id, layout.marker.semaphoreId) : undefined
           }
         />
       ))}

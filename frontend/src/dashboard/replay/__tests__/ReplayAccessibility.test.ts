@@ -93,12 +93,14 @@ describe("announceSeekCompleted", () => {
     expect(announceSeekCompleted(100, window)).toContain("50%");
   });
   it("handles empty recordings", () => {
-    expect(announceSeekCompleted(0, {
-      minSequence: 0,
-      maxSequence: 0,
-      minMonotonicNs: 0,
-      maxMonotonicNs: 0,
-    })).toBe("Replay is empty.");
+    expect(
+      announceSeekCompleted(0, {
+        minSequence: 0,
+        maxSequence: 0,
+        minMonotonicNs: 0,
+        maxMonotonicNs: 0,
+      }),
+    ).toBe("Replay is empty.");
   });
 });
 

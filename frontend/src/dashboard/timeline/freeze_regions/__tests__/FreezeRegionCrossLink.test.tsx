@@ -36,12 +36,8 @@ describe("BlockingWarningsContainer ↔ FreezeRegionStore cross-link", () => {
         recent_groups: [],
       }),
     );
-    renderWithProviders(
-      <BlockingWarningsContainer disableHydration disableLiveUpdates />,
-    );
-    await user.click(
-      screen.getByTestId("blocking-warning-card-toggle-g-active"),
-    );
+    renderWithProviders(<BlockingWarningsContainer disableHydration disableLiveUpdates />);
+    await user.click(screen.getByTestId("blocking-warning-card-toggle-g-active"));
     expect(useFreezeRegionStore.getState().selectedGroupId).toBe("g-active");
     expect(useFreezeRegionStore.getState().revealedGroupId).toBe("g-active");
   });
@@ -54,9 +50,7 @@ describe("BlockingWarningsContainer ↔ FreezeRegionStore cross-link", () => {
         recent_groups: [],
       }),
     );
-    renderWithProviders(
-      <BlockingWarningsContainer disableHydration disableLiveUpdates />,
-    );
+    renderWithProviders(<BlockingWarningsContainer disableHydration disableLiveUpdates />);
     const toggle = screen.getByTestId("blocking-warning-card-toggle-g-active");
     await user.click(toggle);
     await user.click(toggle);

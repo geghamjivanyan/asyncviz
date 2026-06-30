@@ -11,9 +11,7 @@
  * and easy to localize later without touching the components.
  */
 
-import {
-  sequenceToFraction,
-} from "@/dashboard/replay/ReplayTimelineGeometry";
+import { sequenceToFraction } from "@/dashboard/replay/ReplayTimelineGeometry";
 import type {
   ReplayBookmark,
   ReplayPlaybackSnapshot,
@@ -42,8 +40,7 @@ export function describeMarkerForAccessibility(
   window: ReplaySessionWindow,
 ): string {
   const fraction = Math.round(sequenceToFraction(marker.sequence, window) * 100);
-  const severity =
-    marker.severity.charAt(0).toUpperCase() + marker.severity.slice(1);
+  const severity = marker.severity.charAt(0).toUpperCase() + marker.severity.slice(1);
   const base = `${severity} ${marker.kind} marker at frame ${marker.sequence} (${fraction}% through recording).`;
   return marker.description ? `${base} ${marker.description}` : base;
 }
@@ -53,9 +50,7 @@ export function describeBookmarkForAccessibility(
   bookmark: ReplayBookmark,
   window: ReplaySessionWindow,
 ): string {
-  const fraction = Math.round(
-    sequenceToFraction(bookmark.sequence, window) * 100,
-  );
+  const fraction = Math.round(sequenceToFraction(bookmark.sequence, window) * 100);
   const base = `Bookmark "${bookmark.label}" at frame ${bookmark.sequence} (${fraction}% through recording).`;
   return bookmark.note ? `${base} ${bookmark.note}` : base;
 }
@@ -71,10 +66,7 @@ export const REPLAY_KEYBOARD_HELP =
 /** Announce a scrub-end / seek-completed event via an aria-live
  *  region. The result is a short sentence; the live region pushes
  *  it to screen readers automatically. */
-export function announceSeekCompleted(
-  sequence: number,
-  window: ReplaySessionWindow,
-): string {
+export function announceSeekCompleted(sequence: number, window: ReplaySessionWindow): string {
   if (window.maxSequence === 0) return "Replay is empty.";
   const fraction = Math.round(sequenceToFraction(sequence, window) * 100);
   return `Replay positioned at frame ${sequence}, ${fraction}% through recording.`;

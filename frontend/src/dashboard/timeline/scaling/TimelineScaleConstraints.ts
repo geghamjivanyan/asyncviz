@@ -37,10 +37,7 @@ export function isAtConstraintEdge(
 }
 
 /** Pure: clamp a candidate duration into the constraint envelope. */
-export function clampDuration(
-  durationSeconds: number,
-  constraints: ScaleConstraints,
-): number {
+export function clampDuration(durationSeconds: number, constraints: ScaleConstraints): number {
   if (!Number.isFinite(durationSeconds) || durationSeconds <= 0) {
     return constraints.minDurationSeconds;
   }

@@ -29,11 +29,15 @@ describe("BlockingWarningAccessibility", () => {
 
   it("describes counts with proper pluralization", () => {
     expect(describeCountsAnnouncement(1, 0, false)).toMatch(/1 active blocking warning,/);
-    expect(describeCountsAnnouncement(3, 2, true)).toMatch(/3 active blocking warnings, 2 recent, filtered view/);
+    expect(describeCountsAnnouncement(3, 2, true)).toMatch(
+      /3 active blocking warnings, 2 recent, filtered view/,
+    );
   });
 
   it("transition announcement embeds state + severity + window", () => {
     const view = projectGroup(makeGroup({ state: "active", severity: "FREEZE" }));
-    expect(describeTransitionAnnouncement(view)).toMatch(/Blocking active \(freeze\) on window win-1/);
+    expect(describeTransitionAnnouncement(view)).toMatch(
+      /Blocking active \(freeze\) on window win-1/,
+    );
   });
 });

@@ -21,8 +21,7 @@ class ResizeObserverStub {
 }
 
 if (typeof (globalThis as { ResizeObserver?: unknown }).ResizeObserver === "undefined") {
-  (globalThis as unknown as { ResizeObserver: unknown }).ResizeObserver =
-    ResizeObserverStub;
+  (globalThis as unknown as { ResizeObserver: unknown }).ResizeObserver = ResizeObserverStub;
 }
 
 afterEach(() => {

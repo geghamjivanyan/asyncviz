@@ -13,7 +13,10 @@
 import { useEffect, useMemo } from "react";
 import type { TimelineRenderer } from "@/dashboard/timeline/rendering/TimelineRenderer";
 import type { RuntimeWebSocketClient } from "@/runtime/websocket";
-import { TimelineLiveEngine, type TimelineLiveEngineOptions } from "@/dashboard/timeline/live/TimelineLiveEngine";
+import {
+  TimelineLiveEngine,
+  type TimelineLiveEngineOptions,
+} from "@/dashboard/timeline/live/TimelineLiveEngine";
 import { bindLiveEngineToClient } from "@/dashboard/timeline/live/TimelineUpdateCoordinator";
 import { useActiveSegmentCount } from "@/dashboard/timeline/live/selectors/storeLiveSelectors";
 

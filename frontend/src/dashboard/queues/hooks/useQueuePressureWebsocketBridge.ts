@@ -44,9 +44,7 @@ const QUEUE_METRICS_TYPE_SET: ReadonlySet<string> = new Set(QUEUE_METRICS_EVENT_
 export function queueMetricsPayloadFromEnvelope(
   envelope: RuntimeEnvelope,
 ): QueueMetricsEventPayload | null {
-  const payload = envelope.payload as
-    | { event_type?: string }
-    | undefined;
+  const payload = envelope.payload as { event_type?: string } | undefined;
   if (payload === undefined) return null;
   const eventType = payload.event_type;
   if (typeof eventType !== "string") return null;
@@ -88,10 +86,7 @@ export function useQueuePressureWebsocketBridge(
   const client = useWebSocketClient();
   const applyEventPayload = useQueuePressureStore((s) => s.applyEventPayload);
   const factory = useMemo<QueuePressureSubscribeFactory | undefined>(
-    () =>
-      enabled
-        ? (subscribeOverride ?? makeQueuePressureSubscribeFactory(client))
-        : undefined,
+    () => (enabled ? (subscribeOverride ?? makeQueuePressureSubscribeFactory(client)) : undefined),
     [enabled, subscribeOverride, client],
   );
 

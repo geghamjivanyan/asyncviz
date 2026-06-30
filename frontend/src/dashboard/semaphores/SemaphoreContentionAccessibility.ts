@@ -10,10 +10,7 @@ import type {
   SemaphoreContentionSeverity,
   SemaphoreContentionView,
 } from "@/dashboard/semaphores/models/SemaphoreContentionModels";
-import {
-  markerLabel,
-  severityLabel,
-} from "@/dashboard/semaphores/SemaphoreContentionSeverity";
+import { markerLabel, severityLabel } from "@/dashboard/semaphores/SemaphoreContentionSeverity";
 
 /** One-line summary suitable for a card's ``aria-label``. */
 export function describeSemaphoreForAccessibility(view: SemaphoreContentionView): string {
@@ -23,9 +20,7 @@ export function describeSemaphoreForAccessibility(view: SemaphoreContentionView)
     `${view.permitsInUse}/${view.initialValue} permits in use`,
   ];
   if (view.waiterCount > 0) {
-    pieces.push(
-      `${view.waiterCount} waiter${view.waiterCount === 1 ? "" : "s"}`,
-    );
+    pieces.push(`${view.waiterCount} waiter${view.waiterCount === 1 ? "" : "s"}`);
   }
   if (view.saturated) {
     pieces.push("saturated");
@@ -53,9 +48,7 @@ export function describeSemaphoreCountsAnnouncement(
   return `${views.length} semaphores — ${tally.join(", ")}.`;
 }
 
-export function describeSemaphoreFocusAnnouncement(
-  view: SemaphoreContentionView,
-): string {
+export function describeSemaphoreFocusAnnouncement(view: SemaphoreContentionView): string {
   return `Focused semaphore ${view.displayName}, ${severityLabel(view.severity)} contention.`;
 }
 

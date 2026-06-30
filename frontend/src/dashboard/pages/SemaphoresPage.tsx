@@ -77,11 +77,7 @@ export function SemaphoresPage(): JSX.Element {
               label="Contended"
               value={String(summary.contended)}
               intent={
-                summary.critical > 0
-                  ? "danger"
-                  : summary.contended > 0
-                    ? "warning"
-                    : "default"
+                summary.critical > 0 ? "danger" : summary.contended > 0 ? "warning" : "default"
               }
             />
             <SummaryCell
@@ -223,19 +219,12 @@ function SemaphoreCard({ view, selected, onSelect }: SemaphoreCardProps): JSX.El
   const intent = STATUS_INTENT[status];
   const fullyUtilized = view.utilizationRatio >= 1 || status === "saturated";
   const peakWaitIntent: Intent | undefined =
-    view.maxWaitSeconds >= 1
-      ? "danger"
-      : view.maxWaitSeconds >= 0.25
-        ? "warning"
-        : undefined;
+    view.maxWaitSeconds >= 1 ? "danger" : view.maxWaitSeconds >= 0.25 ? "warning" : undefined;
   return (
     <Card
       padding="sm"
       intent={intent}
-      className={cn(
-        "flex flex-col gap-4 transition-colors",
-        selected ? "ring-1 ring-accent" : "",
-      )}
+      className={cn("flex flex-col gap-4 transition-colors", selected ? "ring-1 ring-accent" : "")}
       data-semaphore-id={view.semaphoreId}
       data-severity={view.severity}
       data-status={status}
@@ -264,10 +253,7 @@ function SemaphoreCard({ view, selected, onSelect }: SemaphoreCardProps): JSX.El
           <span className="text-[10px] uppercase tracking-widest text-muted">Utilization</span>
           <span className="flex items-baseline gap-3">
             <span
-              className={cn(
-                "text-sm tabular-nums",
-                fullyUtilized ? "text-warning" : "text-text",
-              )}
+              className={cn("text-sm tabular-nums", fullyUtilized ? "text-warning" : "text-text")}
             >
               {formatPercent(view.utilizationRatio)}
             </span>
@@ -334,18 +320,10 @@ function SemaphoreCard({ view, selected, onSelect }: SemaphoreCardProps): JSX.El
   );
 }
 
-function MetricGroup({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
+function MetricGroup({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <section className="flex flex-col gap-1.5 border-t border-line/40 pt-2">
-      <span className="font-mono text-[10px] uppercase tracking-widest text-subtle">
-        {label}
-      </span>
+      <span className="font-mono text-[10px] uppercase tracking-widest text-subtle">{label}</span>
       <dl className="grid grid-cols-2 gap-x-4 gap-y-1.5 font-mono text-xs">{children}</dl>
     </section>
   );
@@ -392,15 +370,7 @@ function UtilizationBar({
   );
 }
 
-function Metric({
-  label,
-  value,
-  intent,
-}: {
-  label: string;
-  value: string;
-  intent?: Intent;
-}) {
+function Metric({ label, value, intent }: { label: string; value: string; intent?: Intent }) {
   const valueColor =
     intent === "danger"
       ? "text-danger"

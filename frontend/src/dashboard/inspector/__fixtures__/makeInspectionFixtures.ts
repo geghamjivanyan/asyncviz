@@ -9,10 +9,7 @@ import type {
   TimelineSegment,
 } from "@/types/runtime";
 
-export function makeTask(
-  taskId: string,
-  overrides: Partial<TaskSnapshot> = {},
-): TaskSnapshot {
+export function makeTask(taskId: string, overrides: Partial<TaskSnapshot> = {}): TaskSnapshot {
   return {
     task_id: taskId,
     state: "running",

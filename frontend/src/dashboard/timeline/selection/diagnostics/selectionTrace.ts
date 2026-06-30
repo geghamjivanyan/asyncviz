@@ -5,13 +5,7 @@
 const CAPACITY = 256;
 
 export type SelectionTraceKind =
-  | "select"
-  | "clear"
-  | "navigate"
-  | "center"
-  | "reveal"
-  | "restore"
-  | "noop";
+  "select" | "clear" | "navigate" | "center" | "reveal" | "restore" | "noop";
 
 export interface SelectionTraceEntry {
   kind: SelectionTraceKind;

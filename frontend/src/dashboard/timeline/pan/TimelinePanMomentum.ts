@@ -8,9 +8,7 @@
  * stable buffer to consume the moment it ships.
  */
 
-import type {
-  PanVelocitySample,
-} from "@/dashboard/timeline/pan/models/TimelinePanModels";
+import type { PanVelocitySample } from "@/dashboard/timeline/pan/models/TimelinePanModels";
 
 const DEFAULT_WINDOW_MS = 120;
 const DEFAULT_CAPACITY = 16;

@@ -44,10 +44,7 @@ function SemaphoreContentionPanelImpl({
     [views, visibleCap],
   );
   const overflow = views.length - visibleViews.length;
-  const announcement = useMemo(
-    () => describeSemaphoreCountsAnnouncement(views),
-    [views],
-  );
+  const announcement = useMemo(() => describeSemaphoreCountsAnnouncement(views), [views]);
   const renderedRef = useRef(0);
 
   useEffect(() => {
@@ -67,10 +64,7 @@ function SemaphoreContentionPanelImpl({
       aria-labelledby="semaphore-contention-panel-heading"
     >
       <header className="semaphore-contention-panel__header">
-        <h2
-          id="semaphore-contention-panel-heading"
-          className="semaphore-contention-panel__title"
-        >
+        <h2 id="semaphore-contention-panel-heading" className="semaphore-contention-panel__title">
           Semaphore contention
         </h2>
         <span
@@ -84,19 +78,12 @@ function SemaphoreContentionPanelImpl({
           {views.length} semaphore{views.length === 1 ? "" : "s"}
         </span>
         {status.status === "loading" && (
-          <span
-            className="semaphore-contention-panel__status"
-            data-status="loading"
-          >
+          <span className="semaphore-contention-panel__status" data-status="loading">
             loading…
           </span>
         )}
         {status.status === "error" && (
-          <span
-            className="semaphore-contention-panel__status"
-            data-status="error"
-            role="alert"
-          >
+          <span className="semaphore-contention-panel__status" data-status="error" role="alert">
             {status.errorMessage ?? "failed to load semaphore metrics"}
           </span>
         )}
@@ -111,21 +98,14 @@ function SemaphoreContentionPanelImpl({
       </div>
 
       {views.length === 0 ? (
-        <p
-          className="semaphore-contention-panel__empty"
-          data-testid="semaphore-contention-empty"
-        >
-          No semaphores tracked yet. Semaphore activity will appear here as
-          soon as the runtime instruments any{" "}
-          <code>asyncio.Semaphore</code>.
+        <p className="semaphore-contention-panel__empty" data-testid="semaphore-contention-empty">
+          No semaphores tracked yet. Semaphore activity will appear here as soon as the runtime
+          instruments any <code>asyncio.Semaphore</code>.
         </p>
       ) : (
         <ul className="semaphore-contention-panel__list" role="list">
           {visibleViews.map((view) => (
-            <li
-              className="semaphore-contention-panel__item"
-              key={view.semaphoreId}
-            >
+            <li className="semaphore-contention-panel__item" key={view.semaphoreId}>
               <SemaphoreContentionCard
                 view={view}
                 selected={view.semaphoreId === selectedSemaphoreId}
@@ -138,8 +118,7 @@ function SemaphoreContentionPanelImpl({
               className="semaphore-contention-panel__item semaphore-contention-panel__overflow"
               data-testid="semaphore-contention-panel-overflow"
             >
-              +{overflow} more semaphore{overflow === 1 ? "" : "s"} (raise
-              visible cap to inspect)
+              +{overflow} more semaphore{overflow === 1 ? "" : "s"} (raise visible cap to inspect)
             </li>
           )}
         </ul>

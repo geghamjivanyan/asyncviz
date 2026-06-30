@@ -11,9 +11,7 @@
  * onscreen); this is a render-budget cap (render at most N onscreen).
  */
 
-import type {
-  FreezeRegionView,
-} from "@/dashboard/timeline/freeze_regions/models/FreezeRegionModels";
+import type { FreezeRegionView } from "@/dashboard/timeline/freeze_regions/models/FreezeRegionModels";
 
 export const DEFAULT_VISIBLE_FREEZE_CAP = 128;
 

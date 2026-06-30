@@ -51,20 +51,20 @@ describe("getApiBaseUrl", () => {
   });
 
   it("respects VITE_API_BASE_URL overrides", () => {
-    expect(
-      getApiBaseUrl({ ...DEV_ENV, VITE_API_BASE_URL: "https://api.dev.example:9000" }),
-    ).toBe("https://api.dev.example:9000");
+    expect(getApiBaseUrl({ ...DEV_ENV, VITE_API_BASE_URL: "https://api.dev.example:9000" })).toBe(
+      "https://api.dev.example:9000",
+    );
     // Overrides also apply in prod builds (e.g. a static SPA hosted
     // on a CDN talking to an API on a different origin).
-    expect(
-      getApiBaseUrl({ ...PROD_ENV, VITE_API_BASE_URL: "https://api.example.com" }),
-    ).toBe("https://api.example.com");
+    expect(getApiBaseUrl({ ...PROD_ENV, VITE_API_BASE_URL: "https://api.example.com" })).toBe(
+      "https://api.example.com",
+    );
   });
 
   it("falls back to the legacy VITE_RUNTIME_API_URL alias", () => {
-    expect(
-      getApiBaseUrl({ ...DEV_ENV, VITE_RUNTIME_API_URL: "http://legacy.example:8000" }),
-    ).toBe("http://legacy.example:8000");
+    expect(getApiBaseUrl({ ...DEV_ENV, VITE_RUNTIME_API_URL: "http://legacy.example:8000" })).toBe(
+      "http://legacy.example:8000",
+    );
   });
 
   it("prefers VITE_API_BASE_URL when both names are set", () => {
@@ -78,21 +78,17 @@ describe("getApiBaseUrl", () => {
   });
 
   it("strips trailing slashes so consumers can use simple template literals", () => {
-    expect(
-      getApiBaseUrl({ ...DEV_ENV, VITE_API_BASE_URL: "http://localhost:8000/" }),
-    ).toBe("http://localhost:8000");
-    expect(
-      getApiBaseUrl({ ...DEV_ENV, VITE_API_BASE_URL: "http://localhost:8000///" }),
-    ).toBe("http://localhost:8000");
+    expect(getApiBaseUrl({ ...DEV_ENV, VITE_API_BASE_URL: "http://localhost:8000/" })).toBe(
+      "http://localhost:8000",
+    );
+    expect(getApiBaseUrl({ ...DEV_ENV, VITE_API_BASE_URL: "http://localhost:8000///" })).toBe(
+      "http://localhost:8000",
+    );
   });
 
   it("treats empty / whitespace overrides as unset", () => {
-    expect(getApiBaseUrl({ ...DEV_ENV, VITE_API_BASE_URL: "" })).toBe(
-      DEV_DEFAULT_API_BASE_URL,
-    );
-    expect(getApiBaseUrl({ ...DEV_ENV, VITE_API_BASE_URL: "   " })).toBe(
-      DEV_DEFAULT_API_BASE_URL,
-    );
+    expect(getApiBaseUrl({ ...DEV_ENV, VITE_API_BASE_URL: "" })).toBe(DEV_DEFAULT_API_BASE_URL);
+    expect(getApiBaseUrl({ ...DEV_ENV, VITE_API_BASE_URL: "   " })).toBe(DEV_DEFAULT_API_BASE_URL);
   });
 
   it("falls back to embedded same-origin when there is no env at all", () => {
@@ -107,21 +103,17 @@ describe("getWebSocketUrl", () => {
   });
 
   it("derives same-origin ws:// in embedded production over http", () => {
-    expect(getWebSocketUrl(PROD_ENV, SAME_ORIGIN_HTTP)).toBe(
-      "ws://asyncviz.example:8000/ws",
-    );
+    expect(getWebSocketUrl(PROD_ENV, SAME_ORIGIN_HTTP)).toBe("ws://asyncviz.example:8000/ws");
   });
 
   it("derives same-origin wss:// in embedded production over https", () => {
-    expect(getWebSocketUrl(PROD_ENV, SAME_ORIGIN_HTTPS)).toBe(
-      "wss://asyncviz.example/ws",
-    );
+    expect(getWebSocketUrl(PROD_ENV, SAME_ORIGIN_HTTPS)).toBe("wss://asyncviz.example/ws");
   });
 
   it("respects VITE_WS_BASE_URL overrides", () => {
-    expect(
-      getWebSocketUrl({ ...DEV_ENV, VITE_WS_BASE_URL: "ws://other.host:9000/ws" }, null),
-    ).toBe("ws://other.host:9000/ws");
+    expect(getWebSocketUrl({ ...DEV_ENV, VITE_WS_BASE_URL: "ws://other.host:9000/ws" }, null)).toBe(
+      "ws://other.host:9000/ws",
+    );
   });
 
   it("upgrades http(s) override schemes to ws(s)", () => {
@@ -158,10 +150,7 @@ describe("getWebSocketUrl", () => {
 
   it("falls back to the legacy VITE_RUNTIME_WS_URL alias", () => {
     expect(
-      getWebSocketUrl(
-        { ...DEV_ENV, VITE_RUNTIME_WS_URL: "ws://legacy.example/ws" },
-        undefined,
-      ),
+      getWebSocketUrl({ ...DEV_ENV, VITE_RUNTIME_WS_URL: "ws://legacy.example/ws" }, undefined),
     ).toBe("ws://legacy.example/ws");
   });
 

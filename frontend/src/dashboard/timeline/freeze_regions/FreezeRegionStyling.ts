@@ -7,9 +7,7 @@
  * a canvas mock.
  */
 
-import type {
-  FreezeRegionView,
-} from "@/dashboard/timeline/freeze_regions/models/FreezeRegionModels";
+import type { FreezeRegionView } from "@/dashboard/timeline/freeze_regions/models/FreezeRegionModels";
 import {
   freezeBodyFill,
   type FreezeRegionPalette,

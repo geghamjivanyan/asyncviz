@@ -73,9 +73,9 @@ describe("makeSemaphoreContentionSubscribeFactory", () => {
   });
 
   it("integrates end-to-end with the store via apply", () => {
-    useSemaphoreContentionStore.getState().hydrateSnapshot(
-      makeHydration({ semaphores: [makeIdentity({ semaphore_id: "s-1" })] }),
-    );
+    useSemaphoreContentionStore
+      .getState()
+      .hydrateSnapshot(makeHydration({ semaphores: [makeIdentity({ semaphore_id: "s-1" })] }));
     const listeners: Array<(envelope: RuntimeEnvelope) => void> = [];
     const source = {
       subscribe(_filter: "runtime_event", listener: (envelope: RuntimeEnvelope) => void) {

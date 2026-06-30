@@ -8,12 +8,8 @@
  */
 
 import type { JSX } from "react";
-import {
-  sequenceToPixel,
-} from "@/dashboard/replay/ReplayTimelineGeometry";
-import {
-  useReplayViewport,
-} from "@/dashboard/replay/ReplayTimelineSelectors";
+import { sequenceToPixel } from "@/dashboard/replay/ReplayTimelineGeometry";
+import { useReplayViewport } from "@/dashboard/replay/ReplayTimelineSelectors";
 
 export interface ReplayTimelineSelectionProps {
   readonly startSequence: number | null;
@@ -42,10 +38,7 @@ export function ReplayTimelineSelection({
   return (
     <div
       aria-hidden
-      className={
-        "pointer-events-none absolute top-0 rounded bg-accent/15 " +
-        (className ?? "")
-      }
+      className={"pointer-events-none absolute top-0 rounded bg-accent/15 " + (className ?? "")}
       style={{
         left,
         width: Math.max(2, right - left),

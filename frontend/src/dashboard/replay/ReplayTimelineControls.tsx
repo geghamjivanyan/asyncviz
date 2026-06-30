@@ -15,26 +15,15 @@ import { ReplayTimelineMarkers } from "@/dashboard/replay/ReplayTimelineMarkers"
 import { ReplayTimelineMiniMap } from "@/dashboard/replay/ReplayTimelineMiniMap";
 import { ReplayTimelinePlayback } from "@/dashboard/replay/ReplayTimelinePlayback";
 import { ReplayTimelineScrubber } from "@/dashboard/replay/ReplayTimelineScrubber";
-import {
-  REPLAY_KEYBOARD_HELP,
-} from "@/dashboard/replay/ReplayTimelineAccessibility";
+import { REPLAY_KEYBOARD_HELP } from "@/dashboard/replay/ReplayTimelineAccessibility";
 import { useReplayEngineBridge } from "@/dashboard/replay/hooks/useReplayEngineBridge";
 import { useReplayKeyboard } from "@/dashboard/replay/hooks/useReplayKeyboard";
-import {
-  useReplayPlayback,
-  useReplayWindow,
-} from "@/dashboard/replay/ReplayTimelineSelectors";
+import { useReplayPlayback, useReplayWindow } from "@/dashboard/replay/ReplayTimelineSelectors";
 import { useReplayTimelineStore } from "@/dashboard/replay/ReplayTimelineStore";
-import {
-  recordSeekRequested,
-} from "@/dashboard/replay/diagnostics/ReplayTimelineMetrics";
-import {
-  recordReplayTimelineTrace,
-} from "@/dashboard/replay/diagnostics/ReplayTimelineTracing";
+import { recordSeekRequested } from "@/dashboard/replay/diagnostics/ReplayTimelineMetrics";
+import { recordReplayTimelineTrace } from "@/dashboard/replay/diagnostics/ReplayTimelineTracing";
 import type { ReplayEngineBridge } from "@/dashboard/replay/hooks/ReplayEngineBridge";
-import type {
-  ReplayControlIntent,
-} from "@/dashboard/replay/models/ReplayTimelineModels";
+import type { ReplayControlIntent } from "@/dashboard/replay/models/ReplayTimelineModels";
 
 export interface ReplayTimelineControlsProps {
   readonly bridge: ReplayEngineBridge;
@@ -50,9 +39,7 @@ export function ReplayTimelineControls({
   useReplayEngineBridge({ bridge });
   const window = useReplayWindow();
   const playback = useReplayPlayback();
-  const recordSeekStoreCounter = useReplayTimelineStore(
-    (s) => s.recordSeekRequested,
-  );
+  const recordSeekStoreCounter = useReplayTimelineStore((s) => s.recordSeekRequested);
   const addBookmark = useReplayTimelineStore((s) => s.addBookmark);
 
   const dispatch = useCallback(

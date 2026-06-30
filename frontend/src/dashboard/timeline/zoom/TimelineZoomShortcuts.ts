@@ -10,11 +10,7 @@
  * the future settings UI without duplication.
  */
 
-export type ZoomShortcutAction =
-  | "zoom-in"
-  | "zoom-out"
-  | "zoom-reset"
-  | "fit-all";
+export type ZoomShortcutAction = "zoom-in" | "zoom-out" | "zoom-reset" | "fit-all";
 
 export interface ZoomShortcutBinding {
   action: ZoomShortcutAction;

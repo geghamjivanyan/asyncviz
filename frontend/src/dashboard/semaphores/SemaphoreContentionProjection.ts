@@ -64,8 +64,7 @@ export function projectRecord(
     waiterCount: record.waiterCount,
   });
   const utilization = utilizationOf(record.currentValue, record.initialValue);
-  const permitsInUse =
-    record.initialValue - (record.currentValue ?? record.initialValue);
+  const permitsInUse = record.initialValue - (record.currentValue ?? record.initialValue);
   return {
     semaphoreId: record.semaphoreId,
     semaphoreKind: record.semaphoreKind,

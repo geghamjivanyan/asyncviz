@@ -15,19 +15,13 @@ import type {
 export function useAwaitDependencyNodeRecords(): ReadonlyArray<AwaitNodeRecord> {
   const nodesById = useAwaitDependencyStore((s) => s.nodesById);
   const nodeIds = useAwaitDependencyStore((s) => s.nodeIds);
-  return useMemo(
-    () => nodeIds.map((id) => nodesById[id]).filter(Boolean),
-    [nodesById, nodeIds],
-  );
+  return useMemo(() => nodeIds.map((id) => nodesById[id]).filter(Boolean), [nodesById, nodeIds]);
 }
 
 export function useAwaitDependencyEdgeRecords(): ReadonlyArray<AwaitEdgeRecord> {
   const edgesById = useAwaitDependencyStore((s) => s.edgesById);
   const edgeIds = useAwaitDependencyStore((s) => s.edgeIds);
-  return useMemo(
-    () => edgeIds.map((id) => edgesById[id]).filter(Boolean),
-    [edgesById, edgeIds],
-  );
+  return useMemo(() => edgeIds.map((id) => edgesById[id]).filter(Boolean), [edgesById, edgeIds]);
 }
 
 export function useAwaitDependencyViews(): {

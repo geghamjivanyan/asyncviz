@@ -6,10 +6,7 @@
  * visible window, after pan + zoom.
  */
 
-import type {
-  LaidEdge,
-  LaidNode,
-} from "@/dashboard/dependencies/layout/AwaitDependencyLayout";
+import type { LaidEdge, LaidNode } from "@/dashboard/dependencies/layout/AwaitDependencyLayout";
 
 export interface Viewport {
   /** Top-left x in layout coords. */
@@ -20,30 +17,26 @@ export interface Viewport {
   height: number;
 }
 
-export function intersectsViewport(
-  node: LaidNode, viewport: Viewport,
-): boolean {
+export function intersectsViewport(node: LaidNode, viewport: Viewport): boolean {
   return !(
-    node.x + node.width < viewport.x
-    || node.x > viewport.x + viewport.width
-    || node.y + node.height < viewport.y
-    || node.y > viewport.y + viewport.height
+    node.x + node.width < viewport.x ||
+    node.x > viewport.x + viewport.width ||
+    node.y + node.height < viewport.y ||
+    node.y > viewport.y + viewport.height
   );
 }
 
-export function edgeIntersectsViewport(
-  edge: LaidEdge, viewport: Viewport,
-): boolean {
+export function edgeIntersectsViewport(edge: LaidEdge, viewport: Viewport): boolean {
   // Approximate AABB of the edge's segment.
   const minX = Math.min(edge.fromX, edge.toX);
   const maxX = Math.max(edge.fromX, edge.toX);
   const minY = Math.min(edge.fromY, edge.toY);
   const maxY = Math.max(edge.fromY, edge.toY);
   return !(
-    maxX < viewport.x
-    || minX > viewport.x + viewport.width
-    || maxY < viewport.y
-    || minY > viewport.y + viewport.height
+    maxX < viewport.x ||
+    minX > viewport.x + viewport.width ||
+    maxY < viewport.y ||
+    minY > viewport.y + viewport.height
   );
 }
 

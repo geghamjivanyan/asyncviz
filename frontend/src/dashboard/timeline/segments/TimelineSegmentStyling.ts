@@ -79,9 +79,7 @@ export function resolveSegmentStyle(args: SegmentStyleArgs): SegmentStyle {
     strokeWidth: entry.isActive ? 1.5 : 0,
     texture,
     textureColor: segmentHatchStroke(palette),
-    warningStroke: entry.warningSeverity
-      ? severityStroke(palette, entry.warningSeverity)
-      : null,
+    warningStroke: entry.warningSeverity ? severityStroke(palette, entry.warningSeverity) : null,
     cancelledStrike: lifecycle === "cancelled",
     failedBorder: lifecycle === "failed",
     selection: selected

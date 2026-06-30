@@ -6,10 +6,7 @@
  * row layer dependency-tolerant.
  */
 
-import type {
-  TimelineRow,
-  TimelineRowState,
-} from "@/dashboard/timeline/rendering/TimelineLayer";
+import type { TimelineRow, TimelineRowState } from "@/dashboard/timeline/rendering/TimelineLayer";
 import type { TimelineRowProjectionEntry } from "@/dashboard/timeline/rows/models/TimelineRowModels";
 
 const KNOWN_STATES = new Set<TimelineRowState>([
@@ -23,8 +20,7 @@ const KNOWN_STATES = new Set<TimelineRowState>([
 ]);
 
 export function normalizeRow(row: TimelineRow): TimelineRowProjectionEntry {
-  const state =
-    row.state !== undefined && KNOWN_STATES.has(row.state) ? row.state : "unknown";
+  const state = row.state !== undefined && KNOWN_STATES.has(row.state) ? row.state : "unknown";
   return {
     rowIndex: row.rowIndex,
     rowId: row.taskId,

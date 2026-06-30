@@ -126,9 +126,7 @@ function lifecycleForSegment(
   return "unknown";
 }
 
-function lifecycleForActive(
-  segment: ActiveTimelineSegment,
-): TimelineSegmentLifecycleState {
+function lifecycleForActive(segment: ActiveTimelineSegment): TimelineSegmentLifecycleState {
   return segment.segment_type === "wait" ? "waiting" : "running";
 }
 

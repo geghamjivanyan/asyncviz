@@ -31,12 +31,7 @@ describe("TimelineSelectionToolbar", () => {
 
   it("renders prev / next / center / clear buttons", () => {
     const controller = buildController({ initial: "t1" });
-    render(
-      <TimelineSelectionToolbar
-        controller={controller}
-        state={controller.currentState()}
-      />,
-    );
+    render(<TimelineSelectionToolbar controller={controller} state={controller.currentState()} />);
     expect(screen.getByLabelText("Select previous row")).toBeInTheDocument();
     expect(screen.getByLabelText("Select next row")).toBeInTheDocument();
     expect(screen.getByLabelText("Clear selection")).toBeInTheDocument();
@@ -46,24 +41,14 @@ describe("TimelineSelectionToolbar", () => {
   it("clicking ↓ moves the selection to the next row", async () => {
     const controller = buildController({ initial: "t0" });
     const user = userEvent.setup();
-    render(
-      <TimelineSelectionToolbar
-        controller={controller}
-        state={controller.currentState()}
-      />,
-    );
+    render(<TimelineSelectionToolbar controller={controller} state={controller.currentState()} />);
     await user.click(screen.getByLabelText("Select next row"));
     expect(controller.currentState().selectedTaskId).toBe("t1");
   });
 
   it("disables clear when nothing is selected", () => {
     const controller = buildController();
-    render(
-      <TimelineSelectionToolbar
-        controller={controller}
-        state={controller.currentState()}
-      />,
-    );
+    render(<TimelineSelectionToolbar controller={controller} state={controller.currentState()} />);
     expect(screen.getByLabelText("Clear selection")).toBeDisabled();
   });
 
@@ -71,19 +56,11 @@ describe("TimelineSelectionToolbar", () => {
     const first = buildController({ initial: "t0" });
     const last = buildController({ initial: "t2" });
     const { unmount } = render(
-      <TimelineSelectionToolbar
-        controller={first}
-        state={first.currentState()}
-      />,
+      <TimelineSelectionToolbar controller={first} state={first.currentState()} />,
     );
     expect(screen.getByLabelText("Select previous row")).toBeDisabled();
     unmount();
-    render(
-      <TimelineSelectionToolbar
-        controller={last}
-        state={last.currentState()}
-      />,
-    );
+    render(<TimelineSelectionToolbar controller={last} state={last.currentState()} />);
     expect(screen.getByLabelText("Select next row")).toBeDisabled();
   });
 });

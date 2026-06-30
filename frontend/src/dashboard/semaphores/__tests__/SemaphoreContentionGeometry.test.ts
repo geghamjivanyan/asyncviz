@@ -75,11 +75,7 @@ describe("pickMarkerAt", () => {
 
   it("returns null when out of tolerance", () => {
     expect(
-      pickMarkerAt(
-        [{ marker: baseMarker(), x: 10, left: 5, width: 10, clipped: false }],
-        100,
-        5,
-      ),
+      pickMarkerAt([{ marker: baseMarker(), x: 10, left: 5, width: 10, clipped: false }], 100, 5),
     ).toBeNull();
   });
 });

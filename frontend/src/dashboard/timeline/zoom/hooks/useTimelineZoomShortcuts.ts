@@ -54,7 +54,8 @@ export function useTimelineZoomShortcuts(args: UseTimelineZoomShortcutsArgs): vo
           break;
         }
         case "fit-all":
-          if (fitRange) controller.zoomToRange(fitRange.startSeconds, fitRange.endSeconds, "fit-all");
+          if (fitRange)
+            controller.zoomToRange(fitRange.startSeconds, fitRange.endSeconds, "fit-all");
           break;
       }
     };

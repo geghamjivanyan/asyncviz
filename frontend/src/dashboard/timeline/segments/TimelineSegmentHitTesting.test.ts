@@ -41,9 +41,7 @@ describe("hitTestSegment", () => {
 
   it("returns the active segment when the pointer is past the wire end", () => {
     const { coords, layout } = setup();
-    const entries = [
-      makeProjectionEntry("active", 0, 8, 8, { isActive: true }),
-    ];
+    const entries = [makeProjectionEntry("active", 0, 8, 8, { isActive: true })];
     const result = hitTestSegment({
       xCss: 200 + 60 * 9,
       yCss: 5,

@@ -8,9 +8,7 @@
  * invalidation are free.
  */
 
-import type {
-  TimelineTickList,
-} from "@/dashboard/timeline/scaling/models/TimelineScaleModels";
+import type { TimelineTickList } from "@/dashboard/timeline/scaling/models/TimelineScaleModels";
 
 const DEFAULT_CAPACITY = 8;
 
@@ -62,6 +60,11 @@ export class TimelineScaleTickCache {
   }
 
   metrics(): { hits: number; misses: number; evictions: number; size: number } {
-    return { hits: this._hits, misses: this._misses, evictions: this._evictions, size: this.size() };
+    return {
+      hits: this._hits,
+      misses: this._misses,
+      evictions: this._evictions,
+      size: this.size(),
+    };
   }
 }

@@ -29,12 +29,10 @@ function ExecutorActivityDiagnosticsImpl({
 }: ExecutorActivityDiagnosticsProps): JSX.Element {
   const selfMetrics = useExecutorActivitySelfMetrics();
   const storeStats = useExecutorActivityStats();
-  const [panelSnap, setPanelSnap] = useState<ExecutorActivityPanelMetricsSnapshot>(
-    () => getExecutorActivityPanelMetrics().snapshot(),
+  const [panelSnap, setPanelSnap] = useState<ExecutorActivityPanelMetricsSnapshot>(() =>
+    getExecutorActivityPanelMetrics().snapshot(),
   );
-  const [tracingEnabled, setTracingEnabled] = useState(
-    isExecutorActivityTraceEnabled(),
-  );
+  const [tracingEnabled, setTracingEnabled] = useState(isExecutorActivityTraceEnabled());
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -87,9 +85,7 @@ function ExecutorActivityDiagnosticsImpl({
 
         <DiagnosticsSection title="Backend engine">
           {selfMetrics === null ? (
-            <p className="executor-activity-diagnostics__placeholder">
-              No snapshot yet.
-            </p>
+            <p className="executor-activity-diagnostics__placeholder">No snapshot yet.</p>
           ) : (
             <>
               <DiagnosticsRow label="events observed" value={selfMetrics.events_observed} />
@@ -121,12 +117,8 @@ function ExecutorActivityDiagnosticsImpl({
           <ul>
             {trace.slice(-32).map((entry, idx) => (
               <li key={`${entry.at}-${idx}`}>
-                <span className="executor-activity-diagnostics__trace-kind">
-                  {entry.kind}
-                </span>
-                <span className="executor-activity-diagnostics__trace-detail">
-                  {entry.detail}
-                </span>
+                <span className="executor-activity-diagnostics__trace-kind">{entry.kind}</span>
+                <span className="executor-activity-diagnostics__trace-detail">{entry.detail}</span>
               </li>
             ))}
           </ul>

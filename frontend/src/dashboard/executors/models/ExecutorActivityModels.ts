@@ -10,12 +10,7 @@
 
 // ── shared ──────────────────────────────────────────────────────────────
 
-export type ExecutorKind =
-  | "Thread"
-  | "Process"
-  | "default"
-  | "custom"
-  | "unknown";
+export type ExecutorKind = "Thread" | "Process" | "default" | "custom" | "unknown";
 
 /** Backend saturation level. */
 export type ExecutorSaturationLevel = "calm" | "warning" | "critical";
@@ -23,11 +18,7 @@ export type ExecutorSaturationLevel = "calm" | "warning" | "critical";
 /** Visual severity bucket — cards + markers key colors off this.
  *  Saturated outranks the score-based critical because zero permits +
  *  parked waiters is the most actionable signal for operators. */
-export type ExecutorActivitySeverity =
-  | "calm"
-  | "warning"
-  | "critical"
-  | "saturated";
+export type ExecutorActivitySeverity = "calm" | "warning" | "critical" | "saturated";
 
 // ── wire-shape: per-executor sub-records ────────────────────────────────
 
@@ -173,8 +164,7 @@ export const EXECUTOR_METRICS_EVENT_TYPES = [
   "asyncio.executor.latency.spike.detected",
 ] as const;
 
-export type ExecutorActivityEventType =
-  (typeof EXECUTOR_METRICS_EVENT_TYPES)[number];
+export type ExecutorActivityEventType = (typeof EXECUTOR_METRICS_EVENT_TYPES)[number];
 
 // ── view-shape (projection-layer output) ────────────────────────────────
 
@@ -207,10 +197,7 @@ export interface ExecutorActivityView {
 
 // ── timeline marker view-shape ──────────────────────────────────────────
 
-export type ExecutorMarkerKind =
-  | "saturation-changed"
-  | "contention"
-  | "latency-spike";
+export type ExecutorMarkerKind = "saturation-changed" | "contention" | "latency-spike";
 
 export interface ExecutorActivityMarker {
   id: string;

@@ -14,9 +14,7 @@ export {
 } from "@/dashboard/dependencies/AwaitDependencyProjection";
 export type { AwaitDependencyProjection } from "@/dashboard/dependencies/AwaitDependencyProjection";
 
-export {
-  layoutDependencies,
-} from "@/dashboard/dependencies/layout/AwaitDependencyLayout";
+export { layoutDependencies } from "@/dashboard/dependencies/layout/AwaitDependencyLayout";
 export type {
   LaidEdge,
   LaidNode,
@@ -31,18 +29,11 @@ export {
 } from "@/dashboard/dependencies/AwaitDependencyGeometry";
 export type { Viewport } from "@/dashboard/dependencies/AwaitDependencyGeometry";
 
-export {
-  virtualize,
-} from "@/dashboard/dependencies/AwaitDependencyVirtualization";
+export { virtualize } from "@/dashboard/dependencies/AwaitDependencyVirtualization";
 
-export {
-  nodeAt,
-  neighborNodeId,
-} from "@/dashboard/dependencies/AwaitDependencyHitTesting";
+export { nodeAt, neighborNodeId } from "@/dashboard/dependencies/AwaitDependencyHitTesting";
 
-export {
-  buildDependencyFrame,
-} from "@/dashboard/dependencies/AwaitDependencyRenderer";
+export { buildDependencyFrame } from "@/dashboard/dependencies/AwaitDependencyRenderer";
 export type {
   DependencyFrame,
   DependencyFrameInputs,

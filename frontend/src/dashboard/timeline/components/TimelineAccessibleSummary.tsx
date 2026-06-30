@@ -61,15 +61,13 @@ function TimelineAccessibleSummaryImpl({
       ) : null}
       {timeScale !== undefined && timeScale !== null ? (
         <p data-scale-duration={timeScale.durationSeconds}>
-          Scale {timeScale.durationSeconds.toFixed(3)}s across{" "}
-          {Math.round(timeScale.widthPx)}px ({timeScale.pixelsPerSecond.toFixed(2)} px/s).
+          Scale {timeScale.durationSeconds.toFixed(3)}s across {Math.round(timeScale.widthPx)}px (
+          {timeScale.pixelsPerSecond.toFixed(2)} px/s).
         </p>
       ) : null}
       <ul role="list">
         {projection.rows.map((row) => {
-          const segmentsForRow = projection.segments.filter(
-            (s) => s.rowIndex === row.rowIndex,
-          );
+          const segmentsForRow = projection.segments.filter((s) => s.rowIndex === row.rowIndex);
           const segmentCount = segmentsForRow.length;
           const activeCount = segmentsForRow.filter((s) => s.isActive).length;
           const lifecycleSummary = summarizeLifecycle(segmentsForRow);

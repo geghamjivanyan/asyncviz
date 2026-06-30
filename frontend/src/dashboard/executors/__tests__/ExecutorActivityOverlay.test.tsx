@@ -34,13 +34,7 @@ describe("<ExecutorActivityOverlay />", () => {
       endNs: 1000,
       viewportWidth: 200,
     });
-    render(
-      <ExecutorActivityOverlay
-        frame={frame}
-        heightPx={20}
-        onActivate={onActivate}
-      />,
-    );
+    render(<ExecutorActivityOverlay frame={frame} heightPx={20} onActivate={onActivate} />);
     const user = userEvent.setup();
     await user.click(screen.getByTestId("executor-activity-overlay-marker"));
     expect(onActivate).toHaveBeenCalledWith("a", "e-a");
@@ -56,9 +50,7 @@ describe("<ExecutorActivityOverlay />", () => {
       maxMarkers: 5,
     });
     render(<ExecutorActivityOverlay frame={frame} heightPx={20} />);
-    expect(
-      screen.getByTestId("executor-activity-overlay-overflow"),
-    ).toHaveTextContent(/\+15 more/);
+    expect(screen.getByTestId("executor-activity-overlay-overflow")).toHaveTextContent(/\+15 more/);
   });
 
   it("hides itself when empty and hideWhenEmpty is set", () => {

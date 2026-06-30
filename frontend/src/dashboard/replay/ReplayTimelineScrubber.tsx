@@ -16,15 +16,9 @@ import {
 } from "@/dashboard/replay/ReplayTimelineSelectors";
 import { useReplayTimelineStore } from "@/dashboard/replay/ReplayTimelineStore";
 import { useReplayScrub } from "@/dashboard/replay/hooks/useReplayScrub";
-import {
-  describePlaybackForAccessibility,
-} from "@/dashboard/replay/ReplayTimelineAccessibility";
-import {
-  sequenceToPixel,
-} from "@/dashboard/replay/ReplayTimelineGeometry";
-import type {
-  ReplayControlIntent,
-} from "@/dashboard/replay/models/ReplayTimelineModels";
+import { describePlaybackForAccessibility } from "@/dashboard/replay/ReplayTimelineAccessibility";
+import { sequenceToPixel } from "@/dashboard/replay/ReplayTimelineGeometry";
+import type { ReplayControlIntent } from "@/dashboard/replay/models/ReplayTimelineModels";
 
 export interface ReplayTimelineScrubberProps {
   readonly dispatch: (intent: ReplayControlIntent) => void;
@@ -85,9 +79,7 @@ export function ReplayTimelineScrubber({
   const sliderValue =
     window.maxSequence > 0
       ? Math.round(
-          ((preview ? preview.sequence : playback.lastSequence) /
-            window.maxSequence) *
-            100,
+          ((preview ? preview.sequence : playback.lastSequence) / window.maxSequence) * 100,
         )
       : 0;
 

@@ -35,7 +35,9 @@ function TaskInspectorTimelineImpl({ inspection, className }: TaskInspectorTimel
         <Row label="Wait duration" value={formatDuration(t.totalWaitSeconds)} />
         <Row
           label="First start"
-          value={t.firstSegmentStartSeconds === null ? "—" : `${t.firstSegmentStartSeconds.toFixed(3)}s`}
+          value={
+            t.firstSegmentStartSeconds === null ? "—" : `${t.firstSegmentStartSeconds.toFixed(3)}s`
+          }
         />
         <Row
           label="Last end"
@@ -43,7 +45,11 @@ function TaskInspectorTimelineImpl({ inspection, className }: TaskInspectorTimel
         />
         <Row
           label="Active segment"
-          value={t.activeSegment ? `${t.activeSegment.segment_type} since ${(t.activeSegment.monotonic_start_ns / 1e9).toFixed(3)}s` : "—"}
+          value={
+            t.activeSegment
+              ? `${t.activeSegment.segment_type} since ${(t.activeSegment.monotonic_start_ns / 1e9).toFixed(3)}s`
+              : "—"
+          }
         />
       </dl>
       {t.recentSegments.length > 0 ? (
@@ -52,24 +58,23 @@ function TaskInspectorTimelineImpl({ inspection, className }: TaskInspectorTimel
             Recent segments ({t.recentSegments.length})
           </summary>
           <ul className="mt-2 flex max-h-40 flex-col gap-1 overflow-auto font-mono text-[11px]">
-            {t.recentSegments.slice().reverse().map((segment) => (
-              <li
-                key={segment.segment_id}
-                data-segment-row={segment.segment_id}
-                className="flex justify-between"
-              >
-                <span
-                  className={
-                    segment.segment_type === "run" ? "text-success" : "text-warning"
-                  }
+            {t.recentSegments
+              .slice()
+              .reverse()
+              .map((segment) => (
+                <li
+                  key={segment.segment_id}
+                  data-segment-row={segment.segment_id}
+                  className="flex justify-between"
                 >
-                  {segment.segment_type}
-                </span>
-                <span className="tabular-nums">
-                  {formatDuration(segment.duration_ns / 1e9)}
-                </span>
-              </li>
-            ))}
+                  <span
+                    className={segment.segment_type === "run" ? "text-success" : "text-warning"}
+                  >
+                    {segment.segment_type}
+                  </span>
+                  <span className="tabular-nums">{formatDuration(segment.duration_ns / 1e9)}</span>
+                </li>
+              ))}
           </ul>
         </details>
       ) : (

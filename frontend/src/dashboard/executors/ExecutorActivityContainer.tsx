@@ -35,10 +35,7 @@ export function ExecutorActivityContainer({
     [selectExecutor],
   );
 
-  const statusProps = useMemo(
-    () => ({ status, errorMessage }),
-    [status, errorMessage],
-  );
+  const statusProps = useMemo(() => ({ status, errorMessage }), [status, errorMessage]);
 
   return (
     <ExecutorActivityPanel

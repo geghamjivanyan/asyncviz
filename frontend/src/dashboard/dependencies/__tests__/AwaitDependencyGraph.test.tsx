@@ -4,10 +4,7 @@ import { render, screen } from "@testing-library/react";
 import { AwaitDependencyGraph } from "@/dashboard/dependencies/AwaitDependencyGraph";
 import { projectDependencies } from "@/dashboard/dependencies/AwaitDependencyProjection";
 import { buildDependencyFrame } from "@/dashboard/dependencies/AwaitDependencyRenderer";
-import {
-  makeEdge,
-  makeNode,
-} from "@/dashboard/dependencies/__fixtures__/awaitDependencyFixtures";
+import { makeEdge, makeNode } from "@/dashboard/dependencies/__fixtures__/awaitDependencyFixtures";
 
 function renderGraph({
   nodes,
@@ -20,7 +17,11 @@ function renderGraph({
   selectedNodeId?: string | null;
   onSelectNode?: (id: string | null, kind: "task" | "gather" | null) => void;
 }) {
-  const { nodes: views, edges: edgeViews, alarmCount } = projectDependencies({
+  const {
+    nodes: views,
+    edges: edgeViews,
+    alarmCount,
+  } = projectDependencies({
     nodes,
     edges,
   });
@@ -81,15 +82,10 @@ describe("<AwaitDependencyGraph />", () => {
 
   it("announces topology composition via the live region", () => {
     renderGraph({
-      nodes: [
-        makeNode({ id: "t-1", kind: "task" }),
-        makeNode({ id: "g-1", kind: "gather" }),
-      ],
+      nodes: [makeNode({ id: "t-1", kind: "task" }), makeNode({ id: "g-1", kind: "gather" })],
       edges: [],
     });
-    expect(screen.getByTestId("await-dependency-live-region")).toHaveTextContent(
-      /2 nodes/,
-    );
+    expect(screen.getByTestId("await-dependency-live-region")).toHaveTextContent(/2 nodes/);
   });
 
   it("counts non-calm gathers in the alarm badge", () => {
@@ -100,8 +96,6 @@ describe("<AwaitDependencyGraph />", () => {
       ],
       edges: [],
     });
-    expect(screen.getByTestId("await-dependency-alarm-count")).toHaveTextContent(
-      /1 alarm/,
-    );
+    expect(screen.getByTestId("await-dependency-alarm-count")).toHaveTextContent(/1 alarm/);
   });
 });

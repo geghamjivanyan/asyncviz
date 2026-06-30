@@ -19,10 +19,7 @@ export interface ReusableProjectionSignature {
   sequence: number;
 }
 
-export function projectionSignature(
-  length: number,
-  sequence: number,
-): ReusableProjectionSignature {
+export function projectionSignature(length: number, sequence: number): ReusableProjectionSignature {
   return { length, sequence };
 }
 

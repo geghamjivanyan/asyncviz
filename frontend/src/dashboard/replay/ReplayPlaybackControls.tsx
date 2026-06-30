@@ -7,13 +7,9 @@
  */
 
 import type { JSX } from "react";
-import {
-  useReplayPlayback,
-} from "@/dashboard/replay/ReplayTimelineSelectors";
+import { useReplayPlayback } from "@/dashboard/replay/ReplayTimelineSelectors";
 import { REPLAY_SPEED_PRESETS } from "@/dashboard/replay/ReplayPlaybackPresets";
-import type {
-  ReplayControlIntent,
-} from "@/dashboard/replay/models/ReplayTimelineModels";
+import type { ReplayControlIntent } from "@/dashboard/replay/models/ReplayTimelineModels";
 
 export interface ReplayPlaybackControlsProps {
   readonly dispatch: (intent: ReplayControlIntent) => void;
@@ -30,8 +26,7 @@ export function ReplayPlaybackControls({
   return (
     <div
       className={
-        "flex items-center gap-2 text-xs font-mono uppercase tracking-widest " +
-        (className ?? "")
+        "flex items-center gap-2 text-xs font-mono uppercase tracking-widest " + (className ?? "")
       }
       role="group"
       aria-label="Replay playback controls"
@@ -40,9 +35,7 @@ export function ReplayPlaybackControls({
         type="button"
         aria-label={isPlaying ? "Pause replay" : "Play replay"}
         aria-pressed={isPlaying}
-        onClick={() =>
-          dispatch({ type: isPlaying ? "pause" : "play" })
-        }
+        onClick={() => dispatch({ type: isPlaying ? "pause" : "play" })}
         className="rounded border border-border bg-surface px-3 py-1 text-text"
       >
         {isPlaying ? "Pause" : "Play"}
@@ -87,10 +80,7 @@ export function ReplayPlaybackControls({
         </select>
       </label>
 
-      <span
-        aria-live="polite"
-        className="ml-2 text-textMuted normal-case tracking-normal"
-      >
+      <span aria-live="polite" className="ml-2 text-textMuted normal-case tracking-normal">
         {playback.state}
         {playback.paused && playback.state !== "paused" ? " (paused)" : ""}
         {playback.errorDetail ? ` — ${playback.errorDetail}` : ""}

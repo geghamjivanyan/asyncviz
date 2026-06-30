@@ -96,10 +96,4 @@ export interface PanVelocitySample {
 
 /** Coarse classification of an in-flight pan. */
 export type PanReason =
-  | "drag"
-  | "wheel"
-  | "keyboard"
-  | "center"
-  | "to-time"
-  | "manual"
-  | "inertial";
+  "drag" | "wheel" | "keyboard" | "center" | "to-time" | "manual" | "inertial";

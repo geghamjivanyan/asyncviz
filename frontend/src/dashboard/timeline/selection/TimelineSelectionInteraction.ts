@@ -11,10 +11,7 @@ export interface HitResult {
 }
 
 /** Pure: dispatch a pointer hit into the controller. */
-export function dispatchPointerHit(
-  controller: TimelineSelectionController,
-  hit: HitResult,
-): void {
+export function dispatchPointerHit(controller: TimelineSelectionController, hit: HitResult): void {
   if (hit.taskId === null) {
     controller.clearSelection("pointer");
   } else {

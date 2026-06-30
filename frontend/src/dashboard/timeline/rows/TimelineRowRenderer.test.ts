@@ -73,7 +73,9 @@ describe("TimelineRowRenderer", () => {
     const { renderContext, ctx } = buildContext(3);
     renderer.foreground.render(renderContext);
     // The label column fill + divider both call fillRect / stroke.
-    expect((ctx.fillRect as unknown as { mock: { calls: unknown[] } }).mock.calls.length).toBeGreaterThan(0);
+    expect(
+      (ctx.fillRect as unknown as { mock: { calls: unknown[] } }).mock.calls.length,
+    ).toBeGreaterThan(0);
   });
 
   it("records selection metrics when the selected row is on screen", () => {

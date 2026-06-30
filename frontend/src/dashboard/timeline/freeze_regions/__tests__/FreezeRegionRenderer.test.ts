@@ -9,26 +9,27 @@
 
 import { beforeEach, describe, expect, it } from "vitest";
 import { FreezeRegionRenderer } from "@/dashboard/timeline/freeze_regions/FreezeRegionRenderer";
-import type {
-  FreezeRegionSource,
-} from "@/dashboard/timeline/freeze_regions/FreezeRegionRenderer";
+import type { FreezeRegionSource } from "@/dashboard/timeline/freeze_regions/FreezeRegionRenderer";
 import { TimelineCoordinateSystem } from "@/dashboard/timeline/viewport/TimelineCoordinateSystem";
 import { DEFAULT_TIMELINE_PALETTE } from "@/dashboard/timeline/rendering/TimelineColors";
-import { resetFreezeRegionMetrics, getFreezeRegionMetrics } from "@/dashboard/timeline/freeze_regions/diagnostics/FreezeRegionMetricsCollector";
+import {
+  resetFreezeRegionMetrics,
+  getFreezeRegionMetrics,
+} from "@/dashboard/timeline/freeze_regions/diagnostics/FreezeRegionMetricsCollector";
 import { makeFreezeRegionView } from "@/dashboard/timeline/freeze_regions/__fixtures__/makeFreezeRegionFixtures";
-import type {
-  FreezeHitTestEntry,
-} from "@/dashboard/timeline/freeze_regions/FreezeRegionHitTesting";
-import type {
-  FreezeRegionView,
-} from "@/dashboard/timeline/freeze_regions/models/FreezeRegionModels";
+import type { FreezeHitTestEntry } from "@/dashboard/timeline/freeze_regions/FreezeRegionHitTesting";
+import type { FreezeRegionView } from "@/dashboard/timeline/freeze_regions/models/FreezeRegionModels";
 
 interface CallRecord {
   op: string;
   args: unknown[];
 }
 
-function stubContext(): { ctx: CanvasRenderingContext2D; calls: CallRecord[]; state: Record<string, unknown> } {
+function stubContext(): {
+  ctx: CanvasRenderingContext2D;
+  calls: CallRecord[];
+  state: Record<string, unknown>;
+} {
   const calls: CallRecord[] = [];
   const state: Record<string, unknown> = {};
   const setter = (key: string) => (value: unknown) => {

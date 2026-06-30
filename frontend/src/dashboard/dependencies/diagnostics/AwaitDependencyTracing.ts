@@ -24,16 +24,16 @@ export interface AwaitDependencyTraceEntry {
 let _enabled = false;
 const _ring: AwaitDependencyTraceEntry[] = [];
 
-export function isAwaitDependencyTraceEnabled(): boolean { return _enabled; }
+export function isAwaitDependencyTraceEnabled(): boolean {
+  return _enabled;
+}
 
 export function setAwaitDependencyTraceEnabled(enabled: boolean): void {
   _enabled = enabled;
   if (!enabled) _ring.length = 0;
 }
 
-export function recordAwaitDependencyTrace(
-  entry: Omit<AwaitDependencyTraceEntry, "at">,
-): void {
+export function recordAwaitDependencyTrace(entry: Omit<AwaitDependencyTraceEntry, "at">): void {
   if (!_enabled) return;
   _ring.push({ ...entry, at: Date.now() });
   if (_ring.length > CAPACITY) _ring.splice(0, _ring.length - CAPACITY);
@@ -43,4 +43,6 @@ export function getAwaitDependencyTrace(): ReadonlyArray<AwaitDependencyTraceEnt
   return [..._ring];
 }
 
-export function clearAwaitDependencyTrace(): void { _ring.length = 0; }
+export function clearAwaitDependencyTrace(): void {
+  _ring.length = 0;
+}

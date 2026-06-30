@@ -8,10 +8,7 @@ import {
   clampTimeStart,
   wouldExceedBound,
 } from "@/dashboard/timeline/pan/utils/panMath";
-import {
-  UNBOUNDED_PAN,
-  type PanBounds,
-} from "@/dashboard/timeline/pan/models/TimelinePanModels";
+import { UNBOUNDED_PAN, type PanBounds } from "@/dashboard/timeline/pan/models/TimelinePanModels";
 
 export interface BoundedPanInputs {
   timeStartSeconds: number;
@@ -20,10 +17,7 @@ export interface BoundedPanInputs {
 }
 
 /** Pure: clamp a candidate ``timeStart`` to the configured bounds. */
-export function clampPanTimeStart(
-  candidate: number,
-  inputs: BoundedPanInputs,
-): number {
+export function clampPanTimeStart(candidate: number, inputs: BoundedPanInputs): number {
   return clampTimeStart(
     candidate,
     inputs.durationSeconds,
@@ -33,9 +27,7 @@ export function clampPanTimeStart(
 }
 
 /** Pure: report whether the viewport sits at either bound. */
-export function viewportEdgeState(
-  inputs: BoundedPanInputs,
-): { atMin: boolean; atMax: boolean } {
+export function viewportEdgeState(inputs: BoundedPanInputs): { atMin: boolean; atMax: boolean } {
   return atBoundEdge(
     inputs.timeStartSeconds,
     inputs.durationSeconds,

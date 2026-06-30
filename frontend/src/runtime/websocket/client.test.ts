@@ -343,7 +343,15 @@ describe("RuntimeWebSocketClient — hydration", () => {
 describe("RuntimeWebSocketClient — phase recovery", () => {
   function forcePhase(
     client: RuntimeWebSocketClient,
-    phase: "idle" | "hydrating" | "connecting" | "replaying" | "live" | "reconnecting" | "disconnected" | "failed",
+    phase:
+      | "idle"
+      | "hydrating"
+      | "connecting"
+      | "replaying"
+      | "live"
+      | "reconnecting"
+      | "disconnected"
+      | "failed",
   ): void {
     (client as unknown as { _phase: string })._phase = phase;
   }

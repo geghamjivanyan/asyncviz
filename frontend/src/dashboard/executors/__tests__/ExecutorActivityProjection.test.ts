@@ -46,9 +46,9 @@ describe("projectRecord", () => {
 
   it("falls back to executor id for display name", () => {
     expect(projectRecord(makeRecord({ executor_id: "e-99" })).displayName).toBe("e-99");
-    expect(
-      projectRecord(makeRecord({ executor_id: "e-99" }), "thread-pool").displayName,
-    ).toBe("thread-pool");
+    expect(projectRecord(makeRecord({ executor_id: "e-99" }), "thread-pool").displayName).toBe(
+      "thread-pool",
+    );
   });
 });
 
@@ -80,11 +80,7 @@ describe("projectExecutorActivity", () => {
       }),
     ];
     const { bySeverityDescending, alarmCount } = projectExecutorActivity({ records });
-    expect(bySeverityDescending.map((v) => v.executorId)).toEqual([
-      "e-sat",
-      "e-warn",
-      "e-calm",
-    ]);
+    expect(bySeverityDescending.map((v) => v.executorId)).toEqual(["e-sat", "e-warn", "e-calm"]);
     expect(alarmCount).toBe(2);
   });
 

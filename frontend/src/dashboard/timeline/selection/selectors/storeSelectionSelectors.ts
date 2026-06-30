@@ -6,9 +6,7 @@
 import { useMemo } from "react";
 import type { TaskSnapshot } from "@/types/runtime";
 import { useRuntimeStore } from "@/state/runtime";
-import type {
-  SelectableRow,
-} from "@/dashboard/timeline/selection/models/TimelineSelectionModels";
+import type { SelectableRow } from "@/dashboard/timeline/selection/models/TimelineSelectionModels";
 
 /** Stable selectable-row list derived from the row projection used
  *  by the canvas — keeps deterministic ordering (created_at + task
@@ -16,17 +14,14 @@ import type {
 export function useSelectableRows(
   rows: readonly { rowIndex: number; taskId: string }[],
 ): readonly SelectableRow[] {
-  return useMemo(
-    () => rows.map((row) => ({ rowIndex: row.rowIndex, taskId: row.taskId })),
-    [rows],
-  );
+  return useMemo(() => rows.map((row) => ({ rowIndex: row.rowIndex, taskId: row.taskId })), [rows]);
 }
 
 /** Snapshot lookup helper. */
 export function useTaskLookup(): (taskId: string | null) => TaskSnapshot | null {
   const tasksById = useRuntimeStore((s) => s.tasksById);
   return useMemo(
-    () => (taskId: string | null) => (taskId === null ? null : tasksById[taskId] ?? null),
+    () => (taskId: string | null) => (taskId === null ? null : (tasksById[taskId] ?? null)),
     [tasksById],
   );
 }
@@ -34,9 +29,9 @@ export function useTaskLookup(): (taskId: string | null) => TaskSnapshot | null 
 /** Time-range lookup for a task — fans out into the timeline's
  *  closed + active segments. Returns ``null`` when no segments are
  *  known for the task. */
-export function useTaskRangeLookup(): (taskId: string | null) =>
-  | { startSeconds: number; endSeconds: number }
-  | null {
+export function useTaskRangeLookup(): (
+  taskId: string | null,
+) => { startSeconds: number; endSeconds: number } | null {
   const segmentIdsByTaskId = useRuntimeStore((s) => s.timeline.segmentIdsByTaskId);
   const segmentsById = useRuntimeStore((s) => s.timeline.segmentsById);
   const activeByTask = useRuntimeStore((s) => s.timeline.activeSegmentsByTaskId);

@@ -8,9 +8,7 @@
  * regardless of how many events the browser drops or coalesces.
  */
 
-import type {
-  PanDragAnchor,
-} from "@/dashboard/timeline/pan/models/TimelinePanModels";
+import type { PanDragAnchor } from "@/dashboard/timeline/pan/models/TimelinePanModels";
 
 /** Pure: build a fresh anchor. */
 export function makeDragAnchor(args: {

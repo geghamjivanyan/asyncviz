@@ -13,25 +13,14 @@
 
 /** Discrete states the engine reports back to the UI. */
 export type ReplayPlaybackState =
-  | "idle"
-  | "playing"
-  | "paused"
-  | "seeking"
-  | "buffering"
-  | "stopped"
-  | "failed";
+  "idle" | "playing" | "paused" | "seeking" | "buffering" | "stopped" | "failed";
 
 /** Severity of a timeline marker — drives colour + screen-reader text. */
 export type ReplayMarkerSeverity = "info" | "warning" | "critical";
 
 /** Kind of marker — describes which subsystem produced it. */
 export type ReplayMarkerKind =
-  | "warning"
-  | "saturation"
-  | "blocking"
-  | "checkpoint"
-  | "bookmark"
-  | "annotation";
+  "warning" | "saturation" | "blocking" | "checkpoint" | "bookmark" | "annotation";
 
 /** Span of a recording exposed to the controls. */
 export interface ReplaySessionWindow {

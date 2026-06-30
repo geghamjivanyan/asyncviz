@@ -21,13 +21,27 @@ class ExecutorActivityPanelMetrics {
   private _selectionChanges = 0;
   private _inspectorReveals = 0;
 
-  recordHydration(): void { this._hydrations += 1; }
-  recordHydrationFailure(): void { this._hydrationFailures += 1; }
-  recordWebsocketEvent(): void { this._websocketEvents += 1; }
-  recordMarkersRendered(n: number): void { if (n > 0) this._markersRendered += n; }
-  recordCardsRendered(n: number): void { if (n > 0) this._cardsRendered += n; }
-  recordSelectionChange(): void { this._selectionChanges += 1; }
-  recordInspectorReveal(): void { this._inspectorReveals += 1; }
+  recordHydration(): void {
+    this._hydrations += 1;
+  }
+  recordHydrationFailure(): void {
+    this._hydrationFailures += 1;
+  }
+  recordWebsocketEvent(): void {
+    this._websocketEvents += 1;
+  }
+  recordMarkersRendered(n: number): void {
+    if (n > 0) this._markersRendered += n;
+  }
+  recordCardsRendered(n: number): void {
+    if (n > 0) this._cardsRendered += n;
+  }
+  recordSelectionChange(): void {
+    this._selectionChanges += 1;
+  }
+  recordInspectorReveal(): void {
+    this._inspectorReveals += 1;
+  }
 
   snapshot(): ExecutorActivityPanelMetricsSnapshot {
     return {

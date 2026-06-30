@@ -6,11 +6,7 @@
  * lives here so the future hook plugs in unchanged.
  */
 
-import {
-  zoomEaseInOut,
-  zoomEaseLinear,
-  zoomEaseOutCubic,
-} from "@/dashboard/timeline/zoom";
+import { zoomEaseInOut, zoomEaseLinear, zoomEaseOutCubic } from "@/dashboard/timeline/zoom";
 
 export {
   zoomEaseInOut as panEaseInOut,

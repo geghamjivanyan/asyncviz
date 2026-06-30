@@ -15,16 +15,9 @@
  * the caller.
  */
 
-import type {
-  RenderContext,
-  TimelineLayer,
-} from "@/dashboard/timeline/rendering/TimelineLayer";
-import type {
-  FreezeRegionView,
-} from "@/dashboard/timeline/freeze_regions/models/FreezeRegionModels";
-import type {
-  FreezeRegionPalette,
-} from "@/dashboard/timeline/freeze_regions/FreezeRegionColors";
+import type { RenderContext, TimelineLayer } from "@/dashboard/timeline/rendering/TimelineLayer";
+import type { FreezeRegionView } from "@/dashboard/timeline/freeze_regions/models/FreezeRegionModels";
+import type { FreezeRegionPalette } from "@/dashboard/timeline/freeze_regions/FreezeRegionColors";
 import { DEFAULT_FREEZE_REGION_PALETTE } from "@/dashboard/timeline/freeze_regions/FreezeRegionColors";
 import {
   cullVisibleFreezeRegions,
@@ -34,24 +27,16 @@ import {
   drawEscalationMarkers,
   drawFreezeEdgeMarkers,
 } from "@/dashboard/timeline/freeze_regions/FreezeRegionMarkers";
-import {
-  resolveBodyStyle,
-} from "@/dashboard/timeline/freeze_regions/FreezeRegionStyling";
-import {
-  makePulseFn,
-} from "@/dashboard/timeline/freeze_regions/FreezeRegionAnimations";
+import { resolveBodyStyle } from "@/dashboard/timeline/freeze_regions/FreezeRegionStyling";
+import { makePulseFn } from "@/dashboard/timeline/freeze_regions/FreezeRegionAnimations";
 import {
   clampFreezeRegions,
   DEFAULT_VISIBLE_FREEZE_CAP,
 } from "@/dashboard/timeline/freeze_regions/FreezeRegionVirtualization";
-import type {
-  FreezeHitTestEntry,
-} from "@/dashboard/timeline/freeze_regions/FreezeRegionHitTesting";
+import type { FreezeHitTestEntry } from "@/dashboard/timeline/freeze_regions/FreezeRegionHitTesting";
 import { getFreezeRegionMetrics } from "@/dashboard/timeline/freeze_regions/diagnostics/FreezeRegionMetricsCollector";
 import { recordFreezeRegionTrace } from "@/dashboard/timeline/freeze_regions/diagnostics/FreezeRegionTracing";
-import type {
-  BlockingEscalationEntry,
-} from "@/dashboard/warnings/blocking/models/BlockingWarningModels";
+import type { BlockingEscalationEntry } from "@/dashboard/warnings/blocking/models/BlockingWarningModels";
 
 export interface FreezeRegionSource {
   getRegions(): readonly FreezeRegionView[];
@@ -95,7 +80,9 @@ export class FreezeRegionRenderer implements TimelineLayer {
     this.enabled = options.enabled ?? true;
     this.palette = options.palette ?? DEFAULT_FREEZE_REGION_PALETTE;
     this.onVisibleEntries = options.onVisibleEntries;
-    this.clock = options.clock ?? (() => (typeof performance !== "undefined" ? performance.now() : Date.now()));
+    this.clock =
+      options.clock ??
+      (() => (typeof performance !== "undefined" ? performance.now() : Date.now()));
   }
 
   setSource(source: FreezeRegionSource | null): void {

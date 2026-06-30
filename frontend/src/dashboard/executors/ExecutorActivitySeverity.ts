@@ -39,9 +39,7 @@ export interface SeverityInputs {
   backlog: number;
 }
 
-export function deriveSeverity(
-  inputs: SeverityInputs,
-): ExecutorActivitySeverity {
+export function deriveSeverity(inputs: SeverityInputs): ExecutorActivitySeverity {
   if (inputs.utilizationRatio >= 1.0 && inputs.backlog > 0) {
     return "saturated";
   }
@@ -49,7 +47,8 @@ export function deriveSeverity(
 }
 
 export function compareSeverityDesc(
-  a: ExecutorActivitySeverity, b: ExecutorActivitySeverity,
+  a: ExecutorActivitySeverity,
+  b: ExecutorActivitySeverity,
 ): number {
   return SEVERITY_RANK[b] - SEVERITY_RANK[a];
 }

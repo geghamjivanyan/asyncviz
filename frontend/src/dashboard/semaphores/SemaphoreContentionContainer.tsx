@@ -38,10 +38,7 @@ export function SemaphoreContentionContainer({
     [selectSemaphore],
   );
 
-  const statusProps = useMemo(
-    () => ({ status, errorMessage }),
-    [status, errorMessage],
-  );
+  const statusProps = useMemo(() => ({ status, errorMessage }), [status, errorMessage]);
 
   return (
     <SemaphoreContentionPanel

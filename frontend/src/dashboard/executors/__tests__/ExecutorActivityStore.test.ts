@@ -23,10 +23,7 @@ describe("reduceHydration", () => {
   it("indexes records by id + preserves insertion order", () => {
     const reduced = reduceHydration(
       makeHydration({
-        executors: [
-          makeRecord({ executor_id: "e-1" }),
-          makeRecord({ executor_id: "e-2" }),
-        ],
+        executors: [makeRecord({ executor_id: "e-1" }), makeRecord({ executor_id: "e-2" })],
       }),
     );
     expect(reduced.executorIds).toEqual(["e-1", "e-2"]);
@@ -52,8 +49,7 @@ describe("reduceEventPayload", () => {
   });
 
   it("drops saturation.changed for an unknown executor", () => {
-    expect(reduceEventPayload({}, makeSaturationChanged({ executor_id: "ghost" })))
-      .toBeNull();
+    expect(reduceEventPayload({}, makeSaturationChanged({ executor_id: "ghost" }))).toBeNull();
   });
 
   it("applies contention to an existing record", () => {
@@ -147,9 +143,9 @@ describe("appendMarker", () => {
 
 describe("useExecutorActivityStore actions", () => {
   it("hydrateSnapshot bumps stats + flips status to ready", () => {
-    useExecutorActivityStore.getState().hydrateSnapshot(
-      makeHydration({ executors: [makeRecord({ executor_id: "e-a" })] }),
-    );
+    useExecutorActivityStore
+      .getState()
+      .hydrateSnapshot(makeHydration({ executors: [makeRecord({ executor_id: "e-a" })] }));
     const state = useExecutorActivityStore.getState();
     expect(state.status).toBe("ready");
     expect(state.executorIds).toEqual(["e-a"]);
@@ -157,9 +153,9 @@ describe("useExecutorActivityStore actions", () => {
   });
 
   it("applyEventPayload registers a marker on saturation.changed", () => {
-    useExecutorActivityStore.getState().hydrateSnapshot(
-      makeHydration({ executors: [makeRecord({ executor_id: "e-1" })] }),
-    );
+    useExecutorActivityStore
+      .getState()
+      .hydrateSnapshot(makeHydration({ executors: [makeRecord({ executor_id: "e-1" })] }));
     useExecutorActivityStore
       .getState()
       .applyEventPayload(makeSaturationChanged({ executor_id: "e-1" }));
@@ -169,9 +165,7 @@ describe("useExecutorActivityStore actions", () => {
   });
 
   it("applyEventPayload increments dropped stats for unknown executor on non-updated events", () => {
-    useExecutorActivityStore
-      .getState()
-      .applyEventPayload(makeContention({ executor_id: "ghost" }));
+    useExecutorActivityStore.getState().applyEventPayload(makeContention({ executor_id: "ghost" }));
     expect(useExecutorActivityStore.getState().stats.eventsDropped).toBe(1);
   });
 

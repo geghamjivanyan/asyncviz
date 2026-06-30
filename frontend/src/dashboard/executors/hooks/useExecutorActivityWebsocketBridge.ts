@@ -67,9 +67,7 @@ export function useExecutorActivityWebsocketBridge(
   const applyEventPayload = useExecutorActivityStore((s) => s.applyEventPayload);
   const factory = useMemo<ExecutorActivitySubscribeFactory | undefined>(
     () =>
-      enabled
-        ? (subscribeOverride ?? makeExecutorActivitySubscribeFactory(client))
-        : undefined,
+      enabled ? (subscribeOverride ?? makeExecutorActivitySubscribeFactory(client)) : undefined,
     [enabled, subscribeOverride, client],
   );
 

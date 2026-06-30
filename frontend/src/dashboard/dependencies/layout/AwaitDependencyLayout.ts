@@ -149,9 +149,7 @@ function assignLayers(
 }
 
 /** Stable in-layer ordering: ordering hint first, then alphabetic. */
-function sortLayer(
-  ids: string[], ordering?: ReadonlyArray<string>,
-): string[] {
+function sortLayer(ids: string[], ordering?: ReadonlyArray<string>): string[] {
   if (ordering === undefined) {
     return [...ids].sort();
   }
@@ -247,15 +245,9 @@ export function layoutDependencies(inputs: LayoutInputs): LayoutFrame {
     };
   });
 
-  const width =
-    padding * 2 + (layerCount - 1) * layerSpacing + nodeWidth;
-  const maxBucketSize = Math.max(
-    1,
-    ...Array.from(buckets.values()).map((b) => b.length),
-  );
-  const height =
-    padding * 2 + maxBucketSize * nodeHeight
-    + (maxBucketSize - 1) * nodeSpacing;
+  const width = padding * 2 + (layerCount - 1) * layerSpacing + nodeWidth;
+  const maxBucketSize = Math.max(1, ...Array.from(buckets.values()).map((b) => b.length));
+  const height = padding * 2 + maxBucketSize * nodeHeight + (maxBucketSize - 1) * nodeSpacing;
 
   return { laidNodes, laidEdges, width, height, layerCount, cycleDetected };
 }

@@ -18,9 +18,7 @@ export function replayEventPayload(payload: SemaphoreEventPayload): void {
   useSemaphoreContentionStore.getState().applyEventPayload(payload);
 }
 
-export function replayEventStream(
-  payloads: Iterable<SemaphoreEventPayload>,
-): void {
+export function replayEventStream(payloads: Iterable<SemaphoreEventPayload>): void {
   const apply = useSemaphoreContentionStore.getState().applyEventPayload;
   for (const payload of payloads) apply(payload);
 }

@@ -22,10 +22,7 @@ export interface BlockingWarningTimelineProps {
 function BlockingWarningTimelineImpl({ view, className }: BlockingWarningTimelineProps) {
   if (view.escalationHistory.length === 0) {
     return (
-      <p
-        className={className}
-        data-testid="blocking-warning-timeline-empty"
-      >
+      <p className={className} data-testid="blocking-warning-timeline-empty">
         <span className="text-subtle text-xs">No escalations recorded.</span>
       </p>
     );
@@ -44,9 +41,7 @@ function BlockingWarningTimelineImpl({ view, className }: BlockingWarningTimelin
             key={`${entry.monotonic_ns}-${index}`}
             className="flex items-center gap-2 py-0.5 text-xs font-mono"
           >
-            <span className="text-subtle">
-              +{formatDurationMs(Math.max(0, fromFirstMs))}
-            </span>
+            <span className="text-subtle">+{formatDurationMs(Math.max(0, fromFirstMs))}</span>
             <span className="text-text">
               {entry.from_severity} → {entry.to_severity}
             </span>

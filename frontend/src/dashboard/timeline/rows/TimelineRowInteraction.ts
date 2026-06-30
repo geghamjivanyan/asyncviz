@@ -8,14 +8,13 @@
  * later tasks; today it's the canonical event resolver.
  */
 
-import type { RowHitTestResult, TimelineRowZone } from "@/dashboard/timeline/rows/TimelineRowHitTesting";
+import type {
+  RowHitTestResult,
+  TimelineRowZone,
+} from "@/dashboard/timeline/rows/TimelineRowHitTesting";
 
 export type RowInteractionKind =
-  | "none"
-  | "hover-row"
-  | "select-row"
-  | "select-timeline"
-  | "toggle-group";
+  "none" | "hover-row" | "select-row" | "select-timeline" | "toggle-group";
 
 export interface RowInteractionEvent {
   kind: RowInteractionKind;

@@ -25,9 +25,7 @@ export function replayEventPayload(payload: QueueMetricsEventPayload): void {
 }
 
 /** Bulk-replay helper — useful for tests + scripted scenarios. */
-export function replayEventStream(
-  payloads: Iterable<QueueMetricsEventPayload>,
-): void {
+export function replayEventStream(payloads: Iterable<QueueMetricsEventPayload>): void {
   const apply = useQueuePressureStore.getState().applyEventPayload;
   for (const payload of payloads) apply(payload);
 }

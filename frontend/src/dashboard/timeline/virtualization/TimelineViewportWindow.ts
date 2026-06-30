@@ -31,7 +31,10 @@ export class TimelineViewportWindow {
 
   constructor(options: ViewportWindowOptions = {}) {
     this.overscan = {
-      rowOverscan: Math.max(0, Math.floor(options.overscan?.rowOverscan ?? DEFAULT_OVERSCAN.rowOverscan)),
+      rowOverscan: Math.max(
+        0,
+        Math.floor(options.overscan?.rowOverscan ?? DEFAULT_OVERSCAN.rowOverscan),
+      ),
       timeOverscanSeconds: Math.max(
         0,
         options.overscan?.timeOverscanSeconds ?? DEFAULT_OVERSCAN.timeOverscanSeconds,

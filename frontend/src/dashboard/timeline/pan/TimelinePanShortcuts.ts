@@ -3,12 +3,7 @@
  */
 
 export type PanShortcutAction =
-  | "pan-left"
-  | "pan-right"
-  | "pan-left-fast"
-  | "pan-right-fast"
-  | "pan-home"
-  | "pan-end";
+  "pan-left" | "pan-right" | "pan-left-fast" | "pan-right-fast" | "pan-home" | "pan-end";
 
 export interface PanShortcutBinding {
   action: PanShortcutAction;

@@ -82,8 +82,7 @@ function formatSegmentsValue(inspection: TaskInspection): React.ReactNode {
   const count = inspection.timeline.segmentCount;
   if (count > 0) return count;
   const duration = inspection.lifecycle.durationSeconds;
-  const segmentless =
-    inspection.lifecycle.terminal && duration !== null && duration > 0;
+  const segmentless = inspection.lifecycle.terminal && duration !== null && duration > 0;
   if (!segmentless) return count;
   return (
     <span className="inline-flex items-baseline gap-2">
@@ -93,7 +92,9 @@ function formatSegmentsValue(inspection: TaskInspection): React.ReactNode {
   );
 }
 
-function badgeIntentForState(state: TaskInspection["state"]): "default" | "accent" | "success" | "warning" | "danger" {
+function badgeIntentForState(
+  state: TaskInspection["state"],
+): "default" | "accent" | "success" | "warning" | "danger" {
   switch (state) {
     case "running":
       return "success";

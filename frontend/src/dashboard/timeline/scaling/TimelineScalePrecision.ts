@@ -90,10 +90,7 @@ export function guardScaleBounds(
  * the precision floor (sub-millisecond per pixel) and the engine
  * should warn the diagnostics surface.
  */
-export function isNearPrecisionFloor(
-  durationSeconds: number,
-  widthPx: number,
-): boolean {
+export function isNearPrecisionFloor(durationSeconds: number, widthPx: number): boolean {
   if (widthPx <= 0) return true;
   const secondsPerPixel = durationSeconds / widthPx;
   return secondsPerPixel < 1e-6;

@@ -62,9 +62,7 @@ describe("Routing", () => {
 
   it("renders the WarningsPage when navigating to /warnings", () => {
     renderWithProviders(<TestRoutes initialPath={ROUTES.warnings} />);
-    expect(
-      screen.getByRole("heading", { name: /Blocking Warnings/i }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Blocking Warnings/i })).toBeInTheDocument();
   });
 
   it("renders the ReplayPage when navigating to /replay", () => {

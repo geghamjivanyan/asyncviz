@@ -127,9 +127,7 @@ describe("BlockingWarningStore — zustand actions", () => {
   it("applyEventPayload counts duplicates + stales correctly", () => {
     const store = useBlockingWarningStore.getState();
     store.applyEventPayload(makeEvent({ sequence: 5 }));
-    store.applyEventPayload(
-      makeEvent({ sequence: 5, last_seen_ns: makeGroup().last_seen_ns }),
-    );
+    store.applyEventPayload(makeEvent({ sequence: 5, last_seen_ns: makeGroup().last_seen_ns }));
     store.applyEventPayload(makeEvent({ sequence: 2 }));
     const after = useBlockingWarningStore.getState();
     expect(after.stats.eventsApplied).toBe(1);
@@ -140,9 +138,7 @@ describe("BlockingWarningStore — zustand actions", () => {
   it("setFilterMode rebuilds the filter from the mode", () => {
     useBlockingWarningStore.getState().setFilterMode("freeze-only");
     expect(useBlockingWarningStore.getState().filter.severities).not.toBeNull();
-    expect(
-      useBlockingWarningStore.getState().filter.severities?.has("FREEZE"),
-    ).toBe(true);
+    expect(useBlockingWarningStore.getState().filter.severities?.has("FREEZE")).toBe(true);
   });
 
   it("countActiveBySeverity counts only active ids", () => {

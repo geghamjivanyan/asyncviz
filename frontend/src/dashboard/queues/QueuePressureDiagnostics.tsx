@@ -38,8 +38,8 @@ function QueuePressureDiagnosticsImpl({
 }: QueuePressureDiagnosticsProps): JSX.Element {
   const selfMetrics = useQueuePressureSelfMetrics();
   const storeStats = useQueuePressureStats();
-  const [panelSnap, setPanelSnap] = useState<QueuePressurePanelMetricsSnapshot>(
-    () => getQueuePressurePanelMetrics().snapshot(),
+  const [panelSnap, setPanelSnap] = useState<QueuePressurePanelMetricsSnapshot>(() =>
+    getQueuePressurePanelMetrics().snapshot(),
   );
   const [tracingEnabled, setTracingEnabled] = useState(isQueuePressureTraceEnabled());
 
@@ -94,9 +94,7 @@ function QueuePressureDiagnosticsImpl({
 
         <DiagnosticsSection title="Backend engine">
           {selfMetrics === null ? (
-            <p className="queue-pressure-diagnostics__placeholder">
-              No snapshot yet.
-            </p>
+            <p className="queue-pressure-diagnostics__placeholder">No snapshot yet.</p>
           ) : (
             <>
               <DiagnosticsRow label="events observed" value={selfMetrics.events_observed} />
@@ -128,12 +126,8 @@ function QueuePressureDiagnosticsImpl({
           <ul>
             {trace.slice(-32).map((entry, idx) => (
               <li key={`${entry.at}-${idx}`}>
-                <span className="queue-pressure-diagnostics__trace-kind">
-                  {entry.kind}
-                </span>
-                <span className="queue-pressure-diagnostics__trace-detail">
-                  {entry.detail}
-                </span>
+                <span className="queue-pressure-diagnostics__trace-kind">{entry.kind}</span>
+                <span className="queue-pressure-diagnostics__trace-detail">{entry.detail}</span>
               </li>
             ))}
           </ul>

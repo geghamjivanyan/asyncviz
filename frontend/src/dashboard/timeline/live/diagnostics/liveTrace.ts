@@ -5,13 +5,7 @@
 const CAPACITY = 256;
 
 export type LiveTraceKind =
-  | "envelope"
-  | "invalidate"
-  | "flush"
-  | "replay"
-  | "active-tick"
-  | "mode-change"
-  | "frame-request";
+  "envelope" | "invalidate" | "flush" | "replay" | "active-tick" | "mode-change" | "frame-request";
 
 export interface LiveTraceEntry {
   kind: LiveTraceKind;

@@ -73,11 +73,9 @@ describe("TimelineDeltaProcessor", () => {
   it("suppresses envelopes whose sequence is at or before lastAppliedSequence", () => {
     const proc = new TimelineDeltaProcessor();
     const tracker = new TimelineInvalidationTracker();
-    const result = proc.process(
-      makeRuntimeEventEnvelope(5, "t1"),
-      tracker,
-      { lastAppliedSequence: 10 },
-    );
+    const result = proc.process(makeRuntimeEventEnvelope(5, "t1"), tracker, {
+      lastAppliedSequence: 10,
+    });
     expect(result.suppressed).toBe(true);
     expect(result.suppressionReason).toBe("stale");
     expect(tracker.isDirty()).toBe(false);

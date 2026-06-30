@@ -8,14 +8,9 @@
 
 import { useCallback } from "react";
 import { TimelineContainer } from "@/dashboard/timeline";
-import {
-  TaskInspectorContainer,
-  useInspectorFocusBridge,
-} from "@/dashboard/inspector";
+import { TaskInspectorContainer, useInspectorFocusBridge } from "@/dashboard/inspector";
 import { useBlockingWarningStore } from "@/dashboard/warnings/blocking";
-import type {
-  FreezeRegionView,
-} from "@/dashboard/timeline/freeze_regions";
+import type { FreezeRegionView } from "@/dashboard/timeline/freeze_regions";
 
 export function TimelinePage() {
   const { actions, setActions } = useInspectorFocusBridge();

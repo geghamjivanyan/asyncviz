@@ -17,14 +17,10 @@
 import { useEffect, useMemo, useRef } from "react";
 import type { TimelineRenderer } from "@/dashboard/timeline/rendering/TimelineRenderer";
 import { FreezeRegionRenderer } from "@/dashboard/timeline/freeze_regions/FreezeRegionRenderer";
-import type {
-  FreezeRegionSource,
-} from "@/dashboard/timeline/freeze_regions/FreezeRegionRenderer";
+import type { FreezeRegionSource } from "@/dashboard/timeline/freeze_regions/FreezeRegionRenderer";
 import { useFreezeRegionStore } from "@/dashboard/timeline/freeze_regions/FreezeRegionStore";
 import { useFreezeRegionProjection } from "@/dashboard/timeline/freeze_regions/hooks/useFreezeRegionProjection";
-import {
-  recordFreezeRegionTrace,
-} from "@/dashboard/timeline/freeze_regions/diagnostics/FreezeRegionTracing";
+import { recordFreezeRegionTrace } from "@/dashboard/timeline/freeze_regions/diagnostics/FreezeRegionTracing";
 
 export interface UseFreezeRegionLayerOptions {
   /** When ``false``, skip the mount entirely. */

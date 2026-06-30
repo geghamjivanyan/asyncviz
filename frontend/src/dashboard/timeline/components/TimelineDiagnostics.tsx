@@ -11,10 +11,7 @@ import {
   getTimelineRendererMetrics,
   type TimelineRendererMetricsSnapshot,
 } from "@/dashboard/timeline/observability";
-import {
-  getTimelineRowMetrics,
-  type TimelineRowMetricsSnapshot,
-} from "@/dashboard/timeline/rows";
+import { getTimelineRowMetrics, type TimelineRowMetricsSnapshot } from "@/dashboard/timeline/rows";
 import {
   getTimelineSegmentMetrics,
   type TimelineSegmentMetricsSnapshot,
@@ -35,10 +32,7 @@ import {
   getTimelineZoomMetrics,
   type TimelineZoomMetricsSnapshot,
 } from "@/dashboard/timeline/zoom";
-import {
-  getTimelinePanMetrics,
-  type TimelinePanMetricsSnapshot,
-} from "@/dashboard/timeline/pan";
+import { getTimelinePanMetrics, type TimelinePanMetricsSnapshot } from "@/dashboard/timeline/pan";
 import {
   getTimelineSelectionMetrics,
   type TimelineSelectionMetricsSnapshot,
@@ -71,8 +65,8 @@ export function TimelineDiagnostics() {
   const [panSnapshot, setPanSnapshot] = useState<TimelinePanMetricsSnapshot>(() =>
     getTimelinePanMetrics().snapshot(),
   );
-  const [selectionSnapshot, setSelectionSnapshot] = useState<TimelineSelectionMetricsSnapshot>(
-    () => getTimelineSelectionMetrics().snapshot(),
+  const [selectionSnapshot, setSelectionSnapshot] = useState<TimelineSelectionMetricsSnapshot>(() =>
+    getTimelineSelectionMetrics().snapshot(),
   );
   useEffect(() => {
     const handle = window.setInterval(() => {

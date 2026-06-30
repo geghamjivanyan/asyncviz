@@ -19,10 +19,7 @@ export interface AnchorResolveContext {
 }
 
 /** Pure: resolve any :type:`ZoomAnchor` to a single world-time pivot. */
-export function resolveAnchorTime(
-  anchor: ZoomAnchor,
-  context: AnchorResolveContext,
-): number {
+export function resolveAnchorTime(anchor: ZoomAnchor, context: AnchorResolveContext): number {
   const { scale, cursorTimeSeconds } = context;
   switch (anchor.kind) {
     case "time":

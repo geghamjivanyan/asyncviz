@@ -5,12 +5,7 @@
  * surface: deterministic, prefix-tagged, allocation-light.
  */
 
-export type CacheNamespace =
-  | "geometry"
-  | "projection"
-  | "text"
-  | "overlay"
-  | "replay";
+export type CacheNamespace = "geometry" | "projection" | "text" | "overlay" | "replay";
 
 /** Deterministic string key — namespace plus stable identifier. */
 export function makeCacheKey(namespace: CacheNamespace, identity: string): string {

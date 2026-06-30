@@ -28,8 +28,8 @@ export function BlockingWarningsDiagnostics() {
   const status = useBlockingWarningStore((s) => s.status);
   const lastSequence = useBlockingWarningStore((s) => s.lastSequence);
 
-  const [panelStats, setPanelStats] = useState<BlockingWarningPanelMetricsSnapshot>(
-    () => getBlockingWarningPanelMetrics().snapshot(),
+  const [panelStats, setPanelStats] = useState<BlockingWarningPanelMetricsSnapshot>(() =>
+    getBlockingWarningPanelMetrics().snapshot(),
   );
   const [trace, setTrace] = useState<readonly BlockingWarningTraceEntry[]>(() =>
     getBlockingWarningTraceSnapshot(),
@@ -54,9 +54,7 @@ export function BlockingWarningsDiagnostics() {
 
   return (
     <div data-testid="blocking-warnings-diagnostics" className="flex flex-col gap-2">
-      <h2 className="font-mono text-xs uppercase tracking-widest text-subtle">
-        Blocking Warnings
-      </h2>
+      <h2 className="font-mono text-xs uppercase tracking-widest text-subtle">Blocking Warnings</h2>
       <dl className="grid grid-cols-[max-content_1fr] gap-x-3 gap-y-1 font-mono text-xs">
         <dt className="text-muted">status</dt>
         <dd className="text-text">{status}</dd>
@@ -104,10 +102,7 @@ export function BlockingWarningsDiagnostics() {
           data-testid="blocking-warnings-trace-list"
         >
           {trace.slice(-MAX_TRACE_ROWS).map((entry, index) => (
-            <li
-              key={`${entry.atMs}-${index}`}
-              className="flex items-center gap-2"
-            >
+            <li key={`${entry.atMs}-${index}`} className="flex items-center gap-2">
               <span className="text-subtle">{entry.atMs.toFixed(0)} ms</span>
               <span className="text-text">{entry.kind}</span>
               <span className="text-subtle truncate">{entry.detail}</span>

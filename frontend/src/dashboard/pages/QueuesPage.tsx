@@ -88,15 +88,18 @@ export function QueuesPage(): JSX.Element {
               value={String(summary.calm)}
               intent={summary.calm > 0 ? "success" : "default"}
             />
-            <SummaryCell
-              label="Avg occupancy"
-              value={formatPercent(summary.avgOccupancy)}
-            />
+            <SummaryCell label="Avg occupancy" value={formatPercent(summary.avgOccupancy)} />
             <SummaryCell
               label="Highest pressure"
               value={summary.maxPressure.toFixed(2)}
               sub={summary.maxPressureName !== null ? summary.maxPressureName : undefined}
-              intent={summary.maxPressure >= 0.7 ? "danger" : summary.maxPressure >= 0.4 ? "warning" : "default"}
+              intent={
+                summary.maxPressure >= 0.7
+                  ? "danger"
+                  : summary.maxPressure >= 0.4
+                    ? "warning"
+                    : "default"
+              }
             />
           </div>
         ) : (
@@ -213,10 +216,7 @@ function QueueCard({ view, selected, onSelect }: QueueCardProps): JSX.Element {
     <Card
       padding="sm"
       intent={intent}
-      className={cn(
-        "flex flex-col gap-3 transition-colors",
-        selected ? "ring-1 ring-accent" : "",
-      )}
+      className={cn("flex flex-col gap-3 transition-colors", selected ? "ring-1 ring-accent" : "")}
       data-queue-id={view.queueId}
       data-severity={view.severity}
       data-selected={selected ? "true" : undefined}
@@ -322,15 +322,7 @@ function OccupancyBar({
   );
 }
 
-function Metric({
-  label,
-  value,
-  intent,
-}: {
-  label: string;
-  value: string;
-  intent?: Intent;
-}) {
+function Metric({ label, value, intent }: { label: string; value: string; intent?: Intent }) {
   const valueColor =
     intent === "danger"
       ? "text-danger"

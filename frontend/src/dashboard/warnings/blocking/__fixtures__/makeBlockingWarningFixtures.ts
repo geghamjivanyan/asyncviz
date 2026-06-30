@@ -36,8 +36,7 @@ export function makeGroup(
 ): BlockingWarningGroupModel {
   const first_seen_ns = overrides.first_seen_ns ?? 1_000 * NS_PER_MS;
   const last_seen_ns = overrides.last_seen_ns ?? 2_500 * NS_PER_MS;
-  const freeze_duration_ns =
-    overrides.freeze_duration_ns ?? last_seen_ns - first_seen_ns;
+  const freeze_duration_ns = overrides.freeze_duration_ns ?? last_seen_ns - first_seen_ns;
   return {
     group_id: "grp-1",
     warning_id: "wrn-1",

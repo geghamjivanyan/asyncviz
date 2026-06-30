@@ -23,9 +23,7 @@ describe("<SemaphoreContentionOverlay />", () => {
       viewportWidth: 200,
     });
     render(<SemaphoreContentionOverlay frame={frame} heightPx={20} />);
-    expect(
-      screen.getAllByTestId("semaphore-contention-overlay-marker"),
-    ).toHaveLength(3);
+    expect(screen.getAllByTestId("semaphore-contention-overlay-marker")).toHaveLength(3);
   });
 
   it("invokes onActivate with marker id + semaphore id", async () => {
@@ -36,13 +34,7 @@ describe("<SemaphoreContentionOverlay />", () => {
       endNs: 1000,
       viewportWidth: 200,
     });
-    render(
-      <SemaphoreContentionOverlay
-        frame={frame}
-        heightPx={20}
-        onActivate={onActivate}
-      />,
-    );
+    render(<SemaphoreContentionOverlay frame={frame} heightPx={20} onActivate={onActivate} />);
     const user = userEvent.setup();
     await user.click(screen.getByTestId("semaphore-contention-overlay-marker"));
     expect(onActivate).toHaveBeenCalledWith("a", "s-a");
@@ -58,9 +50,9 @@ describe("<SemaphoreContentionOverlay />", () => {
       maxMarkers: 5,
     });
     render(<SemaphoreContentionOverlay frame={frame} heightPx={20} />);
-    expect(
-      screen.getByTestId("semaphore-contention-overlay-overflow"),
-    ).toHaveTextContent(/\+15 more/);
+    expect(screen.getByTestId("semaphore-contention-overlay-overflow")).toHaveTextContent(
+      /\+15 more/,
+    );
   });
 
   it("hides itself when empty and hideWhenEmpty is set", () => {

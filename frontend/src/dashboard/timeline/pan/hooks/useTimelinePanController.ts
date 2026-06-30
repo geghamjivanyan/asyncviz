@@ -9,8 +9,7 @@ import {
 } from "@/dashboard/timeline/pan/TimelinePanController";
 import type { TimelinePanState } from "@/dashboard/timeline/pan/models/TimelinePanModels";
 
-export interface UseTimelinePanControllerArgs
-  extends Omit<TimelinePanControllerOptions, "engine"> {
+export interface UseTimelinePanControllerArgs extends Omit<TimelinePanControllerOptions, "engine"> {
   engine: TimelinePanControllerOptions["engine"] | null;
 }
 

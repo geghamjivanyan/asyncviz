@@ -136,15 +136,9 @@ export interface WebSocketReplayEngineBridgeOptions {
 export class WebSocketReplayEngineBridge implements ReplayEngineBridge {
   private _window: ReplaySessionWindow = EMPTY_WINDOW;
   private _playback: ReplayPlaybackSnapshot = EMPTY_PLAYBACK;
-  private readonly _playbackListeners = new Set<
-    (snapshot: ReplayPlaybackSnapshot) => void
-  >();
-  private readonly _markerListeners = new Set<
-    (marker: ReplayTimelineMarker) => void
-  >();
-  private readonly _bookmarkListeners = new Set<
-    (bookmarks: readonly ReplayBookmark[]) => void
-  >();
+  private readonly _playbackListeners = new Set<(snapshot: ReplayPlaybackSnapshot) => void>();
+  private readonly _markerListeners = new Set<(marker: ReplayTimelineMarker) => void>();
+  private readonly _bookmarkListeners = new Set<(bookmarks: readonly ReplayBookmark[]) => void>();
   /** Marker ids already pushed to listeners — the broadcaster ships
    *  the full marker array on every replay_status envelope (~2 Hz) so
    *  consumers don't miss anything after a websocket reconnect, but
@@ -158,9 +152,8 @@ export class WebSocketReplayEngineBridge implements ReplayEngineBridge {
   private readonly _subscription: { unsubscribe: () => void };
 
   constructor(options: WebSocketReplayEngineBridgeOptions) {
-    this._subscription = options.client.subscribe(
-      "replay_status",
-      (envelope) => this._onReplayStatus(envelope),
+    this._subscription = options.client.subscribe("replay_status", (envelope) =>
+      this._onReplayStatus(envelope),
     );
   }
 
@@ -173,18 +166,14 @@ export class WebSocketReplayEngineBridge implements ReplayEngineBridge {
     return this._playback;
   }
 
-  subscribePlayback(
-    listener: (snapshot: ReplayPlaybackSnapshot) => void,
-  ): ReplayEngineUnsubscribe {
+  subscribePlayback(listener: (snapshot: ReplayPlaybackSnapshot) => void): ReplayEngineUnsubscribe {
     this._playbackListeners.add(listener);
     return () => {
       this._playbackListeners.delete(listener);
     };
   }
 
-  subscribeMarkers(
-    listener: (marker: ReplayTimelineMarker) => void,
-  ): ReplayEngineUnsubscribe {
+  subscribeMarkers(listener: (marker: ReplayTimelineMarker) => void): ReplayEngineUnsubscribe {
     this._markerListeners.add(listener);
     return () => {
       this._markerListeners.delete(listener);
@@ -293,33 +282,35 @@ export class WebSocketReplayEngineBridge implements ReplayEngineBridge {
   private _coerceMarker(raw: WireMarker | null | undefined): ReplayTimelineMarker | null {
     if (raw === null || typeof raw !== "object") return null;
     const id = typeof raw.id === "string" ? raw.id : null;
-    const kind = typeof raw.kind === "string" && KNOWN_MARKER_KINDS.has(raw.kind as ReplayMarkerKind)
-      ? (raw.kind as ReplayMarkerKind)
-      : null;
-    const severity = typeof raw.severity === "string"
-      && KNOWN_SEVERITIES.has(raw.severity as ReplayMarkerSeverity)
-      ? (raw.severity as ReplayMarkerSeverity)
-      : null;
-    const sequence = typeof raw.sequence === "number" && Number.isFinite(raw.sequence)
-      ? Math.trunc(raw.sequence)
-      : null;
-    const monotonicNs = typeof raw.monotonic_ns === "number" && Number.isFinite(raw.monotonic_ns)
-      ? Math.trunc(raw.monotonic_ns)
-      : null;
+    const kind =
+      typeof raw.kind === "string" && KNOWN_MARKER_KINDS.has(raw.kind as ReplayMarkerKind)
+        ? (raw.kind as ReplayMarkerKind)
+        : null;
+    const severity =
+      typeof raw.severity === "string" && KNOWN_SEVERITIES.has(raw.severity as ReplayMarkerSeverity)
+        ? (raw.severity as ReplayMarkerSeverity)
+        : null;
+    const sequence =
+      typeof raw.sequence === "number" && Number.isFinite(raw.sequence)
+        ? Math.trunc(raw.sequence)
+        : null;
+    const monotonicNs =
+      typeof raw.monotonic_ns === "number" && Number.isFinite(raw.monotonic_ns)
+        ? Math.trunc(raw.monotonic_ns)
+        : null;
     const label = typeof raw.label === "string" ? raw.label : null;
     if (
-      id === null
-      || kind === null
-      || severity === null
-      || sequence === null
-      || monotonicNs === null
-      || label === null
+      id === null ||
+      kind === null ||
+      severity === null ||
+      sequence === null ||
+      monotonicNs === null ||
+      label === null
     ) {
       return null;
     }
-    const description = typeof raw.description === "string" && raw.description !== ""
-      ? raw.description
-      : undefined;
+    const description =
+      typeof raw.description === "string" && raw.description !== "" ? raw.description : undefined;
     return { id, kind, severity, sequence, monotonicNs, label, description };
   }
 
@@ -327,25 +318,26 @@ export class WebSocketReplayEngineBridge implements ReplayEngineBridge {
     if (raw === null || typeof raw !== "object") return null;
     const id = typeof raw.id === "string" ? raw.id : null;
     const label = typeof raw.label === "string" ? raw.label : null;
-    const sequence = typeof raw.sequence === "number" && Number.isFinite(raw.sequence)
-      ? Math.trunc(raw.sequence)
-      : null;
-    const monotonicNs = typeof raw.monotonic_ns === "number" && Number.isFinite(raw.monotonic_ns)
-      ? Math.trunc(raw.monotonic_ns)
-      : null;
+    const sequence =
+      typeof raw.sequence === "number" && Number.isFinite(raw.sequence)
+        ? Math.trunc(raw.sequence)
+        : null;
+    const monotonicNs =
+      typeof raw.monotonic_ns === "number" && Number.isFinite(raw.monotonic_ns)
+        ? Math.trunc(raw.monotonic_ns)
+        : null;
     if (id === null || label === null || sequence === null || monotonicNs === null) {
       return null;
     }
-    const createdAtMs = typeof raw.created_at_ms === "number" && Number.isFinite(raw.created_at_ms)
-      ? Math.trunc(raw.created_at_ms)
-      : 0;
+    const createdAtMs =
+      typeof raw.created_at_ms === "number" && Number.isFinite(raw.created_at_ms)
+        ? Math.trunc(raw.created_at_ms)
+        : 0;
     const note = typeof raw.note === "string" && raw.note !== "" ? raw.note : undefined;
     return { id, label, sequence, monotonicNs, note, createdAtMs };
   }
 
-  private _coerceWindow(
-    raw: ReplayStatusPayload["window"],
-  ): ReplaySessionWindow | null {
+  private _coerceWindow(raw: ReplayStatusPayload["window"]): ReplaySessionWindow | null {
     if (raw === undefined) return null;
     const minSequence = toInt(raw.min_sequence, this._window.minSequence);
     const maxSequence = toInt(raw.max_sequence, this._window.maxSequence);
@@ -359,9 +351,7 @@ export class WebSocketReplayEngineBridge implements ReplayEngineBridge {
     };
   }
 
-  private _coercePlayback(
-    raw: ReplayStatusPayload["playback"],
-  ): ReplayPlaybackSnapshot | null {
+  private _coercePlayback(raw: ReplayStatusPayload["playback"]): ReplayPlaybackSnapshot | null {
     if (raw === undefined) return null;
     const state = this._coerceState(raw.state);
     return {
@@ -371,9 +361,10 @@ export class WebSocketReplayEngineBridge implements ReplayEngineBridge {
       lastMonotonicNs: toInt(raw.last_monotonic_ns, this._playback.lastMonotonicNs),
       framesDispatched: toInt(raw.frames_dispatched, this._playback.framesDispatched),
       paused: toBool(raw.paused, this._playback.paused),
-      errorDetail: typeof raw.error_detail === "string" && raw.error_detail !== ""
-        ? raw.error_detail
-        : undefined,
+      errorDetail:
+        typeof raw.error_detail === "string" && raw.error_detail !== ""
+          ? raw.error_detail
+          : undefined,
     };
   }
 
@@ -386,7 +377,6 @@ export class WebSocketReplayEngineBridge implements ReplayEngineBridge {
 }
 
 // ── tiny coercion helpers ──────────────────────────────────────────────
-
 
 function toInt(value: unknown, fallback: number): number {
   if (typeof value !== "number" || !Number.isFinite(value)) return fallback;

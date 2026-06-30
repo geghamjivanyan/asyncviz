@@ -17,10 +17,10 @@ export function nodeAt(
 ): LaidNode | null {
   for (const laid of laidNodes) {
     if (
-      pointerX >= laid.x
-      && pointerX <= laid.x + laid.width
-      && pointerY >= laid.y
-      && pointerY <= laid.y + laid.height
+      pointerX >= laid.x &&
+      pointerX <= laid.x + laid.width &&
+      pointerY >= laid.y &&
+      pointerY <= laid.y + laid.height
     ) {
       return laid;
     }

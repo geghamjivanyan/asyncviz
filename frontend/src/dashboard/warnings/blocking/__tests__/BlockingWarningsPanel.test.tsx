@@ -4,16 +4,18 @@ import userEvent from "@testing-library/user-event";
 import { ConfigProvider } from "@/app/providers/ConfigProvider";
 import { createTestConfig } from "@/app/configuration/runtimeConfig";
 import { BlockingWarningsPanel } from "@/dashboard/warnings/blocking/BlockingWarningsPanel";
-import { bucketViews, projectGroup, summarize } from "@/dashboard/warnings/blocking/selectors/BlockingWarningSelectors";
+import {
+  bucketViews,
+  projectGroup,
+  summarize,
+} from "@/dashboard/warnings/blocking/selectors/BlockingWarningSelectors";
 import {
   makeGroup,
   makeMetrics,
   makeStatistics,
 } from "@/dashboard/warnings/blocking/__fixtures__/makeBlockingWarningFixtures";
 
-function renderPanel(
-  overrides: Partial<React.ComponentProps<typeof BlockingWarningsPanel>> = {},
-) {
+function renderPanel(overrides: Partial<React.ComponentProps<typeof BlockingWarningsPanel>> = {}) {
   const active = projectGroup(makeGroup({ group_id: "active-1" }));
   const recent = projectGroup(
     makeGroup({
@@ -49,12 +51,8 @@ describe("BlockingWarningsPanel", () => {
     expect(screen.getByTestId("blocking-warnings-panel")).toBeInTheDocument();
     expect(screen.getAllByTestId("blocking-warnings-card-list").length).toBe(2);
     expect(screen.getByText(/Blocking Warnings/i)).toBeInTheDocument();
-    expect(
-      screen.getByTestId("blocking-warning-card-active-1"),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByTestId("blocking-warning-card-recent-1"),
-    ).toBeInTheDocument();
+    expect(screen.getByTestId("blocking-warning-card-active-1")).toBeInTheDocument();
+    expect(screen.getByTestId("blocking-warning-card-recent-1")).toBeInTheDocument();
   });
 
   it("renders an empty state when there are no warnings", () => {
@@ -85,9 +83,7 @@ describe("BlockingWarningsPanel", () => {
     const user = userEvent.setup();
     const handler = vi.fn();
     renderPanel({ onSelectGroup: handler });
-    await user.click(
-      screen.getByTestId("blocking-warning-card-toggle-active-1"),
-    );
+    await user.click(screen.getByTestId("blocking-warning-card-toggle-active-1"));
     expect(handler).toHaveBeenCalledWith("active-1");
   });
 
@@ -108,15 +104,13 @@ describe("BlockingWarningsPanel", () => {
       filteredCounts: counts,
       activeVisibleCap: 2,
     });
-    expect(screen.getByTestId("blocking-warnings-truncated")).toHaveTextContent(
-      /\+ 1 more hidden/,
-    );
+    expect(screen.getByTestId("blocking-warnings-truncated")).toHaveTextContent(/\+ 1 more hidden/);
   });
 
   it("uses a filtered announcement when filterMode != 'all'", () => {
     renderPanel({ filterMode: "freeze-only" });
-    expect(
-      screen.getByTestId("blocking-warnings-announcement"),
-    ).toHaveTextContent(/filtered view/i);
+    expect(screen.getByTestId("blocking-warnings-announcement")).toHaveTextContent(
+      /filtered view/i,
+    );
   });
 });

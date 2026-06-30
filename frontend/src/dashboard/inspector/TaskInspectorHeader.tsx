@@ -6,10 +6,7 @@
 import { memo } from "react";
 import { Badge } from "@/ui/primitives/Badge";
 import { cn } from "@/lib/cn";
-import {
-  formatLifecycleState,
-  shortenIdentifier,
-} from "@/dashboard/inspector/utils/formatting";
+import { formatLifecycleState, shortenIdentifier } from "@/dashboard/inspector/utils/formatting";
 import type { TaskInspection } from "@/dashboard/inspector/models/TaskInspectionModels";
 
 export interface TaskInspectorHeaderProps {
@@ -33,10 +30,7 @@ function TaskInspectorHeaderImpl({
   return (
     <header
       data-task-inspector-header="true"
-      className={cn(
-        "flex flex-col gap-2 border-b border-line bg-panel px-3 py-2",
-        className,
-      )}
+      className={cn("flex flex-col gap-2 border-b border-line bg-panel px-3 py-2", className)}
     >
       <div className="flex items-center gap-2">
         <h2 className="truncate font-mono text-sm text-text" title={task.task_id}>

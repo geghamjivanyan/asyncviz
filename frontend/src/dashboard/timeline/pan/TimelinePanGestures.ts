@@ -14,10 +14,7 @@ import {
 /** Pure: convert a pixel-space drag delta to a world-time delta.
  *  ``deltaXPx > 0`` means the pointer moved right; the viewport
  *  should move *left* (i.e. ``timeStart`` decreases). */
-export function dragDeltaToSeconds(
-  deltaXPx: number,
-  secondsPerPixel: number,
-): number {
+export function dragDeltaToSeconds(deltaXPx: number, secondsPerPixel: number): number {
   if (!Number.isFinite(deltaXPx) || !Number.isFinite(secondsPerPixel)) return 0;
   if (deltaXPx === 0 || secondsPerPixel === 0) return 0;
   return -deltaXPx * secondsPerPixel;
@@ -36,8 +33,7 @@ export function wheelToPanSeconds(
   if (secondsPerPixel === 0) return 0;
   // ``wheelSecondsPerPixel`` falls back to the natural scale when
   // unset (zero or non-positive) so trackpad pans feel 1:1.
-  const scale =
-    config.wheelSecondsPerPixel > 0 ? config.wheelSecondsPerPixel : secondsPerPixel;
+  const scale = config.wheelSecondsPerPixel > 0 ? config.wheelSecondsPerPixel : secondsPerPixel;
   return deltaXPx * scale;
 }
 

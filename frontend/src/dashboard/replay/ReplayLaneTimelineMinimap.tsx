@@ -82,21 +82,12 @@ export const ReplayLaneTimelineMinimap = memo(function ReplayLaneTimelineMinimap
   }, [markers, window, width, span]);
 
   const cursorFraction =
-    span > 0
-      ? Math.max(0, Math.min(1, (playback.lastSequence - window.minSequence) / span))
-      : 0;
+    span > 0 ? Math.max(0, Math.min(1, (playback.lastSequence - window.minSequence) / span)) : 0;
   const visibleStartFraction =
-    span > 0
-      ? Math.max(0, Math.min(1, (visibleStartSequence - window.minSequence) / span))
-      : 0;
+    span > 0 ? Math.max(0, Math.min(1, (visibleStartSequence - window.minSequence) / span)) : 0;
   const visibleEndFraction =
-    span > 0
-      ? Math.max(0, Math.min(1, (visibleEndSequence - window.minSequence) / span))
-      : 1;
-  const visibleWidthFraction = Math.max(
-    0.01,
-    visibleEndFraction - visibleStartFraction,
-  );
+    span > 0 ? Math.max(0, Math.min(1, (visibleEndSequence - window.minSequence) / span)) : 1;
+  const visibleWidthFraction = Math.max(0.01, visibleEndFraction - visibleStartFraction);
 
   const sequenceFromClientX = useCallback(
     (clientX: number): number => {
@@ -119,8 +110,7 @@ export const ReplayLaneTimelineMinimap = memo(function ReplayLaneTimelineMinimap
       if (node === null) return;
       const bounds = node.getBoundingClientRect();
       const fraction = (event.clientX - bounds.left) / Math.max(1, bounds.width);
-      const inViewport =
-        fraction >= visibleStartFraction && fraction <= visibleEndFraction;
+      const inViewport = fraction >= visibleStartFraction && fraction <= visibleEndFraction;
       if (inViewport) {
         event.currentTarget.setPointerCapture(event.pointerId);
         setDragging({
@@ -170,13 +160,8 @@ export const ReplayLaneTimelineMinimap = memo(function ReplayLaneTimelineMinimap
       );
       const visibleSpan = visibleEndSequence - visibleStartSequence;
       let newStartFraction = fraction - dragging.grabFraction;
-      newStartFraction = Math.max(
-        0,
-        Math.min(1 - visibleWidthFraction, newStartFraction),
-      );
-      const newStart = Math.round(
-        window.minSequence + newStartFraction * span,
-      );
+      newStartFraction = Math.max(0, Math.min(1 - visibleWidthFraction, newStartFraction));
+      const newStart = Math.round(window.minSequence + newStartFraction * span);
       const newEnd = Math.min(window.maxSequence, newStart + visibleSpan);
       onViewportChange(newStart, newEnd);
     },
@@ -246,8 +231,7 @@ export const ReplayLaneTimelineMinimap = memo(function ReplayLaneTimelineMinimap
         })}
         {bookmarks.length > 0 &&
           bookmarks.map((b) => {
-            const f =
-              span > 0 ? (b.sequence - window.minSequence) / span : 0;
+            const f = span > 0 ? (b.sequence - window.minSequence) / span : 0;
             const x = Math.round(Math.max(0, Math.min(1, f)) * Math.max(1, width));
             return (
               <rect

@@ -131,11 +131,7 @@ function beginRegionClip(ctx: CanvasRenderingContext2D, region: DirtyRegion): vo
   ctx.clip();
 }
 
-function clampRegion(
-  region: DirtyRegion,
-  cssWidth: number,
-  cssHeight: number,
-): DirtyRegion | null {
+function clampRegion(region: DirtyRegion, cssWidth: number, cssHeight: number): DirtyRegion | null {
   const x = Math.max(0, region.x);
   const y = Math.max(0, region.y);
   const right = Math.min(cssWidth, region.x + region.width);

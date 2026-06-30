@@ -31,7 +31,6 @@ export function buildReplayTimelineDiagnostics(
     stats,
     metrics: getReplayTimelineMetricsSnapshot(),
     traceEnabled: isReplayTimelineTraceEnabled(),
-    recentTrace:
-      traceLimit > 0 ? fullTrace.slice(-traceLimit) : fullTrace,
+    recentTrace: traceLimit > 0 ? fullTrace.slice(-traceLimit) : fullTrace,
   };
 }

@@ -4,9 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { renderWithProviders } from "@/test/render";
 import { BlockingWarningsContainer } from "@/dashboard/warnings/blocking/BlockingWarningsContainer";
 import { useBlockingWarningStore } from "@/dashboard/warnings/blocking/BlockingWarningStore";
-import {
-  injectBlockingWarningEvent,
-} from "@/dashboard/warnings/blocking/hooks/useBlockingWarningLiveUpdates";
+import { injectBlockingWarningEvent } from "@/dashboard/warnings/blocking/hooks/useBlockingWarningLiveUpdates";
 import { resetBlockingWarningPanelMetrics } from "@/dashboard/warnings/blocking/diagnostics/BlockingWarningMetricsCollector";
 import {
   makeEvent,
@@ -24,22 +22,14 @@ beforeEach(() => {
 describe("BlockingWarningsContainer", () => {
   it("renders panel header and reflects pre-seeded store state", () => {
     useBlockingWarningStore.getState().hydrateSnapshot(makeSnapshot());
-    renderWithProviders(
-      <BlockingWarningsContainer disableHydration disableLiveUpdates />,
-    );
+    renderWithProviders(<BlockingWarningsContainer disableHydration disableLiveUpdates />);
     expect(screen.getByTestId("blocking-warnings-panel")).toBeInTheDocument();
-    expect(
-      screen.getByTestId("blocking-warning-card-grp-1"),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByTestId("blocking-warning-card-grp-2"),
-    ).toBeInTheDocument();
+    expect(screen.getByTestId("blocking-warning-card-grp-1")).toBeInTheDocument();
+    expect(screen.getByTestId("blocking-warning-card-grp-2")).toBeInTheDocument();
   });
 
   it("reconciles a live opened event into the active bucket", () => {
-    renderWithProviders(
-      <BlockingWarningsContainer disableHydration disableLiveUpdates={false} />,
-    );
+    renderWithProviders(<BlockingWarningsContainer disableHydration disableLiveUpdates={false} />);
     act(() => {
       injectBlockingWarningEvent(
         makeEvent({
@@ -51,9 +41,7 @@ describe("BlockingWarningsContainer", () => {
         }),
       );
     });
-    expect(
-      screen.getByTestId("blocking-warning-card-live-1"),
-    ).toBeInTheDocument();
+    expect(screen.getByTestId("blocking-warning-card-live-1")).toBeInTheDocument();
   });
 
   it("invokes onRevealTask when a task link is clicked", async () => {
@@ -69,11 +57,7 @@ describe("BlockingWarningsContainer", () => {
     useBlockingWarningStore.getState().setSelectedGroup("g1");
     const onRevealTask = vi.fn();
     renderWithProviders(
-      <BlockingWarningsContainer
-        disableHydration
-        disableLiveUpdates
-        onRevealTask={onRevealTask}
-      />,
+      <BlockingWarningsContainer disableHydration disableLiveUpdates onRevealTask={onRevealTask} />,
     );
     await user.click(screen.getByTestId("blocking-warning-task-link"));
     expect(onRevealTask).toHaveBeenCalledWith("t1");

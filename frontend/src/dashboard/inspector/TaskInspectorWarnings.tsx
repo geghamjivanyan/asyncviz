@@ -26,9 +26,7 @@ function TaskInspectorWarningsImpl({ inspection, className }: TaskInspectorWarni
     >
       <header className="flex items-center justify-between">
         <h3 className="font-mono text-xs uppercase tracking-widest text-muted">Warnings</h3>
-        {w.count > 0 ? (
-          <Badge intent={severityIntent(w.highestSeverity)}>{w.count}</Badge>
-        ) : null}
+        {w.count > 0 ? <Badge intent={severityIntent(w.highestSeverity)}>{w.count}</Badge> : null}
       </header>
       {w.active.length === 0 ? (
         <p className="text-[11px] text-subtle">No active warnings.</p>

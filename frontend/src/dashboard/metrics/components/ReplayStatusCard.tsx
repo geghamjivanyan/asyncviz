@@ -26,9 +26,7 @@ function ReplayStatusCardImpl({ replay }: ReplayStatusCardProps) {
   const oldest = formatSequence(replay.oldestRetainedSequence);
   const newest = formatSequence(replay.newestRetainedSequence);
   const hasRange = replay.oldestRetainedSequence !== null && replay.newestRetainedSequence !== null;
-  const detail = hasRange
-    ? `Buffered events #${oldest}–#${newest}`
-    : "No events buffered yet";
+  const detail = hasRange ? `Buffered events #${oldest}–#${newest}` : "No events buffered yet";
   return (
     <MetricsCard
       id="replay-status"

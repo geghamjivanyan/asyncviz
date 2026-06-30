@@ -35,10 +35,7 @@ export interface NormalizeViewportResult extends PrecisionGuardResult {
 export function normalizeViewport(args: NormalizeViewportArgs): NormalizeViewportResult {
   const guarded = guardScaleBounds(args.timeStart, args.timeEnd, args.constraints);
   const widthPx = snapToPixel(Math.max(1, args.widthPx), args.devicePixelRatio);
-  const nearPrecisionFloor = isNearPrecisionFloor(
-    guarded.timeEnd - guarded.timeStart,
-    widthPx,
-  );
+  const nearPrecisionFloor = isNearPrecisionFloor(guarded.timeEnd - guarded.timeStart, widthPx);
   return {
     ...guarded,
     widthPx,

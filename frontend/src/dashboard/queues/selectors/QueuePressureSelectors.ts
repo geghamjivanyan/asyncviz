@@ -17,7 +17,10 @@ import type {
 export function useQueueRecords(): ReadonlyArray<QueueMetricsRecord> {
   const recordsById = useQueuePressureStore((s) => s.recordsById);
   const queueIds = useQueuePressureStore((s) => s.queueIds);
-  return useMemo(() => queueIds.map((id) => recordsById[id]).filter(Boolean), [recordsById, queueIds]);
+  return useMemo(
+    () => queueIds.map((id) => recordsById[id]).filter(Boolean),
+    [recordsById, queueIds],
+  );
 }
 
 export function useQueuePressureViews(): ReadonlyArray<QueuePressureView> {
@@ -27,10 +30,7 @@ export function useQueuePressureViews(): ReadonlyArray<QueuePressureView> {
 
 export function useQueuePressureViewsBySeverity(): ReadonlyArray<QueuePressureView> {
   const records = useQueueRecords();
-  return useMemo(
-    () => projectQueuePressure({ records }).bySeverityDescending,
-    [records],
-  );
+  return useMemo(() => projectQueuePressure({ records }).bySeverityDescending, [records]);
 }
 
 export function useSelectedQueueView(): QueuePressureView | null {
