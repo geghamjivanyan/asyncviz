@@ -47,9 +47,7 @@ def generate_topology_storm(
             candidates = layers[layer - 1]
             if candidates:
                 count = min(fanout, len(candidates))
-                parents = tuple(
-                    rng.choice(candidates) for _ in range(count)
-                )
+                parents = tuple(rng.choice(candidates) for _ in range(count))
         nodes.append(TopologyNode(node_id=node_id, parent_ids=parents, depth=layer))
         layers[layer].append(node_id)
     return tuple(nodes)

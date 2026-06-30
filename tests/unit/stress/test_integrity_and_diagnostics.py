@@ -62,9 +62,7 @@ def test_assert_outcome_clean_raises() -> None:
 
 
 def test_violation_without_metric_flagged() -> None:
-    out = _outcome(violations=(
-        ScalabilityViolation(metric="", observed=0, limit=0, detail=""),
-    ))
+    out = _outcome(violations=(ScalabilityViolation(metric="", observed=0, limit=0, detail=""),))
     findings = check_outcome(out)
     assert any(f.kind == "violation-without-metric" for f in findings)
 

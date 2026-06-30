@@ -38,9 +38,7 @@ class LoopPolicyBridge:
     __slots__ = ("_baseline_policy", "_installed")
 
     def __init__(self) -> None:
-        self._baseline_policy: AbstractEventLoopPolicy | None = (
-            self._safe_current_policy()
-        )
+        self._baseline_policy: AbstractEventLoopPolicy | None = self._safe_current_policy()
         self._installed = False
 
     @property

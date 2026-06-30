@@ -49,11 +49,15 @@ async def test_engine_reducer_evolves_domain_state(
 
     reducers = ReducerRegistry()
     reducers.register(
-        "asyncio.task.created", domain_reducer("tasks", apply=task_reducer),
+        "asyncio.task.created",
+        domain_reducer("tasks", apply=task_reducer),
     )
     cfg = ReplayEngineConfig(playback_mode="as_fast_as_possible")
     async with ReplayRuntimeEngine(
-        loader=loader, config=cfg, sink=sink, reducers=reducers,
+        loader=loader,
+        config=cfg,
+        sink=sink,
+        reducers=reducers,
     ) as engine:
         await engine.play()
         await asyncio.wait_for(engine.wait_until_done(), timeout=5.0)

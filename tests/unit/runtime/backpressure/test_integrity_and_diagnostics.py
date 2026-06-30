@@ -16,15 +16,13 @@ from asyncviz.runtime.backpressure import (
 
 def test_check_state_transition_allows_upgrade_skips() -> None:
     # Upgrades may skip tiers.
-    assert (
-        check_state_transition(OverloadState.NORMAL, OverloadState.EMERGENCY)
-        is None
-    )
+    assert check_state_transition(OverloadState.NORMAL, OverloadState.EMERGENCY) is None
 
 
 def test_check_state_transition_rejects_downgrade_skips() -> None:
     violation = check_state_transition(
-        OverloadState.EMERGENCY, OverloadState.NORMAL,
+        OverloadState.EMERGENCY,
+        OverloadState.NORMAL,
     )
     assert violation is not None
     assert violation.kind == "downgrade_skip"

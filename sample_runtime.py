@@ -221,9 +221,7 @@ async def consumer(
             except TimeoutError:
                 continue
             try:
-                processing_seconds = (
-                    rng.uniform(0.15, 0.35) if slow else rng.uniform(0.02, 0.10)
-                )
+                processing_seconds = rng.uniform(0.15, 0.35) if slow else rng.uniform(0.02, 0.10)
                 await asyncio.sleep(processing_seconds)
                 processed += 1
                 if processed % 20 == 0:

@@ -130,7 +130,9 @@ class RecordingWriter:
                 return
             self._stop_event.clear()
             self._worker = threading.Thread(
-                target=self._worker_loop, name="asyncviz-recording-writer", daemon=True,
+                target=self._worker_loop,
+                name="asyncviz-recording-writer",
+                daemon=True,
             )
             self._worker.start()
             self._started = True

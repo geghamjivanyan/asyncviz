@@ -102,7 +102,8 @@ class _BoundaryCore:
     def _admit(self) -> None:
         now_ns = time.monotonic_ns()
         admitted = self._domain.allow_request(
-            payload_kind=self._payload_kind, now_ns=now_ns,
+            payload_kind=self._payload_kind,
+            now_ns=now_ns,
         )
         self._admitted = admitted
         if not admitted and not self._swallow_unavailable:
@@ -117,10 +118,7 @@ class _BoundaryCore:
                 self._domain.record_success()
             return False
         kind = classify_exception(exc)
-        if (
-            kind == FailureKind.CANCELLED
-            and not self._domain.policy.treat_cancelled_as_failure
-        ):
+        if kind == FailureKind.CANCELLED and not self._domain.policy.treat_cancelled_as_failure:
             # Cancellation is structural — don't penalize the
             # breaker. Propagate the exception.
             return False

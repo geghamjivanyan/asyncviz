@@ -21,7 +21,8 @@ def test_initial_state(controller: ReplaySpeedController) -> None:
 
 
 def test_set_speed_applies_to_clock(
-    controller: ReplaySpeedController, clock: ReplayClock,
+    controller: ReplaySpeedController,
+    clock: ReplayClock,
 ) -> None:
     result = controller.set_speed(2.0)
     assert result.applied_speed == 2.0

@@ -39,12 +39,12 @@ import random
 
 # ``asyncviz run`` executes the target via ``runpy.run_path`` — inject
 # the script's directory so the sibling ``_common`` module imports.
-import sys  # noqa: E402
-from pathlib import Path  # noqa: E402
+import sys
+from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from _common import (  # noqa: E402
+from _common import (
     add_common_args,
     cancel_all,
     common_from_namespace,
@@ -62,7 +62,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     add_common_args(parser)
-    parser.add_argument("--fanout-width", type=int, default=12, help="children per wide-fanout cycle")
+    parser.add_argument(
+        "--fanout-width",
+        type=int,
+        default=12,
+        help="children per wide-fanout cycle",
+    )
     parser.add_argument("--tree-branches", type=int, default=3, help="root → N branches")
     parser.add_argument("--tree-leaves", type=int, default=4, help="branch → M leaves")
     parser.add_argument(
@@ -182,10 +187,7 @@ async def sibling_await_cycle(rng: random.Random, iteration: int) -> None:
 
     results = await asyncio.gather(
         asyncio.create_task(producer(), name=f"sib{iteration}-producer"),
-        *(
-            asyncio.create_task(consumer(i), name=f"sib{iteration}-consumer-{i}")
-            for i in range(4)
-        ),
+        *(asyncio.create_task(consumer(i), name=f"sib{iteration}-consumer-{i}") for i in range(4)),
     )
     logger.info("sibling-await #%s complete (consumers got: %s)", iteration, results[1:])
 

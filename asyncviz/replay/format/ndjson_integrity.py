@@ -41,9 +41,12 @@ def verify_frame_digest(frame: ReplayFrame, expected: str) -> bool:
     On failure, the integrity metric is bumped + a trace is recorded.
     """
     actual = compute_frame_digest(frame)
-    ok = hashlib.sha256(actual.encode("ascii")).digest() == hashlib.sha256(
-        expected.encode("ascii"),
-    ).digest()
+    ok = (
+        hashlib.sha256(actual.encode("ascii")).digest()
+        == hashlib.sha256(
+            expected.encode("ascii"),
+        ).digest()
+    )
     if not ok:
         get_format_metrics().record_integrity_failure()
         record_ndjson_trace("integrity-failed", f"seq={frame.sequence} type={frame.frame_type}")

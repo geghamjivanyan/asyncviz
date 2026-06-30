@@ -94,8 +94,7 @@ def test_cors_env_parses_comma_separated_origins() -> None:
     config = resolve_config(
         env={
             "ASYNCVIZ_CORS_ALLOWED_ORIGINS": (
-                "http://app.example.com, https://admin.example.com,  "
-                "http://localhost:5173"
+                "http://app.example.com, https://admin.example.com,  http://localhost:5173"
             ),
         }
     )

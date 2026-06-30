@@ -46,8 +46,8 @@ def test_by_sequence_range_unbounded_above() -> None:
 def test_by_timestamp_range() -> None:
     f = by_timestamp_range(500, 800)
     assert not f(_frame(1))  # ts=100
-    assert f(_frame(5))      # ts=500
-    assert f(_frame(8))      # ts=800
+    assert f(_frame(5))  # ts=500
+    assert f(_frame(8))  # ts=800
     assert not f(_frame(9))  # ts=900
 
 
@@ -99,7 +99,7 @@ def test_replay_window_below_window_signals_skip() -> None:
 
 def test_replay_window_timestamp_form() -> None:
     w = ReplayWindow.for_timestamps(300, 700)
-    assert not w.contains(_frame(2))   # ts=200
-    assert w.contains(_frame(3))       # ts=300
-    assert w.contains(_frame(7))       # ts=700
-    assert not w.contains(_frame(8))   # ts=800
+    assert not w.contains(_frame(2))  # ts=200
+    assert w.contains(_frame(3))  # ts=300
+    assert w.contains(_frame(7))  # ts=700
+    assert not w.contains(_frame(8))  # ts=800

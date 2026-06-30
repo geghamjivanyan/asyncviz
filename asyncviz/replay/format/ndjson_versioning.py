@@ -63,9 +63,7 @@ def check_envelope_compatibility(envelope_version: int) -> CompatibilityVerdict:
             compatible=False,
             envelope_version=envelope_version,
             reader_version=SCHEMA_VERSION,
-            reason=(
-                f"too old; reader requires >= {MIN_READABLE_SCHEMA_VERSION}"
-            ),
+            reason=(f"too old; reader requires >= {MIN_READABLE_SCHEMA_VERSION}"),
         )
     if envelope_version > SCHEMA_VERSION:
         # Newer envelope — tolerate by best-effort decode, but flag
@@ -137,7 +135,9 @@ class MigrationRegistry:
         version = from_version
         while version < to_version:
             key = MigrationKey(
-                payload_type=payload_type, from_version=version, to_version=version + 1,
+                payload_type=payload_type,
+                from_version=version,
+                to_version=version + 1,
             )
             migration = steps.get(key)
             if migration is None:

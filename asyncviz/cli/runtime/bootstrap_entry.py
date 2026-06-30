@@ -277,8 +277,7 @@ def _install_lag_monitor_loop_discovery(runtime: object) -> object | None:
         lag_monitor = runtime.services.lag_monitor  # type: ignore[attr-defined]
     except AttributeError:
         print(
-            "asyncviz: lag monitor not available on runtime; "
-            "blocking warnings disabled",
+            "asyncviz: lag monitor not available on runtime; blocking warnings disabled",
             file=sys.stderr,
             flush=True,
         )
@@ -293,14 +292,12 @@ def _install_lag_monitor_loop_discovery(runtime: object) -> object | None:
         try:
             lag_monitor.bind_to_loop_threadsafe(loop)
             logger.info(
-                "lag monitor bound to user loop (id=%s); "
-                "blocking warnings now active",
+                "lag monitor bound to user loop (id=%s); blocking warnings now active",
                 id(loop),
             )
         except Exception:
             logger.exception(
-                "lag monitor failed to bind to user loop; "
-                "blocking warnings disabled for this run",
+                "lag monitor failed to bind to user loop; blocking warnings disabled for this run",
             )
 
     return install_main_thread_loop_discovery(_on_user_loop)
@@ -365,9 +362,7 @@ def _start_recording_from_env(
         queue_capacity=int(payload.get("queue_capacity", 16_384)),
         flush_interval_seconds=float(payload.get("flush_interval_seconds", 1.0)),
         include_event_types=(
-            tuple(payload["include_event_types"])
-            if payload.get("include_event_types")
-            else None
+            tuple(payload["include_event_types"]) if payload.get("include_event_types") else None
         ),
         exclude_event_types=tuple(payload.get("exclude_event_types", [])),
         metadata_overrides=tuple(

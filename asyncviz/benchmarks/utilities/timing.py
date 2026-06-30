@@ -19,9 +19,9 @@ from typing import Any
 class HighPrecisionTimer:
     """Context-managed perf timer.
 
-        with HighPrecisionTimer() as t:
-            do_work()
-        elapsed_ns = t.elapsed_ns
+    with HighPrecisionTimer() as t:
+        do_work()
+    elapsed_ns = t.elapsed_ns
     """
 
     started_ns: int = 0

@@ -40,18 +40,12 @@ def check_transition(
     if abs(transition.new_speed - observed_speed) > 1e-9:
         return SpeedIntegrityViolation(
             kind="speed_mismatch",
-            detail=(
-                f"transition.new_speed={transition.new_speed} "
-                f"!= observed={observed_speed}"
-            ),
+            detail=(f"transition.new_speed={transition.new_speed} != observed={observed_speed}"),
         )
     if not (min_speed <= transition.new_speed <= max_speed):
         return SpeedIntegrityViolation(
             kind="out_of_bounds",
-            detail=(
-                f"new_speed={transition.new_speed} outside "
-                f"[{min_speed}, {max_speed}]"
-            ),
+            detail=(f"new_speed={transition.new_speed} outside [{min_speed}, {max_speed}]"),
         )
     if transition.at_virtual_ns < previous_virtual_ns:
         return SpeedIntegrityViolation(

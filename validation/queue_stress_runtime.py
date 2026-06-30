@@ -37,16 +37,16 @@ import asyncio
 import contextlib
 import logging
 import random
-from dataclasses import dataclass
 
 # ``asyncviz run`` executes the target via ``runpy.run_path`` — inject
 # the script's directory so the sibling ``_common`` module imports.
-import sys  # noqa: E402
-from pathlib import Path  # noqa: E402
+import sys
+from dataclasses import dataclass
+from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from _common import (  # noqa: E402
+from _common import (
     add_common_args,
     cancel_all,
     common_from_namespace,
@@ -72,11 +72,51 @@ class QueueProfile:
 # Each profile targets one named instrumentation behavior; the
 # orchestrator runs all of them in parallel.
 PROFILES: tuple[QueueProfile, ...] = (
-    QueueProfile("oscillating", maxsize=8, producers=2, consumers=2, burst_every=10, burst_size=6, slow_consumer=True),
-    QueueProfile("saturating", maxsize=4, producers=3, consumers=1, burst_every=4, burst_size=12, slow_consumer=False),
-    QueueProfile("starving", maxsize=16, producers=1, consumers=4, burst_every=999, burst_size=0, slow_consumer=False),
-    QueueProfile("contended", maxsize=6, producers=2, consumers=3, burst_every=8, burst_size=8, slow_consumer=True),
-    QueueProfile("bursty", maxsize=10, producers=1, consumers=2, burst_every=3, burst_size=20, slow_consumer=False),
+    QueueProfile(
+        "oscillating",
+        maxsize=8,
+        producers=2,
+        consumers=2,
+        burst_every=10,
+        burst_size=6,
+        slow_consumer=True,
+    ),
+    QueueProfile(
+        "saturating",
+        maxsize=4,
+        producers=3,
+        consumers=1,
+        burst_every=4,
+        burst_size=12,
+        slow_consumer=False,
+    ),
+    QueueProfile(
+        "starving",
+        maxsize=16,
+        producers=1,
+        consumers=4,
+        burst_every=999,
+        burst_size=0,
+        slow_consumer=False,
+    ),
+    QueueProfile(
+        "contended",
+        maxsize=6,
+        producers=2,
+        consumers=3,
+        burst_every=8,
+        burst_size=8,
+        slow_consumer=True,
+    ),
+    QueueProfile(
+        "bursty",
+        maxsize=10,
+        producers=1,
+        consumers=2,
+        burst_every=3,
+        burst_size=20,
+        slow_consumer=False,
+    ),
 )
 
 
@@ -166,7 +206,11 @@ async def consumer(
         logger.info("[%s] consumer exited (processed=%s)", name, processed)
 
 
-async def queue_observer(profile: QueueProfile, queue: asyncio.Queue[int], stop: asyncio.Event) -> None:
+async def queue_observer(
+    profile: QueueProfile,
+    queue: asyncio.Queue[int],
+    stop: asyncio.Event,
+) -> None:
     """Periodic depth log per queue — terminal-side visibility."""
     try:
         while not stop.is_set():

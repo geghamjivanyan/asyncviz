@@ -96,12 +96,16 @@ class TransitionVerdict:
 
 
 def check_transition(
-    previous: PlaybackPhase, next_phase: PlaybackPhase,
+    previous: PlaybackPhase,
+    next_phase: PlaybackPhase,
 ) -> TransitionVerdict:
     """Pure check — does NOT mutate any state."""
     if previous == next_phase:
         return TransitionVerdict(
-            allowed=True, previous=previous, next=next_phase, reason="no-op",
+            allowed=True,
+            previous=previous,
+            next=next_phase,
+            reason="no-op",
         )
     allowed = next_phase in _LEGAL_TRANSITIONS.get(previous, frozenset())
     return TransitionVerdict(

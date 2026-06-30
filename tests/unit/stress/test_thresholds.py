@@ -93,16 +93,25 @@ def test_survivability_score_full() -> None:
 
 def test_survivability_score_penalties_apply() -> None:
     base = compute_survivability_score(
-        operations_completed=100, operations_failed=0,
-        overload_transitions=0, emergency_actions=0, websocket_disconnects=0,
+        operations_completed=100,
+        operations_failed=0,
+        overload_transitions=0,
+        emergency_actions=0,
+        websocket_disconnects=0,
     )
     with_failures = compute_survivability_score(
-        operations_completed=50, operations_failed=50,
-        overload_transitions=0, emergency_actions=0, websocket_disconnects=0,
+        operations_completed=50,
+        operations_failed=50,
+        overload_transitions=0,
+        emergency_actions=0,
+        websocket_disconnects=0,
     )
     with_emergency = compute_survivability_score(
-        operations_completed=100, operations_failed=0,
-        overload_transitions=0, emergency_actions=4, websocket_disconnects=0,
+        operations_completed=100,
+        operations_failed=0,
+        overload_transitions=0,
+        emergency_actions=4,
+        websocket_disconnects=0,
     )
     assert 0.0 <= with_failures < base
     assert with_emergency < base

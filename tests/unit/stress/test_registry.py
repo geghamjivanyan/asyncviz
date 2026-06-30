@@ -38,7 +38,9 @@ def test_filter_by_category() -> None:
     reg = StressScenarioRegistry()
     register_scenario(StressScenarioSpec(name="a", category="task"), _noop, registry=reg)
     register_scenario(
-        StressScenarioSpec(name="b", category="websocket"), _noop, registry=reg,
+        StressScenarioSpec(name="b", category="websocket"),
+        _noop,
+        registry=reg,
     )
     task_entries = reg.by_category("task")
     assert len(task_entries) == 1
@@ -75,7 +77,9 @@ def test_iter_categories_stable() -> None:
     reg = StressScenarioRegistry()
     register_scenario(StressScenarioSpec(name="a", category="task"), _noop, registry=reg)
     register_scenario(
-        StressScenarioSpec(name="b", category="websocket"), _noop, registry=reg,
+        StressScenarioSpec(name="b", category="websocket"),
+        _noop,
+        registry=reg,
     )
     register_scenario(StressScenarioSpec(name="c", category="task"), _noop, registry=reg)
     cats = list(iter_categories(reg))

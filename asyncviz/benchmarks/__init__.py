@@ -89,7 +89,8 @@ def run_all(
     """
     runner = BenchmarkRunner(config=config, baselines=baselines)
     specs = get_registry().filtered(
-        category=category, name_prefix=name_prefix,
+        category=category,
+        name_prefix=name_prefix,
     )
     return runner.run_suite(specs)
 

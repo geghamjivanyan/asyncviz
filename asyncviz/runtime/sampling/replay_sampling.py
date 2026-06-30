@@ -49,9 +49,7 @@ class _Window:
             last_sequence=self.last_sequence,
             retained=self.retained,
             dropped=self.dropped,
-            dropped_by_priority={
-                p: c for p, c in self.dropped_by_priority.items() if c > 0
-            },
+            dropped_by_priority={p: c for p, c in self.dropped_by_priority.items() if c > 0},
             reason_summary=(
                 f"dropped {self.dropped} retained {self.retained} "
                 f"seq=[{self.first_sequence},{self.last_sequence}]"

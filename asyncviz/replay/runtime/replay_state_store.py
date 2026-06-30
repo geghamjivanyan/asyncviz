@@ -46,7 +46,8 @@ class ReplayStateStore:
     # ── mutators ──────────────────────────────────────────────────
 
     def update(
-        self, fn: Callable[[VirtualRuntimeState], VirtualRuntimeState],
+        self,
+        fn: Callable[[VirtualRuntimeState], VirtualRuntimeState],
     ) -> VirtualRuntimeState:
         """Run ``fn(state) -> next_state`` under the lock + swap."""
         with self._lock:

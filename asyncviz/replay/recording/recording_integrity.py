@@ -67,7 +67,7 @@ def repair_partial_tail(path: Path) -> RepairResult:
     # we'd rather not propagate a bad line into replay).
     while repaired_end > 0:
         candidate_start = raw.rfind(b"\n", 0, repaired_end - 1) + 1
-        line = raw[candidate_start:repaired_end - 1]
+        line = raw[candidate_start : repaired_end - 1]
         if not line:
             break
         try:

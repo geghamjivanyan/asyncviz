@@ -50,7 +50,10 @@ def _submitted(eid: str = "e-1", wid: str = "w-1") -> ExecutorWorkSubmittedEvent
 
 
 def _started(
-    eid: str = "e-1", wid: str = "w-1", *, latency: float | None = 0.01,
+    eid: str = "e-1",
+    wid: str = "w-1",
+    *,
+    latency: float | None = 0.01,
 ) -> ExecutorWorkStartedEvent:
     return ExecutorWorkStartedEvent(
         executor_id=eid,
@@ -65,7 +68,10 @@ def _started(
 
 
 def _completed(
-    eid: str = "e-1", wid: str = "w-1", *, duration: float | None = 0.05,
+    eid: str = "e-1",
+    wid: str = "w-1",
+    *,
+    duration: float | None = 0.05,
 ) -> ExecutorWorkCompletedEvent:
     return ExecutorWorkCompletedEvent(
         executor_id=eid,
@@ -324,7 +330,8 @@ def test_rebuild_silently_does_not_emit() -> None:
 
 def test_max_tracked_executors_evicts() -> None:
     engine = ExecutorMetricsEngine(
-        bus=None, config=ExecutorMetricsConfig(max_tracked_executors=2),
+        bus=None,
+        config=ExecutorMetricsConfig(max_tracked_executors=2),
     )
     engine.apply_event(_registered("e-1"))
     engine.apply_event(_registered("e-2"))
@@ -339,7 +346,8 @@ def test_max_tracked_executors_evicts() -> None:
 
 @pytest.mark.asyncio
 async def test_engine_subscribes_to_bus_executor_events(
-    bus: EventBus, fast_emit_config: ExecutorMetricsConfig,
+    bus: EventBus,
+    fast_emit_config: ExecutorMetricsConfig,
 ) -> None:
     engine = ExecutorMetricsEngine(bus=bus, config=fast_emit_config)
     engine.start()

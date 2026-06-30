@@ -51,8 +51,8 @@ class SpeedProfile:
                 candidate = preset
             else:
                 break
-        return candidate if candidate is not None else (
-            self.presets[0] if self.presets else current
+        return (
+            candidate if candidate is not None else (self.presets[0] if self.presets else current)
         )
 
 
@@ -64,11 +64,7 @@ def build_speed_profile(
     default_speed: float,
 ) -> SpeedProfile:
     """Normalize raw config inputs into a :class:`SpeedProfile`."""
-    cleaned = sorted({
-        round(p, 6)
-        for p in presets
-        if p > 0 and min_speed <= p <= max_speed
-    })
+    cleaned = sorted({round(p, 6) for p in presets if p > 0 and min_speed <= p <= max_speed})
     return SpeedProfile(
         presets=tuple(cleaned),
         min_speed=min_speed,

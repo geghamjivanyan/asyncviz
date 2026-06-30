@@ -183,8 +183,7 @@ class QueueAggregateState:
         saturated_now = occupancy_ratio >= self.config.saturation_threshold
         saturation_entered = saturated_now and not prev_saturated
         saturation_exited = (
-            prev_saturated
-            and occupancy_ratio < self.config.saturation_recovery_threshold
+            prev_saturated and occupancy_ratio < self.config.saturation_recovery_threshold
         )
         # Re-arm so the next saturation crossing fires again.
         if saturation_entered:

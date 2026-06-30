@@ -23,10 +23,7 @@ async def run_cancellation_storm(
     batch_index = 0
     while remaining > 0:
         batch_size = min(concurrency, remaining)
-        tasks = [
-            asyncio.create_task(_long_sleeper())
-            for _ in range(batch_size)
-        ]
+        tasks = [asyncio.create_task(_long_sleeper()) for _ in range(batch_size)]
         for task in tasks:
             task.cancel()
         results = await asyncio.gather(*tasks, return_exceptions=True)

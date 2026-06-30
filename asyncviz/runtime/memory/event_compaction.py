@@ -27,20 +27,28 @@ def compact_event(
 ) -> CompactEvent:
     """Compact + record metrics."""
     compact = compact_from_runtime_event(
-        event, interner=interner, intern_payload=intern_payload,
+        event,
+        interner=interner,
+        intern_payload=intern_payload,
     )
     get_memory_metrics().record_compact_event()
     record_memory_trace(
-        "compact-event-built", f"type={compact.event_type}",
+        "compact-event-built",
+        f"type={compact.event_type}",
     )
     return compact
 
 
 def compact_dict(
-    data: dict, *, interner: StringInterner, intern_payload: bool = True,  # type: ignore[type-arg]
+    data: dict,
+    *,
+    interner: StringInterner,
+    intern_payload: bool = True,  # type: ignore[type-arg]
 ) -> CompactEvent:
     compact = compact_dict_event(
-        data, interner=interner, intern_payload=intern_payload,
+        data,
+        interner=interner,
+        intern_payload=intern_payload,
     )
     get_memory_metrics().record_compact_event()
     return compact

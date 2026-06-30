@@ -13,7 +13,8 @@ from collections.abc import Iterator
 from contextvars import ContextVar
 
 _in_internal_executor: ContextVar[bool] = ContextVar(
-    "_in_internal_executor", default=False,
+    "_in_internal_executor",
+    default=False,
 )
 
 

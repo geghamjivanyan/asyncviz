@@ -88,7 +88,8 @@ def _end_instrumented() -> None:
 # get double-attributed. We use a ContextVar — thread-locals would
 # bleed across cooperating tasks on the same loop.
 _in_outer_acquire: ContextVar[bool] = ContextVar(
-    "_in_outer_acquire", default=False,
+    "_in_outer_acquire",
+    default=False,
 )
 
 # Flag set while a patched ``__init__`` is running. ``BoundedSemaphore``
@@ -232,11 +233,11 @@ class SemaphoreInstrumentationEngine:
                         raise
                     finally:
                         _in_outer_acquire.reset(token)
-                    wait = (
-                        max(0.0, time.monotonic() - started) if will_block else None
-                    )
+                    wait = max(0.0, time.monotonic() - started) if will_block else None
                     engine._emit_acquired(
-                        self_sem, blocked=will_block, wait_seconds=wait,
+                        self_sem,
+                        blocked=will_block,
+                        wait_seconds=wait,
                     )
                     return result
 
@@ -275,7 +276,10 @@ class SemaphoreInstrumentationEngine:
     # ── internals ─────────────────────────────────────────────────
 
     def _safe_semaphore_id(
-        self, semaphore: asyncio.Semaphore, *, initial_value: int | None = None,
+        self,
+        semaphore: asyncio.Semaphore,
+        *,
+        initial_value: int | None = None,
     ) -> str:
         identity = self._registry.get(semaphore)
         if identity is not None:
@@ -295,9 +299,7 @@ class SemaphoreInstrumentationEngine:
         *,
         initial_value: int,
     ) -> Any:
-        creator = (
-            current_runtime_task() if self._config.capture_creator_task_id else None
-        )
+        creator = current_runtime_task() if self._config.capture_creator_task_id else None
         identity = self._registry.register(
             semaphore,
             initial_value=initial_value,
@@ -341,7 +343,10 @@ class SemaphoreInstrumentationEngine:
             _end_instrumented()
 
     def _emit_acquire_started(
-        self, semaphore: asyncio.Semaphore, *, will_block: bool,
+        self,
+        semaphore: asyncio.Semaphore,
+        *,
+        will_block: bool,
     ) -> None:
         if not self._config.emit_acquire:
             return
@@ -370,7 +375,8 @@ class SemaphoreInstrumentationEngine:
                 ),
             )
             record_semaphore_trace(
-                "semaphore-acquire-started", f"{sid} will_block={will_block}",
+                "semaphore-acquire-started",
+                f"{sid} will_block={will_block}",
             )
         except Exception as exc:  # pragma: no cover — defensive
             logger.debug("semaphore acquire-started instrumentation failed: %s", exc)
@@ -451,7 +457,9 @@ class SemaphoreInstrumentationEngine:
             _end_instrumented()
 
     def _emit_cancelled(
-        self, semaphore: asyncio.Semaphore, started: float,
+        self,
+        semaphore: asyncio.Semaphore,
+        started: float,
     ) -> None:
         if not self._config.emit_cancelled:
             return
@@ -527,7 +535,8 @@ class SemaphoreInstrumentationEngine:
             )
             get_semaphore_metrics().record_contention()
             record_semaphore_trace(
-                "semaphore-contention", f"{sid} waiters={effective_waiters}",
+                "semaphore-contention",
+                f"{sid} waiters={effective_waiters}",
             )
         except Exception as exc:  # pragma: no cover — defensive
             logger.debug("semaphore contention instrumentation failed: %s", exc)

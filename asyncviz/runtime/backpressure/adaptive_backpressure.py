@@ -95,7 +95,9 @@ class AdaptiveBackpressureController:
         already normalized."""
         with self._lock:
             self._sources[name] = _SourceEntry(
-                name=name, callable_=callable_, capacity=capacity,
+                name=name,
+                callable_=callable_,
+                capacity=capacity,
             )
 
         def _unsubscribe() -> None:
@@ -133,7 +135,8 @@ class AdaptiveBackpressureController:
     # ── action listeners ─────────────────────────────────────────
 
     def subscribe_actions(
-        self, listener: ActionListener,
+        self,
+        listener: ActionListener,
     ) -> Callable[[], None]:
         with self._lock:
             self._action_listeners.append(listener)
@@ -146,10 +149,13 @@ class AdaptiveBackpressureController:
         return _unsubscribe
 
     def _dispatch_actions(
-        self, previous: OverloadState, snapshot: OverloadSnapshot,
+        self,
+        previous: OverloadState,
+        snapshot: OverloadSnapshot,
     ) -> None:
         actions = self._policy.actions_for(
-            previous=previous, next_state=snapshot.state,
+            previous=previous,
+            next_state=snapshot.state,
         )
         with self._lock:
             listeners = tuple(self._action_listeners)

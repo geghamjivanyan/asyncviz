@@ -40,7 +40,9 @@ class QueueMetricsDiagnostics:
 
 
 def build_queue_metrics_diagnostics(
-    snapshot: QueueMetricsSnapshot, *, tail: int = 16,
+    snapshot: QueueMetricsSnapshot,
+    *,
+    tail: int = 16,
 ) -> QueueMetricsDiagnostics:
     trace = get_queue_metrics_trace()
     return QueueMetricsDiagnostics(

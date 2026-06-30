@@ -62,9 +62,7 @@ class SemaphoreAcquireStartedEvent(_SemaphoreEventBase):
     permit is granted without parking — only the acquired event fires
     immediately, and a started event is still emitted for symmetry."""
 
-    event_type: Literal["asyncio.semaphore.acquire.started"] = (
-        "asyncio.semaphore.acquire.started"
-    )
+    event_type: Literal["asyncio.semaphore.acquire.started"] = "asyncio.semaphore.acquire.started"
     will_block: bool = False
     """``True`` when the caller had to park inside ``_waiters``; ``False``
     when the permit was granted synchronously."""
@@ -97,9 +95,7 @@ class SemaphoreContentionDetectedEvent(_SemaphoreEventBase):
 
 
 class SemaphoreWaitCancelledEvent(_SemaphoreEventBase):
-    event_type: Literal["asyncio.semaphore.wait.cancelled"] = (
-        "asyncio.semaphore.wait.cancelled"
-    )
+    event_type: Literal["asyncio.semaphore.wait.cancelled"] = "asyncio.semaphore.wait.cancelled"
     wait_seconds: float | None = None
 
 

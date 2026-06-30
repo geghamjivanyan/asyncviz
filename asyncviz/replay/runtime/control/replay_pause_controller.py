@@ -131,19 +131,18 @@ class PauseController:
         pause-at-sequence / pause-at-timestamp triggered now).
         """
         self._state.update_position(
-            last_sequence=last_sequence, last_monotonic_ns=last_monotonic_ns,
+            last_sequence=last_sequence,
+            last_monotonic_ns=last_monotonic_ns,
         )
         with self._lock:
             pending = list(self._pending.values())
         triggered = False
         for entry in pending:
             req = entry.request
-            if req.trigger in ("immediate", "after_current_frame") or (
-                req.trigger == "at_sequence"
-                and last_sequence >= req.target_sequence
-            ) or (
-                req.trigger == "at_timestamp"
-                and last_monotonic_ns >= req.target_monotonic_ns
+            if (
+                req.trigger in ("immediate", "after_current_frame")
+                or (req.trigger == "at_sequence" and last_sequence >= req.target_sequence)
+                or (req.trigger == "at_timestamp" and last_monotonic_ns >= req.target_monotonic_ns)
             ):
                 triggered = True
         if not triggered:
@@ -154,7 +153,10 @@ class PauseController:
         return True
 
     def _finalize_pause(
-        self, *, last_sequence: int, last_monotonic_ns: int,
+        self,
+        *,
+        last_sequence: int,
+        last_monotonic_ns: int,
     ) -> None:
         current = self._state.snapshot
         verdict = check_transition(current.phase, PlaybackPhase.PAUSED)

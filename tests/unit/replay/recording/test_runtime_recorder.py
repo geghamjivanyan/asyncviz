@@ -19,7 +19,8 @@ from asyncviz.runtime.events.models import TaskCreatedEvent
 
 @pytest.mark.asyncio
 async def test_records_bus_events_and_finalizes_manifest(
-    bus: EventBus, basic_config: RecordingConfig,
+    bus: EventBus,
+    basic_config: RecordingConfig,
 ) -> None:
     recorder = RuntimeRecorder(config=basic_config, bus=bus)
     recorder.start()
@@ -43,7 +44,8 @@ async def test_records_bus_events_and_finalizes_manifest(
 
 @pytest.mark.asyncio
 async def test_start_is_idempotent(
-    bus: EventBus, basic_config: RecordingConfig,
+    bus: EventBus,
+    basic_config: RecordingConfig,
 ) -> None:
     recorder = RuntimeRecorder(config=basic_config, bus=bus)
     recorder.start()
@@ -53,7 +55,8 @@ async def test_start_is_idempotent(
 
 @pytest.mark.asyncio
 async def test_stop_is_idempotent(
-    bus: EventBus, basic_config: RecordingConfig,
+    bus: EventBus,
+    basic_config: RecordingConfig,
 ) -> None:
     recorder = RuntimeRecorder(config=basic_config, bus=bus)
     recorder.start()
@@ -63,7 +66,8 @@ async def test_stop_is_idempotent(
 
 @pytest.mark.asyncio
 async def test_snapshot_capture_at_start_and_stop(
-    bus: EventBus, recording_root: Path,
+    bus: EventBus,
+    recording_root: Path,
 ) -> None:
     cfg = RecordingConfig(
         root_dir=recording_root,
@@ -78,7 +82,9 @@ async def test_snapshot_capture_at_start_and_stop(
         return dict(snapshot_payload)
 
     recorder = RuntimeRecorder(
-        config=cfg, bus=bus, snapshot_provider=provider,
+        config=cfg,
+        bus=bus,
+        snapshot_provider=provider,
     )
     recorder.start()
     bus.publish(TaskCreatedEvent(task_id="t-1", task_name="t-1"))
@@ -93,7 +99,8 @@ async def test_snapshot_capture_at_start_and_stop(
 
 @pytest.mark.asyncio
 async def test_high_throughput_workload_preserves_order(
-    bus: EventBus, basic_config: RecordingConfig,
+    bus: EventBus,
+    basic_config: RecordingConfig,
 ) -> None:
     recorder = RuntimeRecorder(config=basic_config, bus=bus)
     recorder.start()
@@ -109,7 +116,8 @@ async def test_high_throughput_workload_preserves_order(
 
 @pytest.mark.asyncio
 async def test_rotation_creates_multiple_chunks(
-    bus: EventBus, recording_root: Path,
+    bus: EventBus,
+    recording_root: Path,
 ) -> None:
     cfg = RecordingConfig(
         root_dir=recording_root,
@@ -151,7 +159,9 @@ async def test_recorder_without_bus_supports_manual_append(
 
 @pytest.mark.asyncio
 async def test_export_session_to_zip_round_trip(
-    bus: EventBus, basic_config: RecordingConfig, tmp_path: Path,
+    bus: EventBus,
+    basic_config: RecordingConfig,
+    tmp_path: Path,
 ) -> None:
     recorder = RuntimeRecorder(config=basic_config, bus=bus)
     recorder.start()
@@ -166,7 +176,8 @@ async def test_export_session_to_zip_round_trip(
 
 @pytest.mark.asyncio
 async def test_recorder_disable_does_not_emit_events(
-    bus: EventBus, basic_config: RecordingConfig,
+    bus: EventBus,
+    basic_config: RecordingConfig,
 ) -> None:
     """Recorder that never starts records nothing — no manifest, no
     chunks, no error from the bus path."""

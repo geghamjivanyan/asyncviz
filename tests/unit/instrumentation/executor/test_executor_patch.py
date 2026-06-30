@@ -107,7 +107,8 @@ async def test_explicit_thread_pool_executor_is_supported(
 ) -> None:
     loop = asyncio.get_running_loop()
     pool = concurrent.futures.ThreadPoolExecutor(
-        max_workers=2, thread_name_prefix="asyncviz-test",
+        max_workers=2,
+        thread_name_prefix="asyncviz-test",
     )
     try:
         result = await loop.run_in_executor(pool, lambda: "ok")
@@ -121,7 +122,8 @@ async def test_explicit_thread_pool_executor_is_supported(
 
 @pytest.mark.asyncio
 async def test_run_in_executor_emits_submitted_started_completed(
-    bus: EventBus, engine: ExecutorInstrumentationEngine,
+    bus: EventBus,
+    engine: ExecutorInstrumentationEngine,
 ) -> None:
     events = await _collect(
         bus,
@@ -144,7 +146,8 @@ async def test_run_in_executor_emits_submitted_started_completed(
 
 @pytest.mark.asyncio
 async def test_failing_work_emits_failed_event_with_exception_type(
-    bus: EventBus, engine: ExecutorInstrumentationEngine,
+    bus: EventBus,
+    engine: ExecutorInstrumentationEngine,
 ) -> None:
     events = await _collect(bus, ["asyncio.executor.work.failed"])
     loop = asyncio.get_running_loop()
@@ -161,12 +164,14 @@ async def test_failing_work_emits_failed_event_with_exception_type(
 
 @pytest.mark.asyncio
 async def test_completed_event_carries_thread_name_and_duration(
-    bus: EventBus, engine: ExecutorInstrumentationEngine,
+    bus: EventBus,
+    engine: ExecutorInstrumentationEngine,
 ) -> None:
     events = await _collect(bus, ["asyncio.executor.work.completed"])
     loop = asyncio.get_running_loop()
     pool = concurrent.futures.ThreadPoolExecutor(
-        max_workers=1, thread_name_prefix="executor-test",
+        max_workers=1,
+        thread_name_prefix="executor-test",
     )
     try:
         await loop.run_in_executor(pool, lambda: 7)
@@ -182,7 +187,8 @@ async def test_completed_event_carries_thread_name_and_duration(
 
 @pytest.mark.asyncio
 async def test_registered_event_fires_once_per_executor(
-    bus: EventBus, engine: ExecutorInstrumentationEngine,
+    bus: EventBus,
+    engine: ExecutorInstrumentationEngine,
 ) -> None:
     events = await _collect(bus, ["asyncio.executor.registered"])
     loop = asyncio.get_running_loop()
@@ -201,7 +207,8 @@ async def test_registered_event_fires_once_per_executor(
 
 @pytest.mark.asyncio
 async def test_cancelled_work_emits_cancelled_event(
-    bus: EventBus, engine: ExecutorInstrumentationEngine,
+    bus: EventBus,
+    engine: ExecutorInstrumentationEngine,
 ) -> None:
     events = await _collect(bus, ["asyncio.executor.work.cancelled"])
     loop = asyncio.get_running_loop()
@@ -235,7 +242,8 @@ async def test_cancelled_work_emits_cancelled_event(
 
 @pytest.mark.asyncio
 async def test_suppress_executor_instrumentation_skips_events(
-    bus: EventBus, engine: ExecutorInstrumentationEngine,
+    bus: EventBus,
+    engine: ExecutorInstrumentationEngine,
 ) -> None:
     events = await _collect(bus, ["asyncio.executor.work.submitted"])
     loop = asyncio.get_running_loop()
@@ -250,7 +258,8 @@ async def test_suppress_executor_instrumentation_skips_events(
 
 @pytest.mark.asyncio
 async def test_work_item_ids_are_monotonic(
-    bus: EventBus, engine: ExecutorInstrumentationEngine,
+    bus: EventBus,
+    engine: ExecutorInstrumentationEngine,
 ) -> None:
     events = await _collect(bus, ["asyncio.executor.work.submitted"])
     loop = asyncio.get_running_loop()
@@ -266,7 +275,8 @@ async def test_work_item_ids_are_monotonic(
 
 @pytest.mark.asyncio
 async def test_high_throughput_workload_balances(
-    bus: EventBus, engine: ExecutorInstrumentationEngine,
+    bus: EventBus,
+    engine: ExecutorInstrumentationEngine,
 ) -> None:
     completed = await _collect(bus, ["asyncio.executor.work.completed"])
     loop = asyncio.get_running_loop()
@@ -288,7 +298,8 @@ async def test_high_throughput_workload_balances(
 
 @pytest.mark.asyncio
 async def test_unpatched_run_in_executor_does_not_emit(
-    bus: EventBus, engine_unpatched: ExecutorInstrumentationEngine,
+    bus: EventBus,
+    engine_unpatched: ExecutorInstrumentationEngine,
 ) -> None:
     events = await _collect(bus, ["asyncio.executor.work.submitted"])
     loop = asyncio.get_running_loop()

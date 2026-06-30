@@ -160,7 +160,9 @@ class RecorderBundleAdapter:
         )
 
     # ── timeline metadata (markers + bookmarks) ──────────────────────
-    def derive_timeline_metadata(self) -> tuple[
+    def derive_timeline_metadata(
+        self,
+    ) -> tuple[
         list[dict[str, Any]],
         list[dict[str, Any]],
     ]:

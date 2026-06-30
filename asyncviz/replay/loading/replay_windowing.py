@@ -36,8 +36,7 @@ class ReplayWindow:
         if frame.monotonic_ns < self.start_monotonic_ns:
             return False
         return not (
-            self.end_monotonic_ns is not None
-            and frame.monotonic_ns > self.end_monotonic_ns
+            self.end_monotonic_ns is not None and frame.monotonic_ns > self.end_monotonic_ns
         )
 
     def below_window(self, frame: ReplayFrame) -> bool:
@@ -54,10 +53,7 @@ class ReplayWindow:
         are monotonic)."""
         if self.end_sequence is not None and frame.sequence > self.end_sequence:
             return True
-        return (
-            self.end_monotonic_ns is not None
-            and frame.monotonic_ns > self.end_monotonic_ns
-        )
+        return self.end_monotonic_ns is not None and frame.monotonic_ns > self.end_monotonic_ns
 
     @staticmethod
     def unbounded() -> ReplayWindow:

@@ -36,7 +36,8 @@ def detect_format_from_session(chunk_paths: tuple[Path, ...]) -> FrameAdapter:
 
 
 def pick_starting_chunk(
-    chunks: tuple[ChunkRecord, ...], sequence: int,
+    chunks: tuple[ChunkRecord, ...],
+    sequence: int,
 ) -> ChunkRecord | None:
     """Linear-scan helper used by the seek planner for tiny chunk
     inventories where bisect's overhead isn't worth it."""

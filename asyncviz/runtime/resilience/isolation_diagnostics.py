@@ -49,7 +49,7 @@ def build_isolation_diagnostics(
 ) -> IsolationDiagnostics:
     trace = get_isolation_trace()
     if inputs.trace_limit > 0 and len(trace) > inputs.trace_limit:
-        trace = trace[-inputs.trace_limit:]
+        trace = trace[-inputs.trace_limit :]
     return IsolationDiagnostics(
         mode=inputs.mode,
         metrics=inputs.metrics,

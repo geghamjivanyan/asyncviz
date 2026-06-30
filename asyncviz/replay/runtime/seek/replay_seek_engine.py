@@ -106,7 +106,8 @@ class SeekEngine:
         else:
             metrics.record_full_reconstruction()
             record_seek_trace(
-                "full-reconstruction", f"seq={out.landed_sequence}",
+                "full-reconstruction",
+                f"seq={out.landed_sequence}",
             )
 
         # Atomic application: state store, cursor, clock.
@@ -127,7 +128,8 @@ class SeekEngine:
 
         latency_ns = time.monotonic_ns() - started_ns
         metrics.record_completed(
-            latency_ns=latency_ns, frames_replayed=out.frames_replayed,
+            latency_ns=latency_ns,
+            frames_replayed=out.frames_replayed,
         )
         return SeekResult(
             request_id=inputs.request.request_id,

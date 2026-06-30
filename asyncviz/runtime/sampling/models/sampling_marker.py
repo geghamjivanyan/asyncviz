@@ -48,8 +48,7 @@ class SamplingMarker:
             "retained": self.retained,
             "dropped": self.dropped,
             "dropped_by_priority": {
-                str(int(p)): count
-                for p, count in self.dropped_by_priority.items()
+                str(int(p)): count for p, count in self.dropped_by_priority.items()
             },
             "reason_summary": self.reason_summary,
         }

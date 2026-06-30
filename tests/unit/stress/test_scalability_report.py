@@ -85,9 +85,13 @@ def test_as_dict_is_json_serializable() -> None:
     import json
 
     outcomes = [
-        _outcome(name="a", verdict="failed", violations=(
-            ScalabilityViolation(metric="x", observed=5.0, limit=3.0, detail="too high"),
-        )),
+        _outcome(
+            name="a",
+            verdict="failed",
+            violations=(
+                ScalabilityViolation(metric="x", observed=5.0, limit=3.0, detail="too high"),
+            ),
+        ),
     ]
     report = build_scalability_report(outcomes)
     data = report.as_dict()
@@ -97,9 +101,13 @@ def test_as_dict_is_json_serializable() -> None:
 
 def test_render_text_includes_violations() -> None:
     outcomes = [
-        _outcome(name="a", verdict="failed", violations=(
-            ScalabilityViolation(metric="fps", observed=10.0, limit=30.0, detail="low"),
-        )),
+        _outcome(
+            name="a",
+            verdict="failed",
+            violations=(
+                ScalabilityViolation(metric="fps", observed=10.0, limit=30.0, detail="low"),
+            ),
+        ),
     ]
     report = build_scalability_report(outcomes)
     rendered = report.render_text()

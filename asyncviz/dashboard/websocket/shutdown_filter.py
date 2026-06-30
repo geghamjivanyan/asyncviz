@@ -82,7 +82,7 @@ _EXPECTED_MESSAGE_SUBSTRINGS: tuple[str, ...] = (
     "Unexpected ASGI message 'websocket.send'",
     "after sending 'websocket.close'",
     "after sending 'websocket.disconnect'",
-    "Cannot call \"send\" once a close message has been sent",
+    'Cannot call "send" once a close message has been sent',
     "WebSocket is not connected",
     # Generic disconnect markers.
     "websocket disconnect",
@@ -117,10 +117,7 @@ def is_expected_websocket_close(exc: BaseException | None) -> bool:
     text = str(exc)
     if not text:
         return False
-    for marker in _EXPECTED_MESSAGE_SUBSTRINGS:
-        if marker in text:
-            return True
-    return False
+    return any(marker in text for marker in _EXPECTED_MESSAGE_SUBSTRINGS)
 
 
 # ── Loop exception handler ───────────────────────────────────────────────

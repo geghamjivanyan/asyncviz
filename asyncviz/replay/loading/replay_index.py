@@ -73,7 +73,9 @@ class ReplayIndex:
         return candidate
 
     def chunk_record_for_sequence(
-        self, sequence: int, chunks: tuple[ChunkRecord, ...],
+        self,
+        sequence: int,
+        chunks: tuple[ChunkRecord, ...],
     ) -> ChunkRecord | None:
         entry = self.chunk_for_sequence(sequence)
         if entry is None:

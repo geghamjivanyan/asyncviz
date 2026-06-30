@@ -37,7 +37,10 @@ def test_snapshot_start_payload_round_trip() -> None:
 def test_snapshot_end_payload_round_trip() -> None:
     payload = SnapshotEndPayload(snapshot_id="snap-1", byte_size=12345, delta_count=7)
     frame = ReplayFrame.for_snapshot(
-        kind="end", sequence=43, monotonic_ns=200, payload=payload.to_dict(),
+        kind="end",
+        sequence=43,
+        monotonic_ns=200,
+        payload=payload.to_dict(),
     )
     restored = decode_frame(encode_frame(frame))
     assert SnapshotEndPayload.from_dict(restored.payload) == payload
@@ -51,7 +54,10 @@ def test_snapshot_delta_payload_round_trip_with_value() -> None:
         value="running",
     )
     frame = ReplayFrame.for_snapshot(
-        kind="delta", sequence=44, monotonic_ns=300, payload=payload.to_dict(),
+        kind="delta",
+        sequence=44,
+        monotonic_ns=300,
+        payload=payload.to_dict(),
     )
     restored = decode_frame(encode_frame(frame))
     out = SnapshotDeltaPayload.from_dict(restored.payload)
@@ -67,7 +73,10 @@ def test_snapshot_delta_unset_op_drops_value() -> None:
 def test_marker_payload_round_trip() -> None:
     payload = MarkerPayload(name="checkpoint", labels=("ci", "perf"), annotation="hot path")
     frame = ReplayFrame.for_marker(
-        sequence=1, monotonic_ns=10, marker_name="checkpoint", payload=payload.to_dict(),
+        sequence=1,
+        monotonic_ns=10,
+        marker_name="checkpoint",
+        payload=payload.to_dict(),
     )
     restored = decode_frame(encode_frame(frame))
     assert MarkerPayload.from_dict(restored.payload) == payload

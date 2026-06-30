@@ -46,16 +46,28 @@ def test_topology_interns_node_ids() -> None:
 def test_replay_frame_cache_lru() -> None:
     cache = ReplayFrameCache(capacity=2)
     f1 = CompactReplayFrame(
-        schema_version=1, frame_type="runtime_event", sequence=1,
-        monotonic_ns=1, payload_type="x", payload={},
+        schema_version=1,
+        frame_type="runtime_event",
+        sequence=1,
+        monotonic_ns=1,
+        payload_type="x",
+        payload={},
     )
     f2 = CompactReplayFrame(
-        schema_version=1, frame_type="runtime_event", sequence=2,
-        monotonic_ns=2, payload_type="x", payload={},
+        schema_version=1,
+        frame_type="runtime_event",
+        sequence=2,
+        monotonic_ns=2,
+        payload_type="x",
+        payload={},
     )
     f3 = CompactReplayFrame(
-        schema_version=1, frame_type="runtime_event", sequence=3,
-        monotonic_ns=3, payload_type="x", payload={},
+        schema_version=1,
+        frame_type="runtime_event",
+        sequence=3,
+        monotonic_ns=3,
+        payload_type="x",
+        payload={},
     )
     cache.put(f1)
     cache.put(f2)
@@ -71,8 +83,12 @@ def test_replay_frame_cache_hit_metric() -> None:
     cache = ReplayFrameCache(capacity=2)
     cache.put(
         CompactReplayFrame(
-            schema_version=1, frame_type="runtime_event",
-            sequence=1, monotonic_ns=1, payload_type="x", payload={},
+            schema_version=1,
+            frame_type="runtime_event",
+            sequence=1,
+            monotonic_ns=1,
+            payload_type="x",
+            payload={},
         ),
     )
     before = get_memory_metrics_snapshot()

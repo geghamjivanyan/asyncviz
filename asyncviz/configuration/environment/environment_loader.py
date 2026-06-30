@@ -92,8 +92,7 @@ class EnvironmentConfigurationLoader:
                     env_key=env_name,
                     severity="error",
                     message=(
-                        f"{env_name}: value exceeds max size {self.max_value_bytes} bytes; "
-                        "ignoring"
+                        f"{env_name}: value exceeds max size {self.max_value_bytes} bytes; ignoring"
                     ),
                     raw=None,
                 )

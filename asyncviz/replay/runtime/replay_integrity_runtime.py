@@ -42,7 +42,8 @@ class IntegrityViolation:
 
 
 def check_pre_dispatch(
-    frame: ReplayFrame, cursor: EngineCursor,
+    frame: ReplayFrame,
+    cursor: EngineCursor,
 ) -> IntegrityViolation | None:
     """Pre-dispatch invariants."""
     if frame.sequence == cursor.last_sequence and cursor.last_sequence != 0:
@@ -53,10 +54,7 @@ def check_pre_dispatch(
     if frame.sequence < cursor.last_sequence:
         return IntegrityViolation(
             kind="out_of_order",
-            detail=(
-                f"sequence {frame.sequence} not strictly after "
-                f"cursor {cursor.last_sequence}"
-            ),
+            detail=(f"sequence {frame.sequence} not strictly after cursor {cursor.last_sequence}"),
         )
     if frame.monotonic_ns < cursor.last_monotonic_ns:
         return IntegrityViolation(
@@ -70,7 +68,8 @@ def check_pre_dispatch(
 
 
 def check_post_dispatch(
-    frame: ReplayFrame, state: VirtualRuntimeState,
+    frame: ReplayFrame,
+    state: VirtualRuntimeState,
 ) -> IntegrityViolation | None:
     """Post-dispatch invariants."""
     if state.last_sequence != frame.sequence:

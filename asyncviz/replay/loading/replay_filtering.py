@@ -51,19 +51,23 @@ def by_frame_type(*types: str) -> FrameFilter:
 def by_sequence_range(start: int, end: int | None = None) -> FrameFilter:
     """Match frames with sequence in ``[start, end]`` (inclusive).
     ``end=None`` means unbounded above."""
+
     def _check(frame: ReplayFrame) -> bool:
         if frame.sequence < start:
             return False
         return end is None or frame.sequence <= end
+
     return FrameFilter(label=f"seq∈[{start},{end}]", predicate=_check)
 
 
 def by_timestamp_range(start_ns: int, end_ns: int | None = None) -> FrameFilter:
     """Match frames with monotonic_ns in ``[start_ns, end_ns]``."""
+
     def _check(frame: ReplayFrame) -> bool:
         if frame.monotonic_ns < start_ns:
             return False
         return end_ns is None or frame.monotonic_ns <= end_ns
+
     return FrameFilter(label=f"monotonic_ns∈[{start_ns},{end_ns}]", predicate=_check)
 
 

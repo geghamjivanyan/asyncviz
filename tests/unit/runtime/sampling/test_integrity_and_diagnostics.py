@@ -14,8 +14,9 @@ from asyncviz.runtime.sampling import (
 )
 
 
-def _decision(retain: bool, priority: SamplingPriority, seq: int = 1,
-               reason: str = "retained-by-rate") -> SamplingDecision:
+def _decision(
+    retain: bool, priority: SamplingPriority, seq: int = 1, reason: str = "retained-by-rate"
+) -> SamplingDecision:
     return SamplingDecision(
         retain=retain,
         priority=priority,
@@ -74,6 +75,7 @@ def test_tracing_captures_kind() -> None:
     set_sampling_trace_enabled(True)
     try:
         from asyncviz.runtime.sampling import record_sampling_trace
+
         record_sampling_trace("event-dropped", "test")
         kinds = {e.kind for e in get_sampling_trace()}
         assert "event-dropped" in kinds

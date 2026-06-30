@@ -49,7 +49,8 @@ def test_read_max_workers() -> None:
 
 def test_read_thread_name_prefix() -> None:
     pool = concurrent.futures.ThreadPoolExecutor(
-        max_workers=1, thread_name_prefix="hello",
+        max_workers=1,
+        thread_name_prefix="hello",
     )
     try:
         assert read_thread_name_prefix(pool) == "hello"
@@ -84,7 +85,8 @@ def test_register_is_idempotent() -> None:
 def test_register_records_kind_and_max_workers() -> None:
     r = ExecutorRegistry()
     pool = concurrent.futures.ThreadPoolExecutor(
-        max_workers=3, thread_name_prefix="p",
+        max_workers=3,
+        thread_name_prefix="p",
     )
     try:
         identity = r.register(pool, is_default=False, creator_task_id="t-1")
@@ -147,10 +149,14 @@ def test_work_item_register_allocates_monotonic_ids() -> None:
 def test_work_item_marks_lifecycle() -> None:
     r = WorkItemRegistry()
     identity = r.register(
-        executor_id="e-1", submitting_task_id="t-1", callable_name="f",
+        executor_id="e-1",
+        submitting_task_id="t-1",
+        callable_name="f",
     )
     r.mark_started(
-        identity.work_item_id, worker_thread_name="t", started_at_ns=100,
+        identity.work_item_id,
+        worker_thread_name="t",
+        started_at_ns=100,
     )
     state = r.state(identity.work_item_id)
     assert state is not None
@@ -166,7 +172,9 @@ def test_work_item_marks_lifecycle() -> None:
 def test_work_item_forget_removes_entry() -> None:
     r = WorkItemRegistry()
     identity = r.register(
-        executor_id="e-1", submitting_task_id=None, callable_name=None,
+        executor_id="e-1",
+        submitting_task_id=None,
+        callable_name=None,
     )
     r.forget(identity.work_item_id)
     assert len(r) == 0

@@ -25,7 +25,9 @@ def test_event_storm_survivable_without_unbounded_growth() -> None:
     )
     controller = EventBackpressureController(cfg)
     channel = controller.register_channel(
-        "bus", capacity=4, policy="drop-oldest",
+        "bus",
+        capacity=4,
+        policy="drop-oldest",
     )
     for i in range(10_000):
         channel.offer(i)
@@ -95,7 +97,9 @@ def test_emergency_action_disconnect_under_emergency() -> None:
 def test_reducer_adapter_sheds_low_priority() -> None:
     controller = EventBackpressureController(BackpressureConfig(reducer_capacity=2))
     adapter = controller.attach_reducer_adapter(
-        "tasks", capacity=2, policy="drop-low-priority",
+        "tasks",
+        capacity=2,
+        policy="drop-low-priority",
     )
     adapter.offer("low-1", priority=0)
     adapter.offer("low-2", priority=0)

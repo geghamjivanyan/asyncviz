@@ -24,13 +24,14 @@ cheapest modulo arithmetic."""
 
 def sampling_key(event_type: str, sequence: int, seed: int) -> bytes:
     """Produce the stable byte string the bucket hash chews on."""
-    return (
-        f"{seed}|{event_type}|{sequence}".encode()
-    )
+    return f"{seed}|{event_type}|{sequence}".encode()
 
 
 def deterministic_bucket(
-    event_type: str, sequence: int, *, seed: int = 0xA5_BE_F7,
+    event_type: str,
+    sequence: int,
+    *,
+    seed: int = 0xA5_BE_F7,
 ) -> int:
     """Map ``(event_type, sequence)`` to one of ``BUCKET_COUNT`` buckets."""
     key = sampling_key(event_type, sequence, seed)

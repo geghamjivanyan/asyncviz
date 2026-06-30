@@ -46,6 +46,7 @@ def test_stream_digest_matches_concatenation() -> None:
         digest.update(frame)
     # Compute the equivalent hash by hand:
     import hashlib
+
     hasher = hashlib.sha256()
     for frame in frames:
         hasher.update(encode_frame(frame).encode("utf-8"))

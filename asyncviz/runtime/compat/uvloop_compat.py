@@ -164,9 +164,7 @@ class LoopCompatibilityManager:
             else:
                 self._metrics.record_uvloop_install_failure()
                 self._install_error = (
-                    "uvloop unavailable"
-                    if not is_uvloop_available()
-                    else "policy swap rejected"
+                    "uvloop unavailable" if not is_uvloop_available() else "policy swap rejected"
                 )
                 record_loop_compat_trace(
                     "uvloop-install-failure",
@@ -215,11 +213,7 @@ class LoopCompatibilityManager:
             "manager-attached",
             f"kind={capabilities.kind.value} impl={capabilities.implementation}",
         )
-        if (
-            install_task_bridge
-            and target is not None
-            and capabilities.supports_task_factory
-        ):
+        if install_task_bridge and target is not None and capabilities.supports_task_factory:
             self._task_bridge.install(target)
         scheduler_enabled = (
             self._config.record_scheduler_anomalies

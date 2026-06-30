@@ -50,18 +50,14 @@ class _WorkEventBase(_ExecutorEventBase):
 
 
 class ExecutorWorkSubmittedEvent(_WorkEventBase):
-    event_type: Literal["asyncio.executor.work.submitted"] = (
-        "asyncio.executor.work.submitted"
-    )
+    event_type: Literal["asyncio.executor.work.submitted"] = "asyncio.executor.work.submitted"
 
 
 class ExecutorWorkStartedEvent(_WorkEventBase):
     """Fired from inside the executor thread when the user function is
     about to run."""
 
-    event_type: Literal["asyncio.executor.work.started"] = (
-        "asyncio.executor.work.started"
-    )
+    event_type: Literal["asyncio.executor.work.started"] = "asyncio.executor.work.started"
     worker_thread_name: str | None = None
     submission_latency_seconds: float | None = None
     """``started_at - submitted_at``; surfaces queue latency for a
@@ -69,27 +65,21 @@ class ExecutorWorkStartedEvent(_WorkEventBase):
 
 
 class ExecutorWorkCompletedEvent(_WorkEventBase):
-    event_type: Literal["asyncio.executor.work.completed"] = (
-        "asyncio.executor.work.completed"
-    )
+    event_type: Literal["asyncio.executor.work.completed"] = "asyncio.executor.work.completed"
     worker_thread_name: str | None = None
     duration_seconds: float | None = None
     """``finished_at - started_at`` measured in the executor thread."""
 
 
 class ExecutorWorkFailedEvent(_WorkEventBase):
-    event_type: Literal["asyncio.executor.work.failed"] = (
-        "asyncio.executor.work.failed"
-    )
+    event_type: Literal["asyncio.executor.work.failed"] = "asyncio.executor.work.failed"
     worker_thread_name: str | None = None
     duration_seconds: float | None = None
     exception_type: str | None = None
 
 
 class ExecutorWorkCancelledEvent(_WorkEventBase):
-    event_type: Literal["asyncio.executor.work.cancelled"] = (
-        "asyncio.executor.work.cancelled"
-    )
+    event_type: Literal["asyncio.executor.work.cancelled"] = "asyncio.executor.work.cancelled"
     duration_seconds: float | None = None
 
 

@@ -49,7 +49,6 @@ class ReplayEventIndex:
 
 def build_index(manifest: ReplayBundleManifest) -> ReplayEventIndex:
     entries = tuple(
-        ReplayChunkIndexEntry(chunk=chunk, chunk_index=i)
-        for i, chunk in enumerate(manifest.chunks)
+        ReplayChunkIndexEntry(chunk=chunk, chunk_index=i) for i, chunk in enumerate(manifest.chunks)
     )
     return ReplayEventIndex(entries)

@@ -129,7 +129,8 @@ class StressRunner:
         self._metrics.record_scenario_started(spec.category)
         record_stress_trace("scenario-started", spec.name)
         seed = derive_scenario_seed(
-            self._config.failure_injection.seed, spec.name,
+            self._config.failure_injection.seed,
+            spec.name,
         )
         context = ScenarioContext(
             spec=spec,
@@ -225,9 +226,7 @@ class StressRunner:
         operations_failed = sum(1 for s in signals if s.kind == "failure")
         overload_transitions = sum(1 for s in signals if s.kind == "overload")
         emergency_actions = sum(1 for s in signals if s.kind == "emergency")
-        websocket_disconnects = sum(
-            1 for s in signals if s.kind == "websocket-disconnect"
-        )
+        websocket_disconnects = sum(1 for s in signals if s.kind == "websocket-disconnect")
         replay_frames = sum(1 for s in signals if s.kind == "replay-frame")
         render_frames = sum(1 for s in signals if s.kind == "render-frame")
         dropped_frames = sum(

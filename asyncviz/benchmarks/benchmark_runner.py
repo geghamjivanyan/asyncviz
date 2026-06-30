@@ -132,10 +132,7 @@ class BenchmarkRunner:
         status: str = "ok"
         if statistics.sample_count < self._config.min_samples:
             status = "insufficient"
-        elif (
-            spec.expected_max_p95_ns > 0
-            and statistics.p95_ns > spec.expected_max_p95_ns
-        ):
+        elif spec.expected_max_p95_ns > 0 and statistics.p95_ns > spec.expected_max_p95_ns:
             status = "slow"
         outcome = BenchmarkOutcome(
             spec_name=spec.name,
@@ -239,7 +236,9 @@ class BenchmarkRunner:
         return BenchmarkSample(duration_ns=elapsed, allocations_delta_bytes=delta)
 
     def _compare_baseline(
-        self, spec: BenchmarkSpec, stats,  # type: ignore[no-untyped-def]
+        self,
+        spec: BenchmarkSpec,
+        stats,  # type: ignore[no-untyped-def]
     ) -> BaselineComparison | None:
         baseline = self._baselines.get(spec.name)
         if baseline is None:
@@ -279,7 +278,7 @@ class BenchmarkRunner:
 
     def _capture_environment(self) -> BenchmarkEnvironment:
         try:
-            cpu_count = (__import__("os").cpu_count() or 0)
+            cpu_count = __import__("os").cpu_count() or 0
         except Exception:
             cpu_count = 0
         return BenchmarkEnvironment(
@@ -309,7 +308,9 @@ def _asyncviz_version() -> str:
 
 
 def _failure(
-    spec: BenchmarkSpec, started_ns: int, detail: str,
+    spec: BenchmarkSpec,
+    started_ns: int,
+    detail: str,
 ) -> BenchmarkResult:
     ended_ns = time.perf_counter_ns()
     return BenchmarkResult(

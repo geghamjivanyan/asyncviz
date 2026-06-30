@@ -108,14 +108,9 @@ class BackpressureConfig:
         ):
             if not (0.0 < band <= 1.0):
                 raise ValueError(f"{name} must be in (0, 1] (got {band})")
-        if not (
-            self.elevated_threshold
-            < self.overload_threshold
-            < self.emergency_threshold
-        ):
+        if not (self.elevated_threshold < self.overload_threshold < self.emergency_threshold):
             raise ValueError(
-                "thresholds must be strictly ordered "
-                "elevated < overload < emergency",
+                "thresholds must be strictly ordered elevated < overload < emergency",
             )
         if not (0.0 < self.degrade_decay < 1.0):
             raise ValueError("degrade_decay must be in (0, 1)")

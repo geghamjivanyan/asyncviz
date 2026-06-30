@@ -154,7 +154,8 @@ class QueueMetricsEngine:
                 self._started = True
                 return
             self._bus_subscription = self._bus.subscribe(
-                self._on_bus_event, event_types=set(QUEUE_EVENT_TYPES),
+                self._on_bus_event,
+                event_types=set(QUEUE_EVENT_TYPES),
             )
             self._started = True
 
@@ -433,7 +434,9 @@ class QueueMetricsEngine:
         return delta_events >= self._config.updated_min_event_delta
 
     def _infer_previous_level(
-        self, state: QueueAggregateState, record: QueueMetricsRecord,
+        self,
+        state: QueueAggregateState,
+        record: QueueMetricsRecord,
     ) -> str:
         # The scorer's classification already wrote ``state.pressure.level``
         # via ``evaluate``; what we want here is the level the *previous*

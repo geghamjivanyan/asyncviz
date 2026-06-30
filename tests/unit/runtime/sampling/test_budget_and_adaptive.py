@@ -33,6 +33,7 @@ def test_budget_rolls_over_after_window() -> None:
     budget.record_retained()
     # Sleep just long enough for the window to roll.
     import time
+
     time.sleep(0.005)
     snap = budget.snapshot()
     assert snap.current_retained == 0
@@ -67,7 +68,8 @@ def test_pressure_source_callable() -> None:
     sampler = EventSampler(default_config())
     pressure = [0]
     controller = AdaptiveSamplingController(
-        sampler=sampler, pressure_source=lambda: pressure[0],
+        sampler=sampler,
+        pressure_source=lambda: pressure[0],
     )
     pressure[0] = 5_000_000
     for _ in range(20):

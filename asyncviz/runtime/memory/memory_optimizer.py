@@ -68,7 +68,8 @@ class EventMemoryOptimizer:
         self._interner = StringInterner(capacity=cfg.interner_capacity)
         self._dedup = EventDeduplicator(window_size=cfg.dedup_window)
         self._topology = CompactTopology(
-            capacity=cfg.topology_node_capacity, interner=self._interner,
+            capacity=cfg.topology_node_capacity,
+            interner=self._interner,
         )
         self._ws_buffers = WebsocketBufferPool(
             capacity_buffers=cfg.websocket_buffer_count,
@@ -126,14 +127,21 @@ class EventMemoryOptimizer:
         intern_payload: bool = True,
     ) -> CompactEvent:
         return compact_event(
-            event, interner=self._interner, intern_payload=intern_payload,
+            event,
+            interner=self._interner,
+            intern_payload=intern_payload,
         )
 
     def compact_dict_event(
-        self, data: dict[str, Any], *, intern_payload: bool = True,
+        self,
+        data: dict[str, Any],
+        *,
+        intern_payload: bool = True,
     ) -> CompactEvent:
         return compact_dict(
-            data, interner=self._interner, intern_payload=intern_payload,
+            data,
+            interner=self._interner,
+            intern_payload=intern_payload,
         )
 
     # ── replay-frame compaction ───────────────────────────────────
@@ -146,7 +154,9 @@ class EventMemoryOptimizer:
         cache: bool = False,
     ) -> CompactReplayFrame:
         compact = compact_frame(
-            frame, interner=self._interner, intern_payload=intern_payload,
+            frame,
+            interner=self._interner,
+            intern_payload=intern_payload,
         )
         if cache:
             self._replay_cache.put(compact)
@@ -197,9 +207,7 @@ class EventMemoryOptimizer:
             misses=interner_stats.misses,
             bypassed=interner_stats.bypassed,
         )
-        pool_stats = tuple(
-            (name, pool.stats()) for name, pool in self._pools.items()
-        )
+        pool_stats = tuple((name, pool.stats()) for name, pool in self._pools.items())
         return build_memory_diagnostics(
             interner_stats=interner_stats,
             pools=pool_stats,

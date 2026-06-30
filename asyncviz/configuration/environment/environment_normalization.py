@@ -32,4 +32,4 @@ def strip_namespace(key: str, namespace: str) -> str:
     """Return ``key`` with ``namespace`` removed from the front."""
     up = key.upper()
     ns = namespace.upper()
-    return up[len(ns):] if up.startswith(ns) else up
+    return up[len(ns) :] if up.startswith(ns) else up

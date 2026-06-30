@@ -164,11 +164,13 @@ class ReplaySeekCoordinator:
         # supplied, otherwise no-op).
         if playback is not None and cfg.pause_before_seek:
             self._pause_hook = lambda: playback.request_pause(
-                trigger="immediate", reason="seek",
+                trigger="immediate",
+                reason="seek",
             )
             self._resume_hook = (
                 (lambda: playback.request_resume(reason="seek-complete"))
-                if cfg.resume_after_seek else None
+                if cfg.resume_after_seek
+                else None
             )
         else:
             self._pause_hook = None
@@ -196,19 +198,25 @@ class ReplaySeekCoordinator:
 
     def seek_to_sequence(self, sequence: int, *, reason: str = "") -> SeekResult:
         return self._dispatch_intent(
-            SeekIntent.to_sequence(sequence), reason=reason,
+            SeekIntent.to_sequence(sequence),
+            reason=reason,
         )
 
     def seek_to_timestamp(
-        self, monotonic_ns: int, *, reason: str = "",
+        self,
+        monotonic_ns: int,
+        *,
+        reason: str = "",
     ) -> SeekResult:
         return self._dispatch_intent(
-            SeekIntent.to_timestamp(monotonic_ns), reason=reason,
+            SeekIntent.to_timestamp(monotonic_ns),
+            reason=reason,
         )
 
     def seek_to_marker(self, marker_id: str, *, reason: str = "") -> SeekResult:
         return self._dispatch_intent(
-            SeekIntent.to_marker(marker_id), reason=reason,
+            SeekIntent.to_marker(marker_id),
+            reason=reason,
         )
 
     def seek_relative(self, delta: int, *, reason: str = "") -> SeekResult:
@@ -239,9 +247,7 @@ class ReplaySeekCoordinator:
             target_sequence = resolve_target_sequence(
                 intent,
                 loader=self._loader,
-                current_cursor_sequence=(
-                    self._cursor.cursor.last_seek_sequence
-                ),
+                current_cursor_sequence=(self._cursor.cursor.last_seek_sequence),
                 marker_resolver=self._marker_resolver,
             )
         except Exception as exc:
@@ -275,7 +281,8 @@ class ReplaySeekCoordinator:
 
         previous_monotonic_ns = self._cursor.cursor.last_seek_monotonic_ns
         result = self._dispatch.submit(
-            request, target_sequence=target_sequence,
+            request,
+            target_sequence=target_sequence,
         )
 
         # Integrity validation.
@@ -290,7 +297,8 @@ class ReplaySeekCoordinator:
             if violation is not None:
                 metrics.record_integrity_violation()
                 record_seek_trace(
-                    "integrity-violation", f"{violation.kind}: {violation.detail}",
+                    "integrity-violation",
+                    f"{violation.kind}: {violation.detail}",
                 )
                 if self._config.strategy == "exact_only":
                     raise SeekIntegrityError(violation.detail)

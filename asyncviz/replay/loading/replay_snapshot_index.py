@@ -42,7 +42,8 @@ class ReplaySnapshotIndex:
 
     @staticmethod
     def from_records(
-        snapshots: tuple[SnapshotRecord, ...], snapshot_paths: tuple[Path, ...],
+        snapshots: tuple[SnapshotRecord, ...],
+        snapshot_paths: tuple[Path, ...],
     ) -> ReplaySnapshotIndex:
         if len(snapshots) != len(snapshot_paths):
             raise ValueError(

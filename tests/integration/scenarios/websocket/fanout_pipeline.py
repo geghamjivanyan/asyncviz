@@ -17,9 +17,7 @@ from tests.integration.harness.scenario_context import IntegrationContext
 async def run_websocket_fanout_pipeline(context: IntegrationContext) -> None:
     cfg = context.config
     capacity = max(4, cfg.websocket_events // 8)
-    subscribers = [
-        deque(maxlen=capacity) for _ in range(cfg.websocket_subscribers)
-    ]
+    subscribers = [deque(maxlen=capacity) for _ in range(cfg.websocket_subscribers)]
     backlog_peak = 0
     for event_index in range(cfg.websocket_events):
         for queue in subscribers:
@@ -37,5 +35,7 @@ async def run_websocket_fanout_pipeline(context: IntegrationContext) -> None:
         if backlog > backlog_peak:
             backlog_peak = backlog
     context.record(
-        "custom", f"backlog_peak={backlog_peak}", value=float(backlog_peak),
+        "custom",
+        f"backlog_peak={backlog_peak}",
+        value=float(backlog_peak),
     )

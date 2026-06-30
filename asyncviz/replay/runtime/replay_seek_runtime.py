@@ -164,9 +164,7 @@ def _state_reducer_adapter(registry: ReducerRegistry):
 
     def _reduce(state_dict: dict, frame: ReplayFrame) -> dict:
         state = (
-            VirtualRuntimeState.from_dict(state_dict)
-            if state_dict
-            else VirtualRuntimeState.empty()
+            VirtualRuntimeState.from_dict(state_dict) if state_dict else VirtualRuntimeState.empty()
         )
         next_state = registry.apply(state, frame)
         return next_state.to_dict()

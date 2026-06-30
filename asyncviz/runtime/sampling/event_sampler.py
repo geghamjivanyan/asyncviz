@@ -123,12 +123,16 @@ class EventSampler:
         return decision
 
     def evaluate_many(
-        self, event_types: Iterable[str],
+        self,
+        event_types: Iterable[str],
     ) -> list[SamplingDecision]:
         return [self.evaluate(et) for et in event_types]
 
     def should_retain(
-        self, event_type: str, *, priority: SamplingPriority | None = None,
+        self,
+        event_type: str,
+        *,
+        priority: SamplingPriority | None = None,
     ) -> bool:
         return self.evaluate(event_type, priority=priority).retain
 

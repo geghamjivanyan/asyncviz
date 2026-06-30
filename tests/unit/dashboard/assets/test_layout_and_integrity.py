@@ -39,8 +39,10 @@ def test_sha256_file_round_trips(tmp_path: Path) -> None:
 
 
 def test_content_type_handles_known_extensions(tmp_path: Path) -> None:
-    assert content_type_for(tmp_path / "a.js").startswith("application/javascript") or \
-        content_type_for(tmp_path / "a.js") == "text/javascript"
+    assert (
+        content_type_for(tmp_path / "a.js").startswith("application/javascript")
+        or content_type_for(tmp_path / "a.js") == "text/javascript"
+    )
     assert content_type_for(tmp_path / "a.css") == "text/css"
     assert content_type_for(tmp_path / "a.unknown") == "application/octet-stream"
 

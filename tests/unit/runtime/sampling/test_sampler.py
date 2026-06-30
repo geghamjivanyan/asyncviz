@@ -20,35 +20,25 @@ def test_off_mode_retains_everything(off_sampler: EventSampler) -> None:
 def test_critical_events_always_retained(
     aggressive_sampler: EventSampler,
 ) -> None:
-    assert all(
-        aggressive_sampler.should_retain("runtime.warning")
-        for _ in range(200)
-    )
+    assert all(aggressive_sampler.should_retain("runtime.warning") for _ in range(200))
 
 
 def test_structural_events_always_retained_by_default(
     aggressive_sampler: EventSampler,
 ) -> None:
-    assert all(
-        aggressive_sampler.should_retain("asyncio.task.created")
-        for _ in range(200)
-    )
+    assert all(aggressive_sampler.should_retain("asyncio.task.created") for _ in range(200))
 
 
 def test_state_events_sampled_proportionally(custom_sampler: EventSampler) -> None:
     # state_retention = 0.5, expect ~50% retention.
-    retained = sum(
-        1 for _ in range(1000)
-        if custom_sampler.should_retain("asyncio.task.waiting")
-    )
+    retained = sum(1 for _ in range(1000) if custom_sampler.should_retain("asyncio.task.waiting"))
     assert 400 < retained < 600
 
 
 def test_delta_events_aggressively_sampled(custom_sampler: EventSampler) -> None:
     # delta_retention = 0.1, expect ~10% retention.
     retained = sum(
-        1 for _ in range(1000)
-        if custom_sampler.should_retain("asyncio.queue.metrics.updated")
+        1 for _ in range(1000) if custom_sampler.should_retain("asyncio.queue.metrics.updated")
     )
     assert 60 < retained < 140
 
@@ -56,12 +46,8 @@ def test_delta_events_aggressively_sampled(custom_sampler: EventSampler) -> None
 def test_deterministic_decisions() -> None:
     sampler_a = EventSampler(default_config())
     sampler_b = EventSampler(default_config())
-    decisions_a = [
-        sampler_a.evaluate("asyncio.queue.metrics.updated") for _ in range(100)
-    ]
-    decisions_b = [
-        sampler_b.evaluate("asyncio.queue.metrics.updated") for _ in range(100)
-    ]
+    decisions_a = [sampler_a.evaluate("asyncio.queue.metrics.updated") for _ in range(100)]
+    decisions_b = [sampler_b.evaluate("asyncio.queue.metrics.updated") for _ in range(100)]
     # Same seed + same sequence stream → same buckets + same retain bits.
     for a, b in zip(decisions_a, decisions_b, strict=True):
         assert a.bucket == b.bucket

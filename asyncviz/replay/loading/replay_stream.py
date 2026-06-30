@@ -68,7 +68,8 @@ class ReplayStream:
                 # Window — early-stop when above the upper bound.
                 if self._window.above_window(frame):
                     record_replay_trace(
-                        "window-drop", f"seq={frame.sequence} above-window",
+                        "window-drop",
+                        f"seq={frame.sequence} above-window",
                     )
                     self._progress.window_drops += 1
                     get_loader_metrics().record_window_drop()

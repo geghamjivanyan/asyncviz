@@ -45,18 +45,18 @@ import argparse
 import asyncio
 import logging
 import random
-import time
 
 # ``asyncviz run`` executes the target via ``runpy.run_path`` which
 # does not put the script's directory on ``sys.path``. Inject it so
 # the sibling ``_common`` module is importable both under the CLI
 # and during a standalone ``python validation/blocking_runtime.py``.
-import sys  # noqa: E402  — must precede the _common import
-from pathlib import Path  # noqa: E402
+import sys
+import time
+from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from _common import (  # noqa: E402
+from _common import (
     add_common_args,
     cancel_all,
     common_from_namespace,
@@ -119,7 +119,7 @@ async def burst_offender(stop: asyncio.Event, rng: random.Random) -> None:
     while not stop.is_set():
         burst += 1
         logger.info("burst_offender burst #%s starting", burst)
-        for blk in range(5):
+        for _blk in range(5):
             time.sleep(rng.uniform(0.20, 0.25))  # noqa: ASYNC251 — intentional
             await asyncio.sleep(0.005)
             if stop.is_set():
@@ -142,7 +142,7 @@ async def nested_offender(stop: asyncio.Event, rng: random.Random) -> None:
         accumulator = 0
         for i in range(10_000):
             accumulator += i
-        time.sleep(dur)  # noqa: ASYNC251 — intentional
+        time.sleep(dur)
         return accumulator
 
     def _middle(dur: float) -> int:

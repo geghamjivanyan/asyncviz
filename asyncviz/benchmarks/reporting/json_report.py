@@ -59,7 +59,8 @@ def _outcome_dict(outcome) -> dict[str, Any]:  # type: ignore[no-untyped-def]
         "iterations_run": outcome.iterations_run,
         "warmup_iterations_run": outcome.warmup_iterations_run,
         "statistics": (
-            None if stats is None
+            None
+            if stats is None
             else {
                 "sample_count": stats.sample_count,
                 "samples_excluded": stats.samples_excluded,

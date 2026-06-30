@@ -23,7 +23,9 @@ def compact_frame(
     intern_payload: bool = True,
 ) -> CompactReplayFrame:
     compact = compact_replay_frame(
-        frame, interner=interner, intern_payload=intern_payload,
+        frame,
+        interner=interner,
+        intern_payload=intern_payload,
     )
     get_memory_metrics().record_compact_frame()
     record_memory_trace(
@@ -77,7 +79,8 @@ class ReplayFrameCache:
                 evicted_seq, _ = self._buf.popitem(last=False)
                 get_memory_metrics().record_replay_cache_eviction()
                 record_memory_trace(
-                    "replay-cache-evicted", f"seq={evicted_seq}",
+                    "replay-cache-evicted",
+                    f"seq={evicted_seq}",
                 )
 
     def clear(self) -> None:

@@ -38,7 +38,9 @@ class ReplayEventRouter:
         self._subscribers: dict[str, list[FrameSubscriber]] = {WILDCARD: []}
 
     def subscribe(
-        self, payload_type: str, subscriber: FrameSubscriber,
+        self,
+        payload_type: str,
+        subscriber: FrameSubscriber,
     ) -> Callable[[], None]:
         """Register a subscriber for one payload type (or the
         wildcard ``"*"``). Returns an unsubscribe handle."""

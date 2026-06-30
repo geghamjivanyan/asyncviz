@@ -68,7 +68,9 @@ def test_writer_reopens_existing_chunk_after_crash(tmp_path: Path) -> None:
     appends after recovery. Sequence numbers and events from the
     first session must survive."""
     cfg = RecordingConfig(
-        root_dir=tmp_path, snapshot_on_start=False, snapshot_on_stop=False,
+        root_dir=tmp_path,
+        snapshot_on_start=False,
+        snapshot_on_stop=False,
     )
     session = tmp_path / "reopen"
     session.mkdir()

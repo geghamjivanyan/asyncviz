@@ -84,10 +84,7 @@ class WebsocketLoopBridge:
             self._interval_sum_ns += interval
             if interval > self._max_interval_ns:
                 self._max_interval_ns = interval
-            if (
-                self._target_interval_ns > 0
-                and interval > self._target_interval_ns * 3 // 2
-            ):
+            if self._target_interval_ns > 0 and interval > self._target_interval_ns * 3 // 2:
                 self._deviations_recorded += 1
 
     def report(self) -> WebsocketBridgeReport:

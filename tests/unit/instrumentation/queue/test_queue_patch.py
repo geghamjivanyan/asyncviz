@@ -56,8 +56,7 @@ def test_unpatch_restores_originals(
     engine_unpatched: QueueInstrumentationEngine,
 ) -> None:
     originals = {
-        cls: {name: getattr(cls, name) for name in _PATCHED_METHOD_NAMES}
-        for cls in PATCHED_CLASSES
+        cls: {name: getattr(cls, name) for name in _PATCHED_METHOD_NAMES} for cls in PATCHED_CLASSES
     }
     engine_unpatched.patch()
     assert asyncio.Queue.put_nowait is not originals[asyncio.Queue]["put_nowait"]
@@ -134,7 +133,8 @@ async def test_get_nowait_raises_queueempty_when_empty(
 
 @pytest.mark.asyncio
 async def test_creating_queue_emits_queue_created(
-    bus: EventBus, engine: QueueInstrumentationEngine,
+    bus: EventBus,
+    engine: QueueInstrumentationEngine,
 ) -> None:
     events = await _collect(bus, ["asyncio.queue.created"])
     asyncio.Queue(maxsize=4)
@@ -148,7 +148,8 @@ async def test_creating_queue_emits_queue_created(
 
 @pytest.mark.asyncio
 async def test_put_get_emit_paired_events(
-    bus: EventBus, engine: QueueInstrumentationEngine,
+    bus: EventBus,
+    engine: QueueInstrumentationEngine,
 ) -> None:
     events = await _collect(bus, ["asyncio.queue.put", "asyncio.queue.get"])
     q: asyncio.Queue[int] = asyncio.Queue()
@@ -161,7 +162,8 @@ async def test_put_get_emit_paired_events(
 
 @pytest.mark.asyncio
 async def test_put_nowait_emits_nowait_flag(
-    bus: EventBus, engine: QueueInstrumentationEngine,
+    bus: EventBus,
+    engine: QueueInstrumentationEngine,
 ) -> None:
     events = await _collect(bus, ["asyncio.queue.put"])
     q: asyncio.Queue[int] = asyncio.Queue()
@@ -174,10 +176,12 @@ async def test_put_nowait_emits_nowait_flag(
 
 @pytest.mark.asyncio
 async def test_blocked_put_emits_full_wait_then_put(
-    bus: EventBus, engine: QueueInstrumentationEngine,
+    bus: EventBus,
+    engine: QueueInstrumentationEngine,
 ) -> None:
     events = await _collect(
-        bus, ["asyncio.queue.full_wait", "asyncio.queue.put", "asyncio.queue.get"],
+        bus,
+        ["asyncio.queue.full_wait", "asyncio.queue.put", "asyncio.queue.get"],
     )
     q: asyncio.Queue[int] = asyncio.Queue(maxsize=1)
     q.put_nowait(1)
@@ -204,10 +208,12 @@ async def test_blocked_put_emits_full_wait_then_put(
 
 @pytest.mark.asyncio
 async def test_blocked_get_emits_empty_wait_then_get(
-    bus: EventBus, engine: QueueInstrumentationEngine,
+    bus: EventBus,
+    engine: QueueInstrumentationEngine,
 ) -> None:
     events = await _collect(
-        bus, ["asyncio.queue.empty_wait", "asyncio.queue.get", "asyncio.queue.put"],
+        bus,
+        ["asyncio.queue.empty_wait", "asyncio.queue.get", "asyncio.queue.put"],
     )
     q: asyncio.Queue[int] = asyncio.Queue()
 
@@ -232,7 +238,8 @@ async def test_blocked_get_emits_empty_wait_then_get(
 
 @pytest.mark.asyncio
 async def test_task_done_emits_event(
-    bus: EventBus, engine: QueueInstrumentationEngine,
+    bus: EventBus,
+    engine: QueueInstrumentationEngine,
 ) -> None:
     events = await _collect(bus, ["asyncio.queue.task_done"])
     q: asyncio.Queue[int] = asyncio.Queue()
@@ -248,7 +255,8 @@ async def test_task_done_emits_event(
 
 @pytest.mark.asyncio
 async def test_events_carry_task_id_when_running_inside_a_task(
-    bus: EventBus, engine: QueueInstrumentationEngine,
+    bus: EventBus,
+    engine: QueueInstrumentationEngine,
 ) -> None:
     events = await _collect(bus, ["asyncio.queue.put", "asyncio.queue.get"])
     q: asyncio.Queue[int] = asyncio.Queue()
@@ -270,7 +278,8 @@ async def test_events_carry_task_id_when_running_inside_a_task(
 
 @pytest.mark.asyncio
 async def test_cancelled_get_emits_queue_cancelled(
-    bus: EventBus, engine: QueueInstrumentationEngine,
+    bus: EventBus,
+    engine: QueueInstrumentationEngine,
 ) -> None:
     events = await _collect(bus, ["asyncio.queue.cancelled"])
     q: asyncio.Queue[int] = asyncio.Queue()
@@ -286,7 +295,8 @@ async def test_cancelled_get_emits_queue_cancelled(
 
 @pytest.mark.asyncio
 async def test_cancelled_put_emits_queue_cancelled(
-    bus: EventBus, engine: QueueInstrumentationEngine,
+    bus: EventBus,
+    engine: QueueInstrumentationEngine,
 ) -> None:
     events = await _collect(bus, ["asyncio.queue.cancelled"])
     q: asyncio.Queue[int] = asyncio.Queue(maxsize=1)
@@ -305,7 +315,8 @@ async def test_cancelled_put_emits_queue_cancelled(
 
 @pytest.mark.asyncio
 async def test_internal_marker_skips_instrumentation(
-    bus: EventBus, engine: QueueInstrumentationEngine,
+    bus: EventBus,
+    engine: QueueInstrumentationEngine,
 ) -> None:
     events = await _collect(
         bus,
@@ -334,7 +345,8 @@ async def test_internal_marker_skips_instrumentation(
 
 @pytest.mark.asyncio
 async def test_queue_ids_are_unique_and_monotonic(
-    bus: EventBus, engine: QueueInstrumentationEngine,
+    bus: EventBus,
+    engine: QueueInstrumentationEngine,
 ) -> None:
     events = await _collect(bus, ["asyncio.queue.created"])
     queues = [asyncio.Queue() for _ in range(5)]
@@ -350,7 +362,8 @@ async def test_queue_ids_are_unique_and_monotonic(
 
 @pytest.mark.asyncio
 async def test_high_throughput_put_get_balance(
-    bus: EventBus, engine: QueueInstrumentationEngine,
+    bus: EventBus,
+    engine: QueueInstrumentationEngine,
 ) -> None:
     puts = await _collect(bus, ["asyncio.queue.put"])
     gets = await _collect(bus, ["asyncio.queue.get"])

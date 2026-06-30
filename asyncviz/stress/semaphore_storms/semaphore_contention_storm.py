@@ -27,7 +27,5 @@ async def run_semaphore_contention_storm(
             await asyncio.sleep(0)
             context.record_signal("operation", f"sem-acquired:{index}")
 
-    workers = [
-        asyncio.create_task(_worker(i)) for i in range(cfg.semaphore_contention)
-    ]
+    workers = [asyncio.create_task(_worker(i)) for i in range(cfg.semaphore_contention)]
     await asyncio.gather(*workers)

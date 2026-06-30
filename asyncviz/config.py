@@ -132,4 +132,3 @@ def _parse_cors_allowed_origins(
         return ()
     parts = tuple(token.strip() for token in stripped.split(",") if token.strip())
     return parts if parts else default
-

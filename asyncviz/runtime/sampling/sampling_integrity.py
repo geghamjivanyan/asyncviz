@@ -41,36 +41,27 @@ def check_decision(
         if decision.priority == SamplingPriority.CRITICAL:
             return SamplingIntegrityViolation(
                 kind="dropped_critical",
-                detail=(
-                    f"critical event dropped via reason={decision.reason}"
-                ),
+                detail=(f"critical event dropped via reason={decision.reason}"),
                 sequence=decision.sequence,
             )
         # Structural drops are only permitted when the
         # ``structural_retention`` config explicitly downgrades —
         # everything that lands here as STRUCTURAL with a drop is
         # almost certainly a bug.
-        if (
-            decision.priority == SamplingPriority.STRUCTURAL
-            and decision.reason in (
-                "dropped-by-rate",
-                "dropped-by-budget",
-                "dropped-by-overload",
-            )
+        if decision.priority == SamplingPriority.STRUCTURAL and decision.reason in (
+            "dropped-by-rate",
+            "dropped-by-budget",
+            "dropped-by-overload",
         ):
             return SamplingIntegrityViolation(
                 kind="dropped_structural",
-                detail=(
-                    f"structural event dropped via reason={decision.reason}"
-                ),
+                detail=(f"structural event dropped via reason={decision.reason}"),
                 sequence=decision.sequence,
             )
     if decision.sequence <= previous_sequence:
         return SamplingIntegrityViolation(
             kind="non_monotonic_sequence",
-            detail=(
-                f"decision sequence {decision.sequence} is not > {previous_sequence}"
-            ),
+            detail=(f"decision sequence {decision.sequence} is not > {previous_sequence}"),
             sequence=decision.sequence,
         )
     if not (0 <= decision.bucket < BUCKET_COUNT):

@@ -76,7 +76,9 @@ def load_and_apply(
     """Convenience helper: load + apply in one call."""
     env_loader = loader or EnvironmentConfigurationLoader()
     return apply_loader_result(
-        base, env_loader.load(environ), provenance=provenance,
+        base,
+        env_loader.load(environ),
+        provenance=provenance,
     )
 
 

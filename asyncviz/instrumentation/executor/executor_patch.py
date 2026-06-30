@@ -116,9 +116,7 @@ class ExecutorInstrumentationEngine:
     ) -> None:
         self._bus = bus
         self._executor_registry = executor_registry or get_default_executor_registry()
-        self._work_item_registry = (
-            work_item_registry or get_default_work_item_registry()
-        )
+        self._work_item_registry = work_item_registry or get_default_work_item_registry()
         self._config = config
         self._lock = threading.Lock()
         self._patched = False
@@ -172,7 +170,11 @@ class ExecutorInstrumentationEngine:
                     return original(self_loop, executor, func, *args)
                 try:
                     return engine._dispatch(
-                        self_loop, executor, func, args, original,
+                        self_loop,
+                        executor,
+                        func,
+                        args,
+                        original,
                     )
                 except Exception as exc:  # pragma: no cover — defensive
                     logger.debug("executor instrumentation failed: %s", exc)
@@ -181,10 +183,14 @@ class ExecutorInstrumentationEngine:
 
             patched_run_in_executor.__doc__ = getattr(original, "__doc__", None)
             patched_run_in_executor.__qualname__ = getattr(
-                original, "__qualname__", "patched_run_in_executor",
+                original,
+                "__qualname__",
+                "patched_run_in_executor",
             )
             patched_run_in_executor.__name__ = getattr(
-                original, "__name__", "run_in_executor",
+                original,
+                "__name__",
+                "run_in_executor",
             )
             base_class.run_in_executor = patched_run_in_executor  # type: ignore[assignment]
             if getattr(self._config, "trace_on_init", False):
@@ -243,9 +249,7 @@ class ExecutorInstrumentationEngine:
                 resolved if resolved is not None else loop,
                 is_default=is_default,
                 creator_task_id=(
-                    current_runtime_task()
-                    if self._config.capture_submitting_task_id
-                    else None
+                    current_runtime_task() if self._config.capture_submitting_task_id else None
                 ),
             )
             if is_new and self._config.emit_registered:
@@ -253,15 +257,9 @@ class ExecutorInstrumentationEngine:
                 self._emit_registered(identity)
 
             submitting_task = (
-                current_runtime_task()
-                if self._config.capture_submitting_task_id
-                else None
+                current_runtime_task() if self._config.capture_submitting_task_id else None
             )
-            callable_name = (
-                read_callable_name(func)
-                if self._config.capture_callable_name
-                else None
-            )
+            callable_name = read_callable_name(func) if self._config.capture_callable_name else None
             work_item = self._work_item_registry.register(
                 executor_id=identity.executor_id,
                 submitting_task_id=submitting_task,
@@ -304,7 +302,10 @@ class ExecutorInstrumentationEngine:
             )
             get_executor_metrics().record_work_started()
             engine._emit_started(
-                identity, work_item, worker_thread_name, started_at_ns,
+                identity,
+                work_item,
+                worker_thread_name,
+                started_at_ns,
             )
             record_executor_trace("work-started", work_item.work_item_id)
             # Emit completed / failed from the executor thread so the
@@ -318,9 +319,7 @@ class ExecutorInstrumentationEngine:
                 finished_at_ns = time.monotonic_ns()
                 duration = max(0, finished_at_ns - started_at_ns) / 1_000_000_000
                 exception_type = (
-                    type(exc).__name__
-                    if engine._config.capture_exception_type
-                    else None
+                    type(exc).__name__ if engine._config.capture_exception_type else None
                 )
                 engine._work_item_registry.mark_failed(
                     work_item.work_item_id,
@@ -338,7 +337,8 @@ class ExecutorInstrumentationEngine:
             finished_at_ns = time.monotonic_ns()
             duration = max(0, finished_at_ns - started_at_ns) / 1_000_000_000
             engine._work_item_registry.mark_completed(
-                work_item.work_item_id, finished_at_ns=finished_at_ns,
+                work_item.work_item_id,
+                finished_at_ns=finished_at_ns,
             )
             engine._emit_completed(
                 identity.executor_id,
@@ -350,7 +350,9 @@ class ExecutorInstrumentationEngine:
 
         with contextlib.suppress(AttributeError):
             wrapper.__qualname__ = getattr(
-                func, "__qualname__", "asyncviz_executor_wrapper",
+                func,
+                "__qualname__",
+                "asyncviz_executor_wrapper",
             )
             wrapper.__name__ = getattr(func, "__name__", "asyncviz_executor_wrapper")
         return wrapper
@@ -430,7 +432,9 @@ class ExecutorInstrumentationEngine:
                 executor_id=executor_id,
                 executor_kind=identity.executor_kind,
                 snapshot=_work_item_snapshot_dict(
-                    work_item, started=True, completed=True,
+                    work_item,
+                    started=True,
+                    completed=True,
                 ),
                 work_item_id=work_item_id,
                 submitting_task_id=work_item.submitting_task_id,
@@ -462,7 +466,9 @@ class ExecutorInstrumentationEngine:
                 executor_id=executor_id,
                 executor_kind=identity.executor_kind,
                 snapshot=_work_item_snapshot_dict(
-                    work_item, started=True, failed=True,
+                    work_item,
+                    started=True,
+                    failed=True,
                 ),
                 work_item_id=work_item_id,
                 submitting_task_id=work_item.submitting_task_id,
@@ -493,7 +499,9 @@ class ExecutorInstrumentationEngine:
                 executor_id=executor_id,
                 executor_kind=identity.executor_kind,
                 snapshot=_work_item_snapshot_dict(
-                    work_item, started=False, cancelled=True,
+                    work_item,
+                    started=False,
+                    cancelled=True,
                 ),
                 work_item_id=work_item_id,
                 submitting_task_id=work_item.submitting_task_id,
@@ -545,9 +553,7 @@ def _make_done_callback(
                     # the submission itself raised. Surface as failed
                     # with no worker thread name.
                     exception_type = (
-                        type(exc).__name__
-                        if engine._config.capture_exception_type
-                        else None
+                        type(exc).__name__ if engine._config.capture_exception_type else None
                     )
                     engine._work_item_registry.mark_failed(
                         work_item_id,
@@ -564,7 +570,8 @@ def _make_done_callback(
                     return
             if cancelled:
                 engine._work_item_registry.mark_cancelled(
-                    work_item_id, finished_at_ns=finished_at_ns,
+                    work_item_id,
+                    finished_at_ns=finished_at_ns,
                 )
                 engine._emit_cancelled(executor_id, work_item_id, duration_seconds)
         except Exception as exc:  # pragma: no cover — defensive

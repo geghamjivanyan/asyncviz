@@ -72,7 +72,9 @@ def record_sampling_trace(kind: SamplingTraceKind, detail: str = "") -> None:
         return
     _RING.push(
         SamplingTraceEntry(
-            monotonic_ns=time.monotonic_ns(), kind=kind, detail=detail,
+            monotonic_ns=time.monotonic_ns(),
+            kind=kind,
+            detail=detail,
         ),
     )
 

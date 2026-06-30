@@ -108,7 +108,4 @@ async def test_aggregated_event_round_trips_through_bus(
     for i in range(4):
         await q.put(i)
     await bus.join()
-    assert any(
-        getattr(e, "event_type", None) == "asyncio.queue.metrics.updated"
-        for e in seen
-    )
+    assert any(getattr(e, "event_type", None) == "asyncio.queue.metrics.updated" for e in seen)

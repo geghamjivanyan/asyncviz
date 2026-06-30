@@ -47,31 +47,43 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         description="Run AsyncViz benchmarks + emit reports.",
     )
     parser.add_argument(
-        "--quick", action="store_true",
+        "--quick",
+        action="store_true",
         help="Use the quick benchmark config",
     )
     parser.add_argument("--category", default=None, help="Filter by category")
     parser.add_argument(
-        "--name-prefix", default=None, help="Filter by name prefix",
+        "--name-prefix",
+        default=None,
+        help="Filter by name prefix",
     )
     parser.add_argument(
-        "--baseline", type=Path, default=None,
+        "--baseline",
+        type=Path,
+        default=None,
         help="Compare against this baseline file",
     )
     parser.add_argument(
-        "--write-baseline", type=Path, default=None,
+        "--write-baseline",
+        type=Path,
+        default=None,
         help="Write a new baseline after the run",
     )
     parser.add_argument(
-        "--json", type=Path, default=None,
+        "--json",
+        type=Path,
+        default=None,
         help="Write full JSON report to this path",
     )
     parser.add_argument(
-        "--markdown", type=Path, default=None,
+        "--markdown",
+        type=Path,
+        default=None,
         help="Write markdown summary to this path",
     )
     parser.add_argument(
-        "--trace", action="store_true",
+        "--trace",
+        action="store_true",
         help="Enable benchmark tracing during the run",
     )
     parser.add_argument(

@@ -40,7 +40,8 @@ class BoundedEventChannel[T]:
     ) -> None:
         self._name = name
         self._queue: PriorityBoundedQueue[T] = PriorityBoundedQueue(
-            capacity=capacity, policy=policy,
+            capacity=capacity,
+            policy=policy,
         )
         self._overflow_count = 0
 

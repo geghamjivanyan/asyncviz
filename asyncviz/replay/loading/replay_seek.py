@@ -66,9 +66,7 @@ def plan_sequence_seek(
     entry = sequence_index.chunk_for_sequence(target_sequence)
     if entry is None:
         return SeekPlan(starting_chunk_index=0, snapshot=None, chunks_to_scan=0)
-    chunks_to_scan = sum(
-        1 for c in chunks if c.index >= entry.chunk_index
-    )
+    chunks_to_scan = sum(1 for c in chunks if c.index >= entry.chunk_index)
     snapshot = snapshot_index.nearest_at_or_before(target_sequence)
     return SeekPlan(
         starting_chunk_index=entry.chunk_index,
@@ -96,7 +94,10 @@ def execute_seek(
         if chunk_record.index < plan.starting_chunk_index:
             continue
         loader = ReplayChunkLoader(
-            chunk_record, chunk_path, adapter=adapter, strict=strict,
+            chunk_record,
+            chunk_path,
+            adapter=adapter,
+            strict=strict,
         )
         chunks_scanned += 1
         for frame in loader.iter_frames():
@@ -121,7 +122,8 @@ def execute_seek(
     # Walked everything — nothing matched.
     get_loader_metrics().record_seek(chunks_scanned=chunks_scanned)
     record_replay_trace(
-        "seek-completed", f"no-match chunks={chunks_scanned}",
+        "seek-completed",
+        f"no-match chunks={chunks_scanned}",
     )
     return SeekResult(cursor=cursor, landed_frame=None, chunks_scanned=chunks_scanned)
 

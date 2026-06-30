@@ -42,8 +42,7 @@ def write_baseline(
     p95_map = {
         result.outcome.spec_name: result.outcome.statistics.p95_ns
         for result in suite.results
-        if result.outcome.statistics is not None
-        and result.outcome.status == "ok"
+        if result.outcome.statistics is not None and result.outcome.status == "ok"
     }
     baseline = BaselineFile(
         schema_version=BASELINE_SCHEMA_VERSION,
@@ -72,15 +71,12 @@ def read_baseline(path: Path) -> BaselineFile | None:
     schema = int(raw.get("schema_version", 0))
     if schema != BASELINE_SCHEMA_VERSION:
         raise ValueError(
-            f"baseline at {path} has schema_version={schema} "
-            f"(expected {BASELINE_SCHEMA_VERSION})",
+            f"baseline at {path} has schema_version={schema} (expected {BASELINE_SCHEMA_VERSION})",
         )
     return BaselineFile(
         schema_version=schema,
         captured_at_wall_ns=int(raw.get("captured_at_wall_ns", 0)),
         asyncviz_version=str(raw.get("asyncviz_version", "")),
-        p95_ns_by_name={
-            str(k): int(v) for k, v in raw.get("p95_ns_by_name", {}).items()
-        },
+        p95_ns_by_name={str(k): int(v) for k, v in raw.get("p95_ns_by_name", {}).items()},
         metadata={str(k): str(v) for k, v in raw.get("metadata", {}).items()},
     )

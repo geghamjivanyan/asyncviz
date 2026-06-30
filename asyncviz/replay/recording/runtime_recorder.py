@@ -106,7 +106,8 @@ class RuntimeRecorder:
             recording_id=recording_id,
         )
         self._session_dir = session_dir_for(
-            Path(config.root_dir), self._session.recording_id,
+            Path(config.root_dir),
+            self._session.recording_id,
         )
         ensure_directory(self._session_dir)
         ensure_directory(snapshots_dir(self._session_dir))
@@ -252,7 +253,8 @@ class RuntimeRecorder:
         self._session.record_snapshot()
         self._metrics.record_snapshot_captured()
         record_recording_trace(
-            "snapshot-captured", f"kind={kind} index={index}",
+            "snapshot-captured",
+            f"kind={kind} index={index}",
         )
         return record
 

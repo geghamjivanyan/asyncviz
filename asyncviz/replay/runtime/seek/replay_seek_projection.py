@@ -31,7 +31,9 @@ class SeekProjection:
 
 
 def project_seek(
-    *, result: SeekResult, state: VirtualRuntimeState,
+    *,
+    result: SeekResult,
+    state: VirtualRuntimeState,
 ) -> SeekProjection:
     """Turn a :class:`SeekResult` + state into a UI-friendly
     :class:`SeekProjection`."""

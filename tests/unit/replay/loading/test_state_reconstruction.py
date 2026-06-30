@@ -15,7 +15,10 @@ from asyncviz.replay.loading import (
 def test_default_reducer_appends_frames() -> None:
     state: dict = {}
     frame = ReplayFrame.for_runtime_event(
-        sequence=1, monotonic_ns=10, payload_type="x", payload={"a": 1},
+        sequence=1,
+        monotonic_ns=10,
+        payload_type="x",
+        payload={"a": 1},
     )
     state = default_collecting_reducer(state, frame)
     assert len(state["frames"]) == 1

@@ -20,10 +20,10 @@ under capacity, and Diagnostics stays "Healthy" the whole time.
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import random
 
 import asyncviz
-
 
 # ── Workload ─────────────────────────────────────────────────────────────
 
@@ -49,7 +49,7 @@ async def producer(queue: asyncio.Queue[int]) -> None:
     """Push jobs onto a shared queue.
 
     Most of the time the producer paces itself with the workers.
-    Every dozen items it does a short *burst* of 3–4 quick puts to
+    Every dozen items it does a short *burst* of 3-4 quick puts to
     make the queue's occupancy oscillate visibly on the Queues
     page — but the bursts are bounded so the queue never saturates
     and Diagnostics stays clean.
@@ -70,7 +70,7 @@ async def producer(queue: asyncio.Queue[int]) -> None:
 async def worker(queue: asyncio.Queue[int]) -> None:
     """Pop jobs from the queue and process them.
 
-    Each job takes 150–400 ms — long enough that the Timeline page
+    Each job takes 150-400 ms — long enough that the Timeline page
     shows visible running bars, short enough that the workers
     keep up with the producer with room to spare.
     """
@@ -88,7 +88,7 @@ async def worker(queue: asyncio.Queue[int]) -> None:
 async def fetch(name: str) -> str:
     """Pretend to fetch something over the network.
 
-    Wide variance (100–550 ms) so the children of each ``gather``
+    Wide variance (100-550 ms) so the children of each ``gather``
     finish at different times — that's what gives the Dependencies
     page its "fan-in / staggered completion" look.
     """
@@ -171,11 +171,11 @@ async def main() -> None:
 
     print("AsyncViz is running. Open http://127.0.0.1:8877 — Ctrl+C to stop.")
 
-    try:
+    # The tasks above are cancelled cleanly during shutdown — gather()
+    # surfaces that as CancelledError, which we suppress so the
+    # finally-block can shut AsyncViz down without a traceback.
+    with contextlib.suppress(asyncio.CancelledError):
         await asyncio.gather(*tasks)
-    except asyncio.CancelledError:
-        # The tasks above are cancelled cleanly during shutdown.
-        pass
 
 
 if __name__ == "__main__":

@@ -9,7 +9,9 @@ from asyncviz.instrumentation.executor.executor_metadata import ExecutorKind
 
 
 def classify_executor(
-    executor: Any, *, is_default: bool = False,
+    executor: Any,
+    *,
+    is_default: bool = False,
 ) -> ExecutorKind:
     """Best-effort classification of ``executor``.
 

@@ -80,7 +80,10 @@ class ReplayPlaybackStateHolder:
         return next_snapshot
 
     def update_position(
-        self, *, last_sequence: int, last_monotonic_ns: int,
+        self,
+        *,
+        last_sequence: int,
+        last_monotonic_ns: int,
     ) -> PlaybackPhaseSnapshot:
         """Update only the cursor fields — used by the playback loop
         as it advances. Phase stays put."""

@@ -97,6 +97,7 @@ def start_recorder_for_runtime(
 
     runtime_snapshot_provider: Callable[[], dict | None] | None = None
     if config.capture_runtime_snapshot and state_store is not None:
+
         def _runtime_snapshot() -> dict | None:
             try:
                 snap = state_store.snapshot()
@@ -115,6 +116,7 @@ def start_recorder_for_runtime(
     if config.capture_warning_snapshot:
         emitter = getattr(services, "blocking_warning_emitter", None)
         if emitter is not None:
+
             def _warning_snapshot() -> dict | None:
                 snapshot_fn = getattr(emitter, "snapshot", None)
                 if not callable(snapshot_fn):

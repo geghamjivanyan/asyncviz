@@ -15,7 +15,8 @@ from asyncviz.replay.runtime.seek import (
 
 def test_seek_intent_factories() -> None:
     assert SeekIntent.to_sequence(42) == SeekIntent(
-        kind="sequence", target_sequence=42,
+        kind="sequence",
+        target_sequence=42,
     )
     assert SeekIntent.to_timestamp(99).kind == "timestamp"
     assert SeekIntent.to_marker("m1").kind == "marker"

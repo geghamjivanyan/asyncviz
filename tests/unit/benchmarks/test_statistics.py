@@ -39,7 +39,10 @@ def test_mad_outlier_filtering_drops_far_samples() -> None:
     base = [100] * 20
     base.extend([100_000, 100_000])  # extreme outliers
     kept, excluded = apply_outlier_policy(
-        base, policy="mad", mad_threshold=3.5, iqr_factor=1.5,
+        base,
+        policy="mad",
+        mad_threshold=3.5,
+        iqr_factor=1.5,
     )
     assert excluded == 2
     assert len(kept) == 20
@@ -48,7 +51,10 @@ def test_mad_outlier_filtering_drops_far_samples() -> None:
 def test_iqr_outlier_filtering_drops_extreme_tail() -> None:
     base = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 1_000_000]
     _kept, excluded = apply_outlier_policy(
-        base, policy="iqr", mad_threshold=3.5, iqr_factor=1.5,
+        base,
+        policy="iqr",
+        mad_threshold=3.5,
+        iqr_factor=1.5,
     )
     assert excluded == 1
 
@@ -56,7 +62,10 @@ def test_iqr_outlier_filtering_drops_extreme_tail() -> None:
 def test_none_policy_keeps_everything() -> None:
     base = [1, 2, 3, 4, 5, 1_000_000]
     kept, excluded = apply_outlier_policy(
-        base, policy="none", mad_threshold=3.5, iqr_factor=1.5,
+        base,
+        policy="none",
+        mad_threshold=3.5,
+        iqr_factor=1.5,
     )
     assert excluded == 0
     assert kept == base

@@ -81,9 +81,7 @@ def test_bare_health_route_is_not_shadowed_by_spa(
     assert "asyncviz</title>" not in response.text
 
 
-def test_docs_route_is_not_shadowed_by_spa(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
+def test_docs_route_is_not_shadowed_by_spa(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     app = _make_app_with_static(tmp_path, monkeypatch)
     with TestClient(app) as client:
         response = client.get("/docs")
@@ -122,9 +120,7 @@ def test_websocket_route_is_not_shadowed_by_spa(
     assert "asyncviz</title>" not in response.text
 
 
-def test_spa_routes_are_preserved(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
+def test_spa_routes_are_preserved(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     # Hard-refresh on canonical SPA deep-links must continue to serve
     # the React shell so React Router can take over on hydration.
     app = _make_app_with_static(tmp_path, monkeypatch)

@@ -111,9 +111,7 @@ class QueueContentionDetectedEvent(_QueueMetricsEventBase):
     new event types can land without bumping the protocol).
     """
 
-    event_type: Literal["asyncio.queue.contention.detected"] = (
-        "asyncio.queue.contention.detected"
-    )
+    event_type: Literal["asyncio.queue.contention.detected"] = "asyncio.queue.contention.detected"
 
     blocked_producers: int = 0
     blocked_consumers: int = 0
@@ -125,9 +123,7 @@ class QueueContentionDetectedEvent(_QueueMetricsEventBase):
 class QueueSaturationDetectedEvent(_QueueMetricsEventBase):
     """Emitted when ``occupancy_ratio`` first crosses the saturation threshold."""
 
-    event_type: Literal["asyncio.queue.saturation.detected"] = (
-        "asyncio.queue.saturation.detected"
-    )
+    event_type: Literal["asyncio.queue.saturation.detected"] = "asyncio.queue.saturation.detected"
 
     occupancy_ratio: float = 0.0
     current_size: int = 0

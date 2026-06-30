@@ -30,7 +30,9 @@ class CpuProfileReport:
 
 
 def profile_callable(
-    fn: Callable[[], None], *, top_n: int = 20,
+    fn: Callable[[], None],
+    *,
+    top_n: int = 20,
 ) -> CpuProfileReport:
     """Profile one invocation + return the top-N entries."""
     profiler = cProfile.Profile()

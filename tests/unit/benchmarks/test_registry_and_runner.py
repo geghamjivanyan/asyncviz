@@ -40,6 +40,7 @@ def test_duplicate_registration_raises() -> None:
         return None
 
     with pytest.raises(ValueError, match="already registered"):
+
         @benchmark(name="test.dup", category="synthetic")
         def second() -> None:
             return None
@@ -163,7 +164,9 @@ def test_insufficient_samples_marked() -> None:
     spec = get_registry().get("test.too_few")
     assert spec is not None
     cfg = BenchmarkConfig(
-        warmup_iterations=0, measured_iterations=1, min_samples=10,
+        warmup_iterations=0,
+        measured_iterations=1,
+        min_samples=10,
     )
     runner = BenchmarkRunner(config=cfg)
     result = runner.run_benchmark(spec)

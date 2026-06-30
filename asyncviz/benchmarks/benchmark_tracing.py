@@ -72,7 +72,9 @@ def record_benchmark_trace(kind: BenchmarkTraceKind, detail: str = "") -> None:
         return
     _RING.push(
         BenchmarkTraceEntry(
-            monotonic_ns=time.monotonic_ns(), kind=kind, detail=detail,
+            monotonic_ns=time.monotonic_ns(),
+            kind=kind,
+            detail=detail,
         ),
     )
 

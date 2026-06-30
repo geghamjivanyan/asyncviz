@@ -74,9 +74,7 @@ class ClockCoordinator:
         state = ClockResumeState(
             resumed_at_virtual_ns=self._clock.current_virtual_ns(),
             resumed_at_wall_ns=now_wall,
-            pause_duration_wall_ns=(
-                now_wall - previous.paused_at_wall_ns if previous else 0
-            ),
+            pause_duration_wall_ns=(now_wall - previous.paused_at_wall_ns if previous else 0),
         )
         self._pause_state = None
         return state

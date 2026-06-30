@@ -195,13 +195,11 @@ class BenchmarkSuiteResult:
     @property
     def regressed(self) -> tuple[BenchmarkResult, ...]:
         return tuple(
-            r for r in self.results
+            r
+            for r in self.results
             if r.comparison is not None and r.comparison.verdict == "regressed"
         )
 
     @property
     def failures(self) -> tuple[BenchmarkResult, ...]:
-        return tuple(
-            r for r in self.results
-            if r.outcome.status in ("failed", "insufficient")
-        )
+        return tuple(r for r in self.results if r.outcome.status in ("failed", "insufficient"))

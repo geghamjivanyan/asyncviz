@@ -82,10 +82,16 @@ def test_manifest_to_dict_is_json_safe(tmp_path: Path) -> None:
 
 def test_build_manifest_uses_unique_bundle_ids() -> None:
     a = build_manifest_model(
-        entries=(), frontend_version="x", built_at_iso="t", commit=None,
+        entries=(),
+        frontend_version="x",
+        built_at_iso="t",
+        commit=None,
     )
     b = build_manifest_model(
-        entries=(), frontend_version="x", built_at_iso="t", commit=None,
+        entries=(),
+        frontend_version="x",
+        built_at_iso="t",
+        commit=None,
     )
     assert a.bundle_id != b.bundle_id
     assert isinstance(a, AssetManifestModel)

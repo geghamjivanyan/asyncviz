@@ -77,12 +77,8 @@ class IntegrationRunner:
         metrics: IntegrationMetrics | None = None,
     ) -> None:
         self._config = config if config is not None else default_config()
-        self._registry = (
-            registry if registry is not None else default_integration_registry()
-        )
-        self._metrics = (
-            metrics if metrics is not None else get_integration_metrics()
-        )
+        self._registry = registry if registry is not None else default_integration_registry()
+        self._metrics = metrics if metrics is not None else get_integration_metrics()
 
     @property
     def config(self) -> IntegrationConfig:
@@ -119,7 +115,8 @@ class IntegrationRunner:
 
         context = self._make_context(spec)
         context, duration, errored, error_detail = await run_scenario_async(
-            entry.runner, context,
+            entry.runner,
+            context,
         )
         determinism_diverged = False
         determinism_runs = 1
@@ -134,14 +131,12 @@ class IntegrationRunner:
             for run_index in range(self._config.determinism_runs - 1):
                 replay_ctx = self._make_context(spec)
                 replay_ctx, _, errored_replay, _ = await run_scenario_async(
-                    entry.runner, replay_ctx,
+                    entry.runner,
+                    replay_ctx,
                 )
                 determinism_runs += 1
                 replay_fp = fingerprint_signals(replay_ctx.signals())
-                diverged = (
-                    errored_replay
-                    or baseline.digest != replay_fp.digest
-                )
+                diverged = errored_replay or baseline.digest != replay_fp.digest
                 self._metrics.record_determinism_run(diverged=diverged)
                 if diverged:
                     determinism_diverged = True

@@ -22,7 +22,10 @@ from asyncviz.replay.runtime import (
 
 def _frame(seq: int, payload_type: str = "asyncio.task.created") -> ReplayFrame:
     return ReplayFrame.for_runtime_event(
-        sequence=seq, monotonic_ns=seq, payload_type=payload_type, payload={"x": 1},
+        sequence=seq,
+        monotonic_ns=seq,
+        payload_type=payload_type,
+        payload={"x": 1},
     )
 
 

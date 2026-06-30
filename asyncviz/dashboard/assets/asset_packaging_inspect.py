@@ -50,11 +50,7 @@ def inspect_wheel(path: Path) -> WheelAssetReport:
     return _build_report(
         path,
         "wheel",
-        [
-            (info.filename, info.file_size)
-            for info in infos
-            if not info.is_dir()
-        ],
+        [(info.filename, info.file_size) for info in infos if not info.is_dir()],
     )
 
 
@@ -83,7 +79,7 @@ def _build_report(
     for name, size in entries:
         if not name.startswith(static_prefix):
             continue
-        relative = name[len(static_prefix):]
+        relative = name[len(static_prefix) :]
         if not relative:
             continue
         is_index = relative == "index.html"

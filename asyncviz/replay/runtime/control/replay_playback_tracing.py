@@ -72,13 +72,16 @@ def is_coordination_trace_enabled() -> bool:
 
 
 def record_coordination_trace(
-    kind: CoordinationTraceKind, detail: str = "",
+    kind: CoordinationTraceKind,
+    detail: str = "",
 ) -> None:
     if not _enabled:
         return
     _RING.push(
         CoordinationTraceEntry(
-            monotonic_ns=time.monotonic_ns(), kind=kind, detail=detail,
+            monotonic_ns=time.monotonic_ns(),
+            kind=kind,
+            detail=detail,
         ),
     )
 

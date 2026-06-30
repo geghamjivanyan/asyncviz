@@ -66,7 +66,10 @@ class PriorityBoundedQueue[T]:
     )
 
     def __init__(
-        self, *, capacity: int, policy: DropPolicy,
+        self,
+        *,
+        capacity: int,
+        policy: DropPolicy,
     ) -> None:
         if capacity < 1:
             raise ValueError("capacity must be >= 1")
@@ -108,12 +111,14 @@ class PriorityBoundedQueue[T]:
             if self._policy == "drop-newest":
                 self._rejected += 1
                 return EnqueueVerdict(
-                    accepted=False, reason="drop-newest",
+                    accepted=False,
+                    reason="drop-newest",
                 )
             if self._policy == "block":
                 self._rejected += 1
                 return EnqueueVerdict(
-                    accepted=False, reason="block-full",
+                    accepted=False,
+                    reason="block-full",
                 )
             if self._policy == "drop-oldest":
                 evicted = self._pop_oldest_locked()
@@ -127,14 +132,17 @@ class PriorityBoundedQueue[T]:
                 # Incoming item is itself the lowest — refuse it.
                 self._rejected += 1
                 return EnqueueVerdict(
-                    accepted=False, reason="drop-low-priority-incoming",
+                    accepted=False,
+                    reason="drop-low-priority-incoming",
                 )
             evicted = self._pop_lowest_priority_locked()
             self._push_locked(item, priority)
             self._evicted_low_priority += 1
             self._accepted += 1
             return EnqueueVerdict(
-                accepted=True, evicted=evicted, reason="drop-low-priority",
+                accepted=True,
+                evicted=evicted,
+                reason="drop-low-priority",
             )
 
     # ── dequeue ───────────────────────────────────────────────────

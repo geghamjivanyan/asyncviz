@@ -108,7 +108,8 @@ class SpeedDispatch:
         if not verdict.accepted:
             metrics.record_invalid_speed()
             record_speed_trace(
-                "speed-rejected", f"id={request.request_id} {verdict.reason}",
+                "speed-rejected",
+                f"id={request.request_id} {verdict.reason}",
             )
             if self._invalid_policy == "reject":
                 self._state.transition_to(
@@ -215,7 +216,8 @@ class SpeedDispatch:
 
         previous_anchor_virtual_ns = self._clock.anchor.virtual_ns
         transition = self._transition_engine.apply(
-            request=request, resolved_speed=verdict.resolved,
+            request=request,
+            resolved_speed=verdict.resolved,
         )
 
         # Integrity check.

@@ -45,8 +45,7 @@ def test_unpatch_restores_originals(
     engine_unpatched: SemaphoreInstrumentationEngine,
 ) -> None:
     originals = {
-        cls: {name: getattr(cls, name) for name in _PATCHED_METHOD_NAMES}
-        for cls in PATCHED_CLASSES
+        cls: {name: getattr(cls, name) for name in _PATCHED_METHOD_NAMES} for cls in PATCHED_CLASSES
     }
     engine_unpatched.patch()
     assert asyncio.Semaphore.acquire is not originals[asyncio.Semaphore]["acquire"]
@@ -130,7 +129,8 @@ async def test_blocked_acquire_waits_for_release(
 
 @pytest.mark.asyncio
 async def test_creating_semaphore_emits_created(
-    bus: EventBus, engine: SemaphoreInstrumentationEngine,
+    bus: EventBus,
+    engine: SemaphoreInstrumentationEngine,
 ) -> None:
     events = await _collect(bus, ["asyncio.semaphore.created"])
     asyncio.Semaphore(3)
@@ -144,7 +144,8 @@ async def test_creating_semaphore_emits_created(
 
 @pytest.mark.asyncio
 async def test_bounded_semaphore_emits_bound_value(
-    bus: EventBus, engine: SemaphoreInstrumentationEngine,
+    bus: EventBus,
+    engine: SemaphoreInstrumentationEngine,
 ) -> None:
     events = await _collect(bus, ["asyncio.semaphore.created"])
     asyncio.BoundedSemaphore(5)
@@ -158,7 +159,8 @@ async def test_bounded_semaphore_emits_bound_value(
 
 @pytest.mark.asyncio
 async def test_acquire_release_emit_paired_events(
-    bus: EventBus, engine: SemaphoreInstrumentationEngine,
+    bus: EventBus,
+    engine: SemaphoreInstrumentationEngine,
 ) -> None:
     events = await _collect(
         bus,
@@ -182,7 +184,8 @@ async def test_acquire_release_emit_paired_events(
 
 @pytest.mark.asyncio
 async def test_blocked_acquire_emits_wait_seconds(
-    bus: EventBus, engine: SemaphoreInstrumentationEngine,
+    bus: EventBus,
+    engine: SemaphoreInstrumentationEngine,
 ) -> None:
     events = await _collect(bus, ["asyncio.semaphore.acquired"])
     s = asyncio.Semaphore(1)
@@ -208,7 +211,8 @@ async def test_blocked_acquire_emits_wait_seconds(
 
 @pytest.mark.asyncio
 async def test_contention_detected_fires_on_blocked_waiter(
-    bus: EventBus, engine: SemaphoreInstrumentationEngine,
+    bus: EventBus,
+    engine: SemaphoreInstrumentationEngine,
 ) -> None:
     events = await _collect(bus, ["asyncio.semaphore.contention.detected"])
     s = asyncio.Semaphore(1)
@@ -230,7 +234,8 @@ async def test_contention_detected_fires_on_blocked_waiter(
 
 @pytest.mark.asyncio
 async def test_contention_does_not_re_fire_on_subsequent_waiters(
-    bus: EventBus, engine: SemaphoreInstrumentationEngine,
+    bus: EventBus,
+    engine: SemaphoreInstrumentationEngine,
 ) -> None:
     events = await _collect(bus, ["asyncio.semaphore.contention.detected"])
     s = asyncio.Semaphore(1)
@@ -258,7 +263,8 @@ async def test_contention_does_not_re_fire_on_subsequent_waiters(
 
 @pytest.mark.asyncio
 async def test_cancelled_acquire_emits_wait_cancelled(
-    bus: EventBus, engine: SemaphoreInstrumentationEngine,
+    bus: EventBus,
+    engine: SemaphoreInstrumentationEngine,
 ) -> None:
     events = await _collect(bus, ["asyncio.semaphore.wait.cancelled"])
     s = asyncio.Semaphore(1)
@@ -277,7 +283,8 @@ async def test_cancelled_acquire_emits_wait_cancelled(
 
 @pytest.mark.asyncio
 async def test_internal_marker_skips_instrumentation(
-    bus: EventBus, engine: SemaphoreInstrumentationEngine,
+    bus: EventBus,
+    engine: SemaphoreInstrumentationEngine,
 ) -> None:
     events = await _collect(
         bus,
@@ -303,7 +310,8 @@ async def test_internal_marker_skips_instrumentation(
 
 @pytest.mark.asyncio
 async def test_semaphore_ids_are_unique_and_monotonic(
-    bus: EventBus, engine: SemaphoreInstrumentationEngine,
+    bus: EventBus,
+    engine: SemaphoreInstrumentationEngine,
 ) -> None:
     events = await _collect(bus, ["asyncio.semaphore.created"])
     sems = [asyncio.Semaphore(1) for _ in range(5)]
@@ -318,7 +326,8 @@ async def test_semaphore_ids_are_unique_and_monotonic(
 
 @pytest.mark.asyncio
 async def test_high_contention_workload_acquire_release_balance(
-    bus: EventBus, engine: SemaphoreInstrumentationEngine,
+    bus: EventBus,
+    engine: SemaphoreInstrumentationEngine,
 ) -> None:
     acquired = await _collect(bus, ["asyncio.semaphore.acquired"])
     released = await _collect(bus, ["asyncio.semaphore.released"])

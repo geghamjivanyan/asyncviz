@@ -70,11 +70,7 @@ class _BrowserMetrics:
             self._peak_in_flight = value
 
     def snapshot(self) -> BrowserMetricsSnapshot:
-        avg = (
-            self._readiness_total / self._readiness_waits
-            if self._readiness_waits
-            else 0.0
-        )
+        avg = self._readiness_total / self._readiness_waits if self._readiness_waits else 0.0
         return BrowserMetricsSnapshot(
             launches_attempted=self._attempted,
             launches_opened=self._opened,

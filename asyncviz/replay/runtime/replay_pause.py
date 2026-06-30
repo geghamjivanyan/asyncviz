@@ -66,7 +66,8 @@ class PauseController:
             self._event.set()
             self._history.append(
                 PauseTransition(
-                    paused=False, at_virtual_ns=self._clock.current_virtual_ns(),
+                    paused=False,
+                    at_virtual_ns=self._clock.current_virtual_ns(),
                 ),
             )
             listeners = tuple(self._listeners)

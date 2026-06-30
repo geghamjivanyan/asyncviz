@@ -43,9 +43,7 @@ def parse_bool(raw: str) -> ParseOutcome:
     return ParseOutcome.failure(
         raw=raw,
         kind=ParseKind.BOOL,
-        error=(
-            f"expected one of true/false/yes/no/1/0/on/off, got {raw!r}"
-        ),
+        error=(f"expected one of true/false/yes/no/1/0/on/off, got {raw!r}"),
     )
 
 

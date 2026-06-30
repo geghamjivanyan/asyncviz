@@ -173,16 +173,15 @@ def test_websocket_is_not_blocked_by_cors_middleware() -> None:
     CORS must not break the realtime stream regardless of the
     client's origin.
     """
-    with _client() as client:
-        # The ``Origin`` here would normally trigger a CORS check on
-        # an HTTP request; for the websocket scope it's purely
-        # informational. The test client raises if the connection
-        # fails outright, so reaching the body is the assertion.
-        with client.websocket_connect("/ws") as ws:
-            # Receive at least one frame to confirm the bridge handshake
-            # ran end-to-end (snapshot / replay envelope).
-            envelope = ws.receive_json()
-            assert envelope.get("type") is not None
+    # The ``Origin`` here would normally trigger a CORS check on
+    # an HTTP request; for the websocket scope it's purely
+    # informational. The test client raises if the connection
+    # fails outright, so reaching the body is the assertion.
+    with _client() as client, client.websocket_connect("/ws") as ws:
+        # Receive at least one frame to confirm the bridge handshake
+        # ran end-to-end (snapshot / replay envelope).
+        envelope = ws.receive_json()
+        assert envelope.get("type") is not None
 
 
 # ── Range coverage for the /api/* endpoints the SPA hydrates ──────────────

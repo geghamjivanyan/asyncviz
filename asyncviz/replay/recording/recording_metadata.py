@@ -109,11 +109,7 @@ class RecordingMetadata:
             chunk_count=int(data.get("chunk_count", 0)),
             last_sequence=int(data.get("last_sequence", 0)),
             finalized=bool(data.get("finalized", False)),
-            chunks=tuple(
-                ChunkRecord(**c) for c in data.get("chunks", [])
-            ),
-            snapshots=tuple(
-                SnapshotRecord(**s) for s in data.get("snapshots", [])
-            ),
+            chunks=tuple(ChunkRecord(**c) for c in data.get("chunks", [])),
+            snapshots=tuple(SnapshotRecord(**s) for s in data.get("snapshots", [])),
             notes=dict(data.get("notes", {})),
         )

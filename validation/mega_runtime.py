@@ -42,17 +42,17 @@ import asyncio
 import contextlib
 import logging
 import random
-import time
-from concurrent.futures import ThreadPoolExecutor
 
 # ``asyncviz run`` executes the target via ``runpy.run_path`` — inject
 # the script's directory so the sibling ``_common`` module imports.
-import sys  # noqa: E402
-from pathlib import Path  # noqa: E402
+import sys
+import time
+from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from _common import (  # noqa: E402
+from _common import (
     add_common_args,
     cancel_all,
     common_from_namespace,
@@ -154,9 +154,7 @@ async def mini_semaphore_pipeline(stop: asyncio.Event, rng: random.Random) -> No
                 await asyncio.sleep(rng.uniform(0.10, 0.25))
             await asyncio.sleep(rng.uniform(0.01, 0.05))
 
-    tasks = [
-        asyncio.create_task(worker(f"mega-sem-{i}"), name=f"mega-sem-{i}") for i in range(8)
-    ]
+    tasks = [asyncio.create_task(worker(f"mega-sem-{i}"), name=f"mega-sem-{i}") for i in range(8)]
     try:
         await stop.wait()
     finally:
@@ -175,10 +173,13 @@ async def mini_gather_pipeline(stop: asyncio.Event, rng: random.Random) -> None:
             await asyncio.sleep(rng.uniform(0.05, 0.30))
             return idx
 
-        async def branch(branch_idx: int) -> list[int]:
+        async def branch(branch_idx: int, _iter: int = iteration) -> list[int]:
             return await asyncio.gather(
                 *(
-                    asyncio.create_task(leaf(branch_idx * 10 + j), name=f"mega-leaf-{iteration}-{branch_idx}-{j}")
+                    asyncio.create_task(
+                        leaf(branch_idx * 10 + j),
+                        name=f"mega-leaf-{_iter}-{branch_idx}-{j}",
+                    )
                     for j in range(3)
                 ),
             )
@@ -220,7 +221,11 @@ def _io_block(duration: float) -> str:
     return f"io-{duration}"
 
 
-async def mini_executor_pipeline(pool: ThreadPoolExecutor, stop: asyncio.Event, rng: random.Random) -> None:
+async def mini_executor_pipeline(
+    pool: ThreadPoolExecutor,
+    stop: asyncio.Event,
+    rng: random.Random,
+) -> None:
     loop = asyncio.get_running_loop()
     cycle = 0
     while not stop.is_set():
@@ -284,9 +289,7 @@ async def cancellation_churn(stop: asyncio.Event, rng: random.Random) -> None:
         async def slow(i: int) -> None:
             await asyncio.sleep(rng.uniform(1.5, 2.5))
 
-        children = [
-            asyncio.create_task(slow(i), name=f"churn-{iteration}-{i}") for i in range(5)
-        ]
+        children = [asyncio.create_task(slow(i), name=f"churn-{iteration}-{i}") for i in range(5)]
         await asyncio.sleep(rng.uniform(0.2, 0.5))
         logger.info("cancellation-churn #%s cancelling 5 tasks", iteration)
         for c in children:

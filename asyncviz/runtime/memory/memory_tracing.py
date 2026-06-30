@@ -74,7 +74,9 @@ def record_memory_trace(kind: MemoryTraceKind, detail: str = "") -> None:
         return
     _RING.push(
         MemoryTraceEntry(
-            monotonic_ns=time.monotonic_ns(), kind=kind, detail=detail,
+            monotonic_ns=time.monotonic_ns(),
+            kind=kind,
+            detail=detail,
         ),
     )
 

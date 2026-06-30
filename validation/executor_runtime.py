@@ -46,17 +46,17 @@ import argparse
 import asyncio
 import logging
 import random
-import time
-from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 
 # ``asyncviz run`` executes the target via ``runpy.run_path`` — inject
 # the script's directory so the sibling ``_common`` module imports.
-import sys  # noqa: E402
-from pathlib import Path  # noqa: E402
+import sys
+import time
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
+from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from _common import (  # noqa: E402
+from _common import (
     add_common_args,
     cancel_all,
     common_from_namespace,
@@ -113,7 +113,7 @@ def io_bound_sleep(duration: float, tag: str) -> str:
 def cpu_burn(iterations: int, tag: str) -> int:
     """CPU-bound burn used to saturate workers."""
     acc = 0
-    for i in range(iterations):
+    for _i in range(iterations):
         acc = (acc + _fib(20)) & 0xFFFF_FFFF
     return acc ^ hash(tag) & 0xFFFF_FFFF
 
@@ -133,7 +133,11 @@ async def thread_pool_baseline(pool: ThreadPoolExecutor, stop: asyncio.Event) ->
             logger.info("thread-pool-baseline ticked %s", tick)
 
 
-async def thread_pool_io_burst(pool: ThreadPoolExecutor, stop: asyncio.Event, rng: random.Random) -> None:
+async def thread_pool_io_burst(
+    pool: ThreadPoolExecutor,
+    stop: asyncio.Event,
+    rng: random.Random,
+) -> None:
     """Bursts of blocking-IO calls submitted faster than the pool drains."""
     loop = asyncio.get_running_loop()
     burst = 0
@@ -156,9 +160,7 @@ async def thread_pool_saturator(pool: ThreadPoolExecutor, stop: asyncio.Event) -
     while not stop.is_set():
         cycle += 1
         logger.info("thread-saturator #%s submitting 8 heavy CPU jobs", cycle)
-        futures = [
-            loop.run_in_executor(pool, cpu_burn, 800, f"sat{cycle}.{i}") for i in range(8)
-        ]
+        futures = [loop.run_in_executor(pool, cpu_burn, 800, f"sat{cycle}.{i}") for i in range(8)]
         await asyncio.gather(*futures)
         # Brief breather so saturation can recover before next round.
         await asyncio.sleep(2.0)
@@ -179,7 +181,11 @@ async def process_pool_demo(pool: ProcessPoolExecutor | None, stop: asyncio.Even
         await asyncio.sleep(4.0)
 
 
-async def mixed_scheduling(pool: ThreadPoolExecutor, stop: asyncio.Event, rng: random.Random) -> None:
+async def mixed_scheduling(
+    pool: ThreadPoolExecutor,
+    stop: asyncio.Event,
+    rng: random.Random,
+) -> None:
     """One long async task that interleaves executor calls with awaits.
 
     Validates that the per-task executor-time attribution surfaces:
@@ -192,7 +198,12 @@ async def mixed_scheduling(pool: ThreadPoolExecutor, stop: asyncio.Event, rng: r
         iteration += 1
         await loop.run_in_executor(pool, cpu_burn, 200, f"mixed{iteration}")
         await asyncio.sleep(rng.uniform(0.05, 0.15))
-        await loop.run_in_executor(pool, io_bound_sleep, rng.uniform(0.05, 0.10), f"mixed{iteration}")
+        await loop.run_in_executor(
+            pool,
+            io_bound_sleep,
+            rng.uniform(0.05, 0.10),
+            f"mixed{iteration}",
+        )
         await asyncio.sleep(rng.uniform(0.05, 0.15))
 
 

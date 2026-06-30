@@ -51,8 +51,13 @@ def events_chunk_path(session_dir: Path, index: int) -> Path:
 
 
 def snapshot_chunk_path(session_dir: Path, index: int) -> Path:
-    return session_dir / SNAPSHOTS_DIRNAME / chunk_filename(
-        index, extension=SNAPSHOT_EXTENSION,
+    return (
+        session_dir
+        / SNAPSHOTS_DIRNAME
+        / chunk_filename(
+            index,
+            extension=SNAPSHOT_EXTENSION,
+        )
     )
 
 

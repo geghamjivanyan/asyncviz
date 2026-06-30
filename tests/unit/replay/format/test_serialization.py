@@ -100,7 +100,9 @@ def test_decode_rejects_non_object_top_level() -> None:
 
 def test_decode_rejects_missing_schema_version() -> None:
     with pytest.raises(FrameDecodingError):
-        decode_frame('{"frame_type":"runtime_event","sequence":1,"monotonic_ns":1,"payload_type":"x","payload":{}}\n')
+        decode_frame(
+            '{"frame_type":"runtime_event","sequence":1,"monotonic_ns":1,"payload_type":"x","payload":{}}\n'
+        )
 
 
 def test_decode_increments_metrics() -> None:

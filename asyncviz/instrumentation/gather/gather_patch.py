@@ -168,13 +168,15 @@ class GatherInstrumentationEngine:
             original = self._original_gather
 
             def patched_gather(
-                *coros_or_futures: Any, return_exceptions: bool = False,
+                *coros_or_futures: Any,
+                return_exceptions: bool = False,
             ) -> Any:
                 if is_internal_gather():
                     get_gather_metrics().record_suppressed()
                     record_gather_trace("suppressed")
                     return original(
-                        *coros_or_futures, return_exceptions=return_exceptions,
+                        *coros_or_futures,
+                        return_exceptions=return_exceptions,
                     )
                 if not coros_or_futures:
                     # Empty-args path returns a pre-completed Future. Skip
@@ -182,7 +184,9 @@ class GatherInstrumentationEngine:
                     return original(return_exceptions=return_exceptions)
                 try:
                     return engine._dispatch(
-                        coros_or_futures, return_exceptions, original,
+                        coros_or_futures,
+                        return_exceptions,
+                        original,
                     )
                 except Exception as exc:  # pragma: no cover — defensive
                     # If instrumentation itself blows up, fall back to the
@@ -190,12 +194,15 @@ class GatherInstrumentationEngine:
                     logger.debug("gather instrumentation failed: %s", exc)
                     get_gather_metrics().record_dropped()
                     return original(
-                        *coros_or_futures, return_exceptions=return_exceptions,
+                        *coros_or_futures,
+                        return_exceptions=return_exceptions,
                     )
 
             patched_gather.__doc__ = getattr(original, "__doc__", None)
             patched_gather.__qualname__ = getattr(
-                original, "__qualname__", "patched_gather",
+                original,
+                "__qualname__",
+                "patched_gather",
             )
             patched_gather.__name__ = getattr(original, "__name__", "gather")
             asyncio.gather = patched_gather  # type: ignore[assignment]
@@ -229,7 +236,8 @@ class GatherInstrumentationEngine:
             # just call original.
             get_gather_metrics().record_recursion_skip()
             return original_gather(
-                *coros_or_futures, return_exceptions=return_exceptions,
+                *coros_or_futures,
+                return_exceptions=return_exceptions,
             )
         try:
             # Coerce children to Futures so we have stable handles. asyncio
@@ -252,13 +260,10 @@ class GatherInstrumentationEngine:
             for child in coerced:
                 resolved = self._resolve_child_id(child)
                 child_ids.append(
-                    resolved if isinstance(resolved, str) and resolved
-                    else f"task-{id(child)}",
+                    resolved if isinstance(resolved, str) and resolved else f"task-{id(child)}",
                 )
 
-            parent_id = (
-                current_runtime_task() if self._config.capture_parent_task_id else None
-            )
+            parent_id = current_runtime_task() if self._config.capture_parent_task_id else None
             future = original_gather(*coerced, return_exceptions=return_exceptions)
             identity = self._registry.register(
                 parent_task_id=parent_id,
@@ -314,7 +319,9 @@ class GatherInstrumentationEngine:
             logger.debug("gather created emission failed: %s", exc)
 
     def _emit_children_attached(
-        self, identity: Any, child_ids: list[str],
+        self,
+        identity: Any,
+        child_ids: list[str],
     ) -> None:
         if not self._config.emit_child_attached:
             return
@@ -520,9 +527,7 @@ class GatherInstrumentationEngine:
                     completed_count=completed,
                     duration_seconds=duration,
                     exception_type=(
-                        type(exception).__name__
-                        if self._config.capture_exception_type
-                        else None
+                        type(exception).__name__ if self._config.capture_exception_type else None
                     ),
                 ),
             )
@@ -574,7 +579,11 @@ def _make_child_callback(
             failed = True
         try:
             engine._emit_child_completed(
-                gather_id, child_task_id, child_index, cancelled, failed,
+                gather_id,
+                child_task_id,
+                child_index,
+                cancelled,
+                failed,
             )
         except Exception as exc:  # pragma: no cover — defensive
             logger.debug("gather child callback failed: %s", exc)
@@ -583,7 +592,9 @@ def _make_child_callback(
 
 
 def _make_gather_callback(
-    engine: GatherInstrumentationEngine, gather_id: str, started_at: float,
+    engine: GatherInstrumentationEngine,
+    gather_id: str,
+    started_at: float,
 ):
     def _on_done(future: asyncio.Future[Any]) -> None:
         try:

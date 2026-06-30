@@ -75,13 +75,19 @@ def main() -> int:
         help="Skip the frontend rebuild if the embed already exists.",
     )
     parser.add_argument(
-        "--wheel-only", action="store_true", help="Build only the wheel artifact.",
+        "--wheel-only",
+        action="store_true",
+        help="Build only the wheel artifact.",
     )
     parser.add_argument(
-        "--sdist-only", action="store_true", help="Build only the sdist artifact.",
+        "--sdist-only",
+        action="store_true",
+        help="Build only the sdist artifact.",
     )
     parser.add_argument(
-        "--keep-dist", action="store_true", help="Do not wipe dist/ before building.",
+        "--keep-dist",
+        action="store_true",
+        help="Do not wipe dist/ before building.",
     )
     args = parser.parse_args()
 

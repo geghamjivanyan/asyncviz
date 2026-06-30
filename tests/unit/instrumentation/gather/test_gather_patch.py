@@ -131,7 +131,8 @@ async def test_gather_empty_args_returns_completed_future(
 
 @pytest.mark.asyncio
 async def test_gather_emits_created_attached_wait_completed_in_order(
-    bus: EventBus, engine: GatherInstrumentationEngine,
+    bus: EventBus,
+    engine: GatherInstrumentationEngine,
 ) -> None:
     events = await _collect(
         bus,
@@ -159,7 +160,8 @@ async def test_gather_emits_created_attached_wait_completed_in_order(
 
 @pytest.mark.asyncio
 async def test_gather_completed_carries_child_count_and_duration(
-    bus: EventBus, engine: GatherInstrumentationEngine,
+    bus: EventBus,
+    engine: GatherInstrumentationEngine,
 ) -> None:
     events = await _collect(bus, ["asyncio.gather.completed"])
 
@@ -178,7 +180,8 @@ async def test_gather_completed_carries_child_count_and_duration(
 
 @pytest.mark.asyncio
 async def test_gather_cancelled_emits_cancelled_event(
-    bus: EventBus, engine: GatherInstrumentationEngine,
+    bus: EventBus,
+    engine: GatherInstrumentationEngine,
 ) -> None:
     events = await _collect(bus, ["asyncio.gather.cancelled"])
 
@@ -196,7 +199,8 @@ async def test_gather_cancelled_emits_cancelled_event(
 
 @pytest.mark.asyncio
 async def test_gather_failure_emits_failed_event_with_exception_type(
-    bus: EventBus, engine: GatherInstrumentationEngine,
+    bus: EventBus,
+    engine: GatherInstrumentationEngine,
 ) -> None:
     events = await _collect(bus, ["asyncio.gather.failed"])
 
@@ -215,7 +219,8 @@ async def test_gather_failure_emits_failed_event_with_exception_type(
 
 @pytest.mark.asyncio
 async def test_gather_child_completed_reports_failed_flag(
-    bus: EventBus, engine: GatherInstrumentationEngine,
+    bus: EventBus,
+    engine: GatherInstrumentationEngine,
 ) -> None:
     events = await _collect(bus, ["asyncio.gather.child.completed"])
 
@@ -237,7 +242,8 @@ async def test_gather_child_completed_reports_failed_flag(
 
 @pytest.mark.asyncio
 async def test_gather_ids_are_monotonic(
-    bus: EventBus, engine: GatherInstrumentationEngine,
+    bus: EventBus,
+    engine: GatherInstrumentationEngine,
 ) -> None:
     events = await _collect(bus, ["asyncio.gather.created"])
 
@@ -256,7 +262,8 @@ async def test_gather_ids_are_monotonic(
 
 @pytest.mark.asyncio
 async def test_nested_gather_emits_independent_ids(
-    bus: EventBus, engine: GatherInstrumentationEngine,
+    bus: EventBus,
+    engine: GatherInstrumentationEngine,
 ) -> None:
     events = await _collect(bus, ["asyncio.gather.created"])
 
@@ -275,7 +282,8 @@ async def test_nested_gather_emits_independent_ids(
 
 @pytest.mark.asyncio
 async def test_suppress_gather_instrumentation_skips_events(
-    bus: EventBus, engine: GatherInstrumentationEngine,
+    bus: EventBus,
+    engine: GatherInstrumentationEngine,
 ) -> None:
     events = await _collect(bus, ["asyncio.gather.created"])
 
@@ -293,7 +301,8 @@ async def test_suppress_gather_instrumentation_skips_events(
 
 @pytest.mark.asyncio
 async def test_child_attached_carries_resolved_task_ids(
-    bus: EventBus, engine: GatherInstrumentationEngine,
+    bus: EventBus,
+    engine: GatherInstrumentationEngine,
 ) -> None:
     events = await _collect(bus, ["asyncio.gather.child.attached"])
     # The default resolver falls back to ``get_name`` — set explicit names
@@ -334,7 +343,8 @@ async def test_task_id_resolver_override(
 
 @pytest.mark.asyncio
 async def test_high_fanout_workload_balances(
-    bus: EventBus, engine: GatherInstrumentationEngine,
+    bus: EventBus,
+    engine: GatherInstrumentationEngine,
 ) -> None:
     completed = await _collect(bus, ["asyncio.gather.completed"])
     child_completed = await _collect(bus, ["asyncio.gather.child.completed"])
@@ -355,7 +365,9 @@ async def test_high_fanout_workload_balances(
 
 @pytest.mark.asyncio
 async def test_registry_prunes_after_completion(
-    registry, bus: EventBus, engine: GatherInstrumentationEngine,
+    registry,
+    bus: EventBus,
+    engine: GatherInstrumentationEngine,
 ) -> None:
     async def child() -> int:
         return 1
@@ -374,7 +386,8 @@ async def test_registry_prunes_after_completion(
 
 @pytest.mark.asyncio
 async def test_unpatched_gather_does_not_emit(
-    bus: EventBus, engine_unpatched: GatherInstrumentationEngine,
+    bus: EventBus,
+    engine_unpatched: GatherInstrumentationEngine,
 ) -> None:
     events = await _collect(bus, ["asyncio.gather.created"])
 

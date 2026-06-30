@@ -129,7 +129,10 @@ def migrate_payload(frame: ReplayFrame, *, from_version: int, to_version: int) -
     if from_version == to_version:
         return frame
     migrated = get_migration_registry().migrate(
-        frame.payload_type, frame.payload, from_version=from_version, to_version=to_version,
+        frame.payload_type,
+        frame.payload,
+        from_version=from_version,
+        to_version=to_version,
     )
     if migrated is frame.payload:
         return frame
@@ -153,7 +156,9 @@ def migrate_payload(frame: ReplayFrame, *, from_version: int, to_version: int) -
 
 
 def iter_decode_lines(
-    lines: Iterable[str | bytes], *, strict: bool = False,
+    lines: Iterable[str | bytes],
+    *,
+    strict: bool = False,
 ) -> Iterator[ReplayFrame]:
     """Decode an iterable of lines into frames.
 

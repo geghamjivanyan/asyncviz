@@ -71,7 +71,11 @@ class ReplayDispatch:
         self._checkpoint_interval = checkpoint_interval
 
     async def dispatch(
-        self, frame: ReplayFrame, *, cursor: EngineCursor, virtual_ns: int,
+        self,
+        frame: ReplayFrame,
+        *,
+        cursor: EngineCursor,
+        virtual_ns: int,
     ) -> DispatchResult:
         # 1) Reducer → state store (atomic swap inside the store).
         new_state = self._state_store.update(

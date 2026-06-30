@@ -132,9 +132,7 @@ def test_drop_newest_policy_when_buffer_full(recording_root: Path) -> None:
     session = recording_root / "drop"
     session.mkdir()
     writer = RecordingWriter(session, config=cfg)
-    results = [
-        writer.enqueue(sequence=i, payload=_make_payload(i)) for i in range(1, 5)
-    ]
+    results = [writer.enqueue(sequence=i, payload=_make_payload(i)) for i in range(1, 5)]
     accepted = sum(1 for r in results if r.action == "accepted")
     dropped = sum(1 for r in results if r.action == "dropped-newest")
     assert accepted == 2

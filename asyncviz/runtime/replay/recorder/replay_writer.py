@@ -103,8 +103,13 @@ class ReplayWriter:
         # On a freshly-opened writer ``chunks_rolled`` is 0; on a roll
         # we increment via ``reset_for_new_chunk`` so the new chunk
         # index matches the previously rolled count.
-        path = self.bundle_dir / CHUNK_DIRECTORY / build_chunk_name(
-            index, compressed=self.compression is CompressionMode.GZIP,
+        path = (
+            self.bundle_dir
+            / CHUNK_DIRECTORY
+            / build_chunk_name(
+                index,
+                compressed=self.compression is CompressionMode.GZIP,
+            )
         )
         fh = open_chunk_writer(path, self.compression)
         self._open_chunk = _OpenChunk(index=index, path=path, fh=fh)

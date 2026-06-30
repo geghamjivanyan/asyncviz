@@ -92,6 +92,4 @@ def test_queue_metrics_event_types_match_event_type_enum() -> None:
 
 def test_event_registry_contains_every_metrics_event() -> None:
     for type_name in QUEUE_METRICS_EVENT_TYPES:
-        assert type_name in EVENT_REGISTRY, (
-            f"missing event registry entry for {type_name}"
-        )
+        assert type_name in EVENT_REGISTRY, f"missing event registry entry for {type_name}"

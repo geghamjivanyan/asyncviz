@@ -109,7 +109,8 @@ def recover_session(session_dir: Path) -> RecoveryReport:
 
 
 def patch_manifest_after_recovery(
-    metadata: RecordingMetadata, report: RecoveryReport,
+    metadata: RecordingMetadata,
+    report: RecoveryReport,
 ) -> RecordingMetadata:
     """Return a copy of ``metadata`` with counters reconciled to the
     on-disk state from ``report``. Leaves ``finalized`` False so a

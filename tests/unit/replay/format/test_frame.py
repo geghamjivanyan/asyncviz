@@ -29,13 +29,22 @@ def test_runtime_event_factory_sets_envelope() -> None:
 
 def test_snapshot_factory_assigns_frame_type() -> None:
     begin = ReplayFrame.for_snapshot(
-        kind="begin", sequence=1, monotonic_ns=1, payload={"snapshot_id": "s1"},
+        kind="begin",
+        sequence=1,
+        monotonic_ns=1,
+        payload={"snapshot_id": "s1"},
     )
     end = ReplayFrame.for_snapshot(
-        kind="end", sequence=2, monotonic_ns=2, payload={"snapshot_id": "s1"},
+        kind="end",
+        sequence=2,
+        monotonic_ns=2,
+        payload={"snapshot_id": "s1"},
     )
     delta = ReplayFrame.for_snapshot(
-        kind="delta", sequence=3, monotonic_ns=3, payload={"snapshot_id": "s1"},
+        kind="delta",
+        sequence=3,
+        monotonic_ns=3,
+        payload={"snapshot_id": "s1"},
     )
     assert begin.frame_type == "snapshot_begin"
     assert end.frame_type == "snapshot_end"
@@ -44,7 +53,10 @@ def test_snapshot_factory_assigns_frame_type() -> None:
 
 def test_to_dict_omits_unset_optionals() -> None:
     frame = ReplayFrame.for_runtime_event(
-        sequence=1, monotonic_ns=1, payload_type="t", payload={"a": 1},
+        sequence=1,
+        monotonic_ns=1,
+        payload_type="t",
+        payload={"a": 1},
     )
     data = frame.to_dict()
     assert "runtime_id" not in data
@@ -68,16 +80,18 @@ def test_from_dict_round_trip_preserves_envelope() -> None:
 
 
 def test_from_dict_routes_unknown_keys_to_extensions() -> None:
-    frame = ReplayFrame.from_dict({
-        "schema_version": 1,
-        "frame_type": "runtime_event",
-        "sequence": 1,
-        "monotonic_ns": 1,
-        "payload_type": "asyncio.task.created",
-        "payload": {"task_id": "t"},
-        "future_field": "from-a-newer-producer",
-        "another_thing": 42,
-    })
+    frame = ReplayFrame.from_dict(
+        {
+            "schema_version": 1,
+            "frame_type": "runtime_event",
+            "sequence": 1,
+            "monotonic_ns": 1,
+            "payload_type": "asyncio.task.created",
+            "payload": {"task_id": "t"},
+            "future_field": "from-a-newer-producer",
+            "another_thing": 42,
+        }
+    )
     assert frame.extensions == {
         "future_field": "from-a-newer-producer",
         "another_thing": 42,
@@ -85,16 +99,18 @@ def test_from_dict_routes_unknown_keys_to_extensions() -> None:
 
 
 def test_from_dict_explicit_extensions_merge_without_clobber() -> None:
-    frame = ReplayFrame.from_dict({
-        "schema_version": 1,
-        "frame_type": "marker",
-        "sequence": 1,
-        "monotonic_ns": 1,
-        "payload_type": "marker.checkpoint",
-        "payload": {},
-        "extensions": {"a": 1, "b": 2},
-        "stray": "from-newer",
-    })
+    frame = ReplayFrame.from_dict(
+        {
+            "schema_version": 1,
+            "frame_type": "marker",
+            "sequence": 1,
+            "monotonic_ns": 1,
+            "payload_type": "marker.checkpoint",
+            "payload": {},
+            "extensions": {"a": 1, "b": 2},
+            "stray": "from-newer",
+        }
+    )
     assert frame.extensions["stray"] == "from-newer"
     assert frame.extensions["a"] == 1
     assert frame.extensions["b"] == 2

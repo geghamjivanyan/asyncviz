@@ -92,7 +92,8 @@ def verify_chunk(chunk: ChunkRecord, path: Path) -> ChunkIntegrityVerdict:
 
 
 def verify_session(
-    chunks: tuple[ChunkRecord, ...], paths: tuple[Path, ...],
+    chunks: tuple[ChunkRecord, ...],
+    paths: tuple[Path, ...],
 ) -> IntegrityReport:
     """Verify every chunk in a session in order."""
     if len(chunks) != len(paths):

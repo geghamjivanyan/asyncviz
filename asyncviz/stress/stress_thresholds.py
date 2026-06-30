@@ -29,10 +29,7 @@ def evaluate_violations(
 ) -> tuple[ScalabilityViolation, ...]:
     """Return the violations a scenario triggered, in stable order."""
     violations: list[ScalabilityViolation] = []
-    if (
-        thresholds.max_dropped_frames is not None
-        and dropped_frames > thresholds.max_dropped_frames
-    ):
+    if thresholds.max_dropped_frames is not None and dropped_frames > thresholds.max_dropped_frames:
         violations.append(
             ScalabilityViolation(
                 metric="dropped_frames",
@@ -77,11 +74,7 @@ def evaluate_violations(
                 detail="memory grew beyond the configured ceiling",
             ),
         )
-    if (
-        thresholds.min_fps is not None
-        and fps is not None
-        and fps < thresholds.min_fps
-    ):
+    if thresholds.min_fps is not None and fps is not None and fps < thresholds.min_fps:
         violations.append(
             ScalabilityViolation(
                 metric="fps",

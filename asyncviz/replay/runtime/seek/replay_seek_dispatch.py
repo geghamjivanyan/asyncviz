@@ -113,7 +113,8 @@ class SeekDispatch:
 
         result = self._engine.execute(
             SeekExecutionInputs(
-                target_sequence=target_sequence, request=request,
+                target_sequence=target_sequence,
+                request=request,
             ),
         )
 
@@ -130,7 +131,8 @@ class SeekDispatch:
                 ),
             )
             record_seek_trace(
-                "seek-failed", f"id={request.request_id} err={result.error_detail}",
+                "seek-failed",
+                f"id={request.request_id} err={result.error_detail}",
             )
             return result
 

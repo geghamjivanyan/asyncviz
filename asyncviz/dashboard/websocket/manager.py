@@ -47,7 +47,9 @@ class ConnectionManager:
         except BaseException as exc:
             if is_expected_websocket_close(exc):
                 logger.debug(
-                    "client %s expected-close artefact: %s", client_id, exc,
+                    "client %s expected-close artefact: %s",
+                    client_id,
+                    exc,
                 )
             else:
                 logger.warning("client %s raised during close: %s", client_id, exc)

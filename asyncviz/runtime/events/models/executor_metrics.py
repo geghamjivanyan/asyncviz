@@ -35,9 +35,7 @@ class _ExecutorMetricsEventBase(RuntimeEvent):
 class ExecutorMetricsUpdatedEvent(_ExecutorMetricsEventBase):
     """Debounced snapshot of an executor's aggregated metrics."""
 
-    event_type: Literal["asyncio.executor.metrics.updated"] = (
-        "asyncio.executor.metrics.updated"
-    )
+    event_type: Literal["asyncio.executor.metrics.updated"] = "asyncio.executor.metrics.updated"
 
     active_workers: int = 0
     peak_active_workers: int = 0

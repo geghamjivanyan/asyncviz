@@ -44,6 +44,7 @@ def test_writer_with_digest_produces_stable_hash(tmp_path: Path) -> None:
             writer.append(frame)
         first_digest = writer.hexdigest()
     import hashlib
+
     hasher = hashlib.sha256()
     for frame in frames:
         hasher.update(encode_frame(frame).encode("utf-8"))
@@ -81,6 +82,7 @@ def test_iter_lines_multi_concatenates_in_order(tmp_path: Path) -> None:
     chunk2.write_text(encode_frame(_evt_frame(3)), encoding="utf-8")
     seqs = []
     from asyncviz.replay.format import decode_frame
+
     for line in iter_lines_multi([chunk1, chunk2]):
         seqs.append(decode_frame(line).sequence)
     assert seqs == [1, 2, 3]

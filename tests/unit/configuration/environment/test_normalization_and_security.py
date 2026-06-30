@@ -24,7 +24,8 @@ from asyncviz.configuration.environment.environment_security import (
     ],
 )
 def test_normalize_env_key_uppercases_and_normalizes_separators(
-    raw: str, expected: str,
+    raw: str,
+    expected: str,
 ) -> None:
     assert normalize_env_key(raw) == expected
 

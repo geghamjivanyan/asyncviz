@@ -29,7 +29,8 @@ def test_repeated_same_speed_storm_collapses(
 
 
 def test_drift_sample_under_no_external_interference(
-    controller: ReplaySpeedController, clock: ReplayClock,
+    controller: ReplaySpeedController,
+    clock: ReplayClock,
 ) -> None:
     controller.set_speed(4.0)
     sample = controller.sample_drift()
@@ -38,7 +39,8 @@ def test_drift_sample_under_no_external_interference(
 
 
 def test_drift_sample_records_metric(
-    controller: ReplaySpeedController, clock: ReplayClock,
+    controller: ReplaySpeedController,
+    clock: ReplayClock,
 ) -> None:
     before = get_speed_metrics_snapshot()
     controller.sample_drift()
@@ -47,7 +49,8 @@ def test_drift_sample_records_metric(
 
 
 def test_external_clock_jump_surfaces_as_drift(
-    controller: ReplaySpeedController, clock: ReplayClock,
+    controller: ReplaySpeedController,
+    clock: ReplayClock,
 ) -> None:
     # External seek-equivalent.
     clock.jump_to(123_456_789)
@@ -56,7 +59,8 @@ def test_external_clock_jump_surfaces_as_drift(
 
 
 def test_seek_anchor_refresh_clears_drift(
-    controller: ReplaySpeedController, clock: ReplayClock,
+    controller: ReplaySpeedController,
+    clock: ReplayClock,
 ) -> None:
     clock.jump_to(123_456_789)
     controller.refresh_clock_anchor_from_seek(123_456_789)

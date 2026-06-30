@@ -50,9 +50,7 @@ class GatherChildAttachedEvent(_GatherEventBase):
     having to wait for the gather to complete (a long-running gather
     on a 1000-child fanout would otherwise be invisible until done)."""
 
-    event_type: Literal["asyncio.gather.child.attached"] = (
-        "asyncio.gather.child.attached"
-    )
+    event_type: Literal["asyncio.gather.child.attached"] = "asyncio.gather.child.attached"
     child_task_id: str
     child_index: int = 0
 
@@ -62,17 +60,13 @@ class GatherWaitStartedEvent(_GatherEventBase):
     gather future is created. ``parent_task_id`` is now actively awaiting
     on the gather."""
 
-    event_type: Literal["asyncio.gather.wait.started"] = (
-        "asyncio.gather.wait.started"
-    )
+    event_type: Literal["asyncio.gather.wait.started"] = "asyncio.gather.wait.started"
 
 
 class GatherChildCompletedEvent(_GatherEventBase):
     """Fired when one child transitions to done."""
 
-    event_type: Literal["asyncio.gather.child.completed"] = (
-        "asyncio.gather.child.completed"
-    )
+    event_type: Literal["asyncio.gather.child.completed"] = "asyncio.gather.child.completed"
     child_task_id: str
     child_index: int = 0
     cancelled: bool = False

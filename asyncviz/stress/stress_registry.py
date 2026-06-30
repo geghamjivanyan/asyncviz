@@ -65,8 +65,7 @@ class StressScenarioRegistry:
     def by_category(self, category: ScenarioCategory) -> tuple[RegisteredScenario, ...]:
         with self._lock:
             return tuple(
-                entry for entry in self._entries.values()
-                if entry.spec.category == category
+                entry for entry in self._entries.values() if entry.spec.category == category
             )
 
     def clear(self) -> None:

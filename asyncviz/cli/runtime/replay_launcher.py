@@ -148,8 +148,7 @@ async def _run_async(
         info(f"bundle_id    {metadata.bundle_id}")
         info(f"runtime_id   {metadata.runtime_id or '<unknown>'}")
         info(
-            f"timeline     {len(markers)} markers, "
-            f"{len(bookmarks)} bookmarks",
+            f"timeline     {len(markers)} markers, {len(bookmarks)} bookmarks",
         )
 
     # Spin the dashboard. Instrumentation OFF — replay sources its
@@ -379,7 +378,7 @@ def _derive_canonical_metadata(
 
 async def _await_dashboard_loop(
     runtime: object,
-    timeout: float,
+    timeout: float,  # noqa: ASYNC109 — deliberate bound; we return None on expiry instead of raising
 ) -> asyncio.AbstractEventLoop | None:
     """Poll ``app.state.dashboard_loop`` until the lifespan publishes it.
 

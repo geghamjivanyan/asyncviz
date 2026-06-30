@@ -40,7 +40,10 @@ class CompactTopology:
     )
 
     def __init__(
-        self, *, capacity: int = 65536, interner: StringInterner,
+        self,
+        *,
+        capacity: int = 65536,
+        interner: StringInterner,
     ) -> None:
         if capacity < 1:
             raise ValueError("capacity must be >= 1")

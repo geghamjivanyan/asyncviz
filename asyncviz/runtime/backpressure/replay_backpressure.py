@@ -86,7 +86,10 @@ class ReplayBackpressureAdapter:
         return self._channel.take()
 
     def record_drop(
-        self, *, sequence: int, state: OverloadState,
+        self,
+        *,
+        sequence: int,
+        state: OverloadState,
     ) -> OverflowMarker | None:
         """Record one dropped event. Returns a marker when the
         window has accumulated enough drops to warrant emission;
@@ -114,7 +117,9 @@ class ReplayBackpressureAdapter:
             return marker
 
     def flush_pending_drops(
-        self, *, state: OverloadState,
+        self,
+        *,
+        state: OverloadState,
     ) -> OverflowMarker | None:
         with self._lock:
             if self._pending_drops == 0:
@@ -153,7 +158,10 @@ class ReplayBackpressureAdapter:
 
 
 def overflow_marker_to_event(
-    marker: OverflowMarker, *, sequence: int, monotonic_ns: int,
+    marker: OverflowMarker,
+    *,
+    sequence: int,
+    monotonic_ns: int,
 ) -> dict:
     """Build a recorder-ready event dict for one marker."""
     return {

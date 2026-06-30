@@ -102,7 +102,9 @@ def test_reset_clears_counter() -> None:
     r.reset()
     assert len(r) == 0
     fresh = r.register(
-        parent_task_id=None, child_task_ids=["c"], return_exceptions=False,
+        parent_task_id=None,
+        child_task_ids=["c"],
+        return_exceptions=False,
     )
     assert fresh.gather_id == "g-1"
 

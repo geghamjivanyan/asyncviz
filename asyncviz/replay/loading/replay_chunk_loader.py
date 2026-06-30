@@ -86,7 +86,8 @@ class ReplayChunkLoader:
                 except FrameAdapterError:
                     get_loader_metrics().record_malformed_frame()
                     record_replay_trace(
-                        "frame-dropped", f"index={self._chunk.index}",
+                        "frame-dropped",
+                        f"index={self._chunk.index}",
                     )
                     if self._strict:
                         raise

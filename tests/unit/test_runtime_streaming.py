@@ -449,9 +449,7 @@ def test_engine_assigns_unique_wire_sequence_per_timeline_envelope(
     timeline_envs = [env for env in captured if env.type == "timeline_delta"]
     assert timeline_envs, "expected timeline_delta envelopes"
     sequences = [env.sequence for env in timeline_envs]
-    assert all(seq is not None for seq in sequences), (
-        "every wire envelope must carry a sequence"
-    )
+    assert all(seq is not None for seq in sequences), "every wire envelope must carry a sequence"
     assert len(set(sequences)) == len(sequences), (
         f"duplicate wire sequences would be dropped by the frontend "
         f"SequenceTracker; got {sequences}"

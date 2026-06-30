@@ -30,7 +30,8 @@ class IntegrityViolation:
 
 
 def check_state_transition(
-    previous: OverloadState, next_state: OverloadState,
+    previous: OverloadState,
+    next_state: OverloadState,
 ) -> IntegrityViolation | None:
     """Validate a state transition. Returns ``None`` when clean."""
     delta = next_state - previous
@@ -61,7 +62,10 @@ def check_pressure_ratio(ratio: float) -> IntegrityViolation | None:
 
 def check_drop_policy(policy: DropPolicy) -> IntegrityViolation | None:
     if policy not in (
-        "drop-oldest", "drop-newest", "drop-low-priority", "block",
+        "drop-oldest",
+        "drop-newest",
+        "drop-low-priority",
+        "block",
     ):
         return IntegrityViolation(
             kind="unknown_drop_policy",

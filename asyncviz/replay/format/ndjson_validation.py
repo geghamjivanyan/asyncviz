@@ -143,7 +143,9 @@ class SequenceValidator:
 
 
 def validate_stream(
-    frames: Iterable[ReplayFrame], *, allow_gaps: bool = False,
+    frames: Iterable[ReplayFrame],
+    *,
+    allow_gaps: bool = False,
 ) -> Iterator[tuple[ReplayFrame, bool, str]]:
     """Yield ``(frame, clean, reason)`` triples. Both the frame and
     the verdict so callers can decide whether to keep or drop."""

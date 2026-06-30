@@ -137,5 +137,7 @@ class DefaultBackpressurePolicy:
             kind = "halt-production"
             detail = "emergency action: halt"
         return DegradationAction(
-            kind=kind, detail=detail, target_subsystem="*",
+            kind=kind,
+            detail=detail,
+            target_subsystem="*",
         )

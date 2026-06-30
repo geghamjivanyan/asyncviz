@@ -47,16 +47,14 @@ def check_seek_result(
         return SeekIntegrityViolation(
             kind="sequence_mismatch",
             detail=(
-                f"target={target_sequence} landed={result.landed_sequence} "
-                f"(exact_only strategy)"
+                f"target={target_sequence} landed={result.landed_sequence} (exact_only strategy)"
             ),
         )
     if state.last_sequence != result.landed_sequence and result.frames_replayed > 0:
         return SeekIntegrityViolation(
             kind="sequence_mismatch",
             detail=(
-                f"state.last_sequence={state.last_sequence} != "
-                f"landed={result.landed_sequence}"
+                f"state.last_sequence={state.last_sequence} != landed={result.landed_sequence}"
             ),
         )
     if result.frames_replayed < 0:

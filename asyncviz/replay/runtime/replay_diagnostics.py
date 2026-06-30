@@ -27,7 +27,9 @@ class ReplayEngineDiagnostics:
 
 
 def build_engine_diagnostics(
-    playback: PlaybackSnapshot, *, trace_limit: int = 32,
+    playback: PlaybackSnapshot,
+    *,
+    trace_limit: int = 32,
 ) -> ReplayEngineDiagnostics:
     trace = get_engine_trace()
     if trace_limit > 0:

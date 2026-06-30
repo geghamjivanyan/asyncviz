@@ -20,7 +20,10 @@ class ExportResult:
 
 
 def export_session_to_zip(
-    session_dir: Path, output_path: Path, *, compression: int = zipfile.ZIP_DEFLATED,
+    session_dir: Path,
+    output_path: Path,
+    *,
+    compression: int = zipfile.ZIP_DEFLATED,
 ) -> ExportResult:
     """Bundle ``session_dir`` (recursively) into a zip archive at
     ``output_path``. Returns an :class:`ExportResult`.

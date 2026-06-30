@@ -71,7 +71,10 @@ class _SeekMetrics:
             self._seeks_requested += 1
 
     def record_completed(
-        self, *, latency_ns: int, frames_replayed: int,
+        self,
+        *,
+        latency_ns: int,
+        frames_replayed: int,
     ) -> None:
         with self._lock:
             self._seeks_completed += 1

@@ -33,7 +33,10 @@ class VirtualRuntimeState:
     """Optional metadata bag — recording id, run id, version, etc."""
 
     def with_advance(
-        self, *, sequence: int, monotonic_ns: int,
+        self,
+        *,
+        sequence: int,
+        monotonic_ns: int,
     ) -> VirtualRuntimeState:
         return VirtualRuntimeState(
             last_sequence=sequence,

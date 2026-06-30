@@ -31,7 +31,8 @@ async def test_pause_at_sequence_defers_until_target(
     coordinator: ReplayPlaybackCoordinator,
 ) -> None:
     barrier = coordinator.request_pause(
-        trigger="at_sequence", target_sequence=5,
+        trigger="at_sequence",
+        target_sequence=5,
     )
     # Frame 3 — below target, shouldn't fire.
     assert not coordinator.on_frame_dispatched(sequence=3, monotonic_ns=30)
@@ -47,7 +48,8 @@ async def test_pause_at_timestamp_defers_until_target(
     coordinator: ReplayPlaybackCoordinator,
 ) -> None:
     barrier = coordinator.request_pause(
-        trigger="at_timestamp", target_monotonic_ns=500,
+        trigger="at_timestamp",
+        target_monotonic_ns=500,
     )
     assert not coordinator.on_frame_dispatched(sequence=1, monotonic_ns=100)
     assert coordinator.on_frame_dispatched(sequence=6, monotonic_ns=600)

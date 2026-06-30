@@ -13,7 +13,9 @@ from asyncviz.runtime.backpressure.models.overload_state import OverloadState
 
 
 def state_for_ratio(
-    ratio: float, *, config: BackpressureConfig,
+    ratio: float,
+    *,
+    config: BackpressureConfig,
 ) -> OverloadState:
     """Map a smoothed pressure ratio to the corresponding state."""
     if ratio >= config.emergency_threshold:

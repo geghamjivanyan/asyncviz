@@ -26,9 +26,7 @@ async def _gather_layer(context: ScenarioContext, *, depth: int) -> int:
         context.record_signal("operation", "leaf")
         return 1
     fanout = context.config.gather_fanout
-    coroutines = [
-        _gather_layer(context, depth=depth - 1) for _ in range(fanout)
-    ]
+    coroutines = [_gather_layer(context, depth=depth - 1) for _ in range(fanout)]
     results = await asyncio.gather(*coroutines)
     context.record_signal("operation", f"gather:depth={depth}")
     return sum(results)

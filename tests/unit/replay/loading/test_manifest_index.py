@@ -69,7 +69,8 @@ def test_replay_index_from_session_dir(canonical_session: Path) -> None:
 def test_snapshot_index_nearest_at_or_before(canonical_session: Path) -> None:
     result = load_manifest(canonical_session)
     snap_index = ReplaySnapshotIndex.from_records(
-        result.session.snapshots, result.session.snapshot_paths,
+        result.session.snapshots,
+        result.session.snapshot_paths,
     )
     assert snap_index.snapshot_count == 1
     # snapshot captured at sequence 3

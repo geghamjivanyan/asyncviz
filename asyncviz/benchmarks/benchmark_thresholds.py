@@ -60,10 +60,7 @@ def summarize_regressions(suite: BenchmarkSuiteResult) -> RegressionSummary:
 
 
 def is_regression(result: BenchmarkResult) -> bool:
-    return (
-        result.comparison is not None
-        and result.comparison.verdict == "regressed"
-    )
+    return result.comparison is not None and result.comparison.verdict == "regressed"
 
 
 def label_for(verdict: str) -> str:

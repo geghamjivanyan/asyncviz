@@ -32,8 +32,7 @@ def render_markdown(suite: BenchmarkSuiteResult) -> str:
     if summary.worst_regression is not None:
         worst = summary.worst_regression
         lines.append(
-            f"- ⚠️ Worst regression: **{worst.spec_name}** "
-            f"({worst.delta_ratio:+.1%} vs baseline)",
+            f"- ⚠️ Worst regression: **{worst.spec_name}** ({worst.delta_ratio:+.1%} vs baseline)",
         )
     lines.append("")
     lines.append("## Results")
@@ -48,9 +47,7 @@ def render_markdown(suite: BenchmarkSuiteResult) -> str:
         outcome = result.outcome
         stats = outcome.statistics
         verdict_text = (
-            label_for(result.comparison.verdict)
-            if result.comparison is not None
-            else "—"
+            label_for(result.comparison.verdict) if result.comparison is not None else "—"
         )
         if stats is None:
             lines.append(

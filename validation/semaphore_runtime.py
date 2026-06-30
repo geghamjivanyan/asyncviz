@@ -9,7 +9,7 @@ sizes. Each scenario targets a specific event the engine emits
 Scenarios:
 
   * **Heavy contention**   — :class:`asyncio.Semaphore` (value=2)
-    with 12 tasks racing for it, each holding for 100–300 ms.
+    with 12 tasks racing for it, each holding for 100-300 ms.
     Most tasks spend most of their time in ``acquire.started`` →
     ``acquired`` wait gaps; the contention aggregation event
     fires repeatedly.
@@ -43,12 +43,12 @@ import random
 
 # ``asyncviz run`` executes the target via ``runpy.run_path`` — inject
 # the script's directory so the sibling ``_common`` module imports.
-import sys  # noqa: E402
-from pathlib import Path  # noqa: E402
+import sys
+from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from _common import (  # noqa: E402
+from _common import (
     add_common_args,
     cancel_all,
     common_from_namespace,
@@ -107,7 +107,12 @@ async def starvation_holder(sem: asyncio.Semaphore, stop: asyncio.Event) -> None
         raise
 
 
-async def starvation_waiter(name: str, sem: asyncio.Semaphore, stop: asyncio.Event, rng: random.Random) -> None:
+async def starvation_waiter(
+    name: str,
+    sem: asyncio.Semaphore,
+    stop: asyncio.Event,
+    rng: random.Random,
+) -> None:
     acquired = 0
     try:
         while not stop.is_set():
@@ -121,7 +126,12 @@ async def starvation_waiter(name: str, sem: asyncio.Semaphore, stop: asyncio.Eve
         logger.info("[%s] eventually acquired %s times", name, acquired)
 
 
-async def fairness_worker(name: str, sem: asyncio.Semaphore, rng: random.Random, stop: asyncio.Event) -> None:
+async def fairness_worker(
+    name: str,
+    sem: asyncio.Semaphore,
+    rng: random.Random,
+    stop: asyncio.Event,
+) -> None:
     """Light hold + short gap — low-contention churn."""
     holds = 0
     try:
@@ -136,7 +146,11 @@ async def fairness_worker(name: str, sem: asyncio.Semaphore, rng: random.Random,
         logger.info("[%s] fairness churn: %s holds", name, holds)
 
 
-async def cancellation_demo(sem: asyncio.Semaphore, stop: asyncio.Event, rng: random.Random) -> None:
+async def cancellation_demo(
+    sem: asyncio.Semaphore,
+    stop: asyncio.Event,
+    rng: random.Random,
+) -> None:
     """Periodically saturate the semaphore + cancel queued waiters.
 
     The demo holds the semaphore in a single task, spawns 4 waiters
@@ -149,10 +163,16 @@ async def cancellation_demo(sem: asyncio.Semaphore, stop: asyncio.Event, rng: ra
     while not stop.is_set():
         iteration += 1
         # Hold every permit so any new acquire blocks.
-        holder = asyncio.create_task(_block_forever_holder(sem, stop), name=f"cancel-demo-holder-{iteration}")
+        holder = asyncio.create_task(
+            _block_forever_holder(sem, stop),
+            name=f"cancel-demo-holder-{iteration}",
+        )
         await asyncio.sleep(0.05)
         waiters = [
-            asyncio.create_task(_blocked_waiter(sem, f"cancel-demo-{iteration}-w{i}"), name=f"cancel-demo-{iteration}-w{i}")
+            asyncio.create_task(
+                _blocked_waiter(sem, f"cancel-demo-{iteration}-w{i}"),
+                name=f"cancel-demo-{iteration}-w{i}",
+            )
             for i in range(4)
         ]
         # Let them queue up.
@@ -200,15 +220,30 @@ async def run_workload(args: argparse.Namespace) -> None:
     for i in range(12):
         tasks.append(
             asyncio.create_task(
-                contended_worker(f"contended-{i}", contended_sem, random.Random(rng.random()), stop),
+                contended_worker(
+                    f"contended-{i}",
+                    contended_sem,
+                    random.Random(rng.random()),
+                    stop,
+                ),
                 name=f"contended-{i}",
             ),
         )
-    tasks.append(asyncio.create_task(starvation_holder(starvation_sem, stop), name="starvation-holder"))
+    tasks.append(
+        asyncio.create_task(
+            starvation_holder(starvation_sem, stop),
+            name="starvation-holder",
+        ),
+    )
     for i in range(8):
         tasks.append(
             asyncio.create_task(
-                starvation_waiter(f"starve-w{i}", starvation_sem, stop, random.Random(rng.random())),
+                starvation_waiter(
+                    f"starve-w{i}",
+                    starvation_sem,
+                    stop,
+                    random.Random(rng.random()),
+                ),
                 name=f"starve-w{i}",
             ),
         )

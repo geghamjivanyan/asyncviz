@@ -150,7 +150,8 @@ class DefaultSamplingPolicy:
 
 
 def _rate_for_priority(
-    config: SamplingConfig, priority: SamplingPriority,
+    config: SamplingConfig,
+    priority: SamplingPriority,
 ) -> float:
     if priority == SamplingPriority.CRITICAL:
         return min(1.0, config.critical_retention)

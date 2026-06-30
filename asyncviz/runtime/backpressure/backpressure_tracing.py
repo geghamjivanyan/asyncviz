@@ -70,13 +70,16 @@ def is_backpressure_trace_enabled() -> bool:
 
 
 def record_backpressure_trace(
-    kind: BackpressureTraceKind, detail: str = "",
+    kind: BackpressureTraceKind,
+    detail: str = "",
 ) -> None:
     if not _enabled:
         return
     _RING.push(
         BackpressureTraceEntry(
-            monotonic_ns=time.monotonic_ns(), kind=kind, detail=detail,
+            monotonic_ns=time.monotonic_ns(),
+            kind=kind,
+            detail=detail,
         ),
     )
 

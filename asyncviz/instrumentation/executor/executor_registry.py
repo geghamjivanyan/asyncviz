@@ -107,6 +107,7 @@ class ExecutorRegistry:
             with self._lock:
                 if self._by_object.pop(obj_id, None) is not None:
                     self._finalized += 1
+
         return _finalize
 
     def get(self, executor: object) -> ExecutorIdentity | None:
@@ -191,7 +192,11 @@ class WorkItemRegistry:
             return identity
 
     def mark_started(
-        self, work_item_id: str, *, worker_thread_name: str | None, started_at_ns: int,
+        self,
+        work_item_id: str,
+        *,
+        worker_thread_name: str | None,
+        started_at_ns: int,
     ) -> None:
         with self._lock:
             entry = self._entries.get(work_item_id)

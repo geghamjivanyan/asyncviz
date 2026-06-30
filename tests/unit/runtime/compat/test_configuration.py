@@ -42,4 +42,4 @@ def test_config_is_frozen() -> None:
 def test_drift_tolerance_default_is_reasonable() -> None:
     cfg = default_config()
     assert cfg.clock_drift_tolerance_ns > 0
-    assert cfg.clock_drift_tolerance_ns <= 10 ** 9  # never more than 1s
+    assert cfg.clock_drift_tolerance_ns <= 10**9  # never more than 1s

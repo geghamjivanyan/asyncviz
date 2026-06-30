@@ -444,4 +444,5 @@ def _register_cors_middleware(app: FastAPI, config: AsyncVizConfig) -> None:
         allow_headers=["*"],
     )
 
+
 app = create_app()

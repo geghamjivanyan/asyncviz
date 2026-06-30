@@ -86,7 +86,8 @@ class ReconstructionPipeline:
 
         # ── Tier 2: in-memory checkpoint exact hit ───────────────
         lookup: CheckpointLookup = find_nearest_checkpoint(
-            self._checkpoints, target_sequence,
+            self._checkpoints,
+            target_sequence,
         )
         if lookup.exact_match and lookup.checkpoint is not None:
             cp = lookup.checkpoint
@@ -143,11 +144,17 @@ class ReconstructionPipeline:
         )
 
     def cache(
-        self, *, sequence: int, monotonic_ns: int, state: VirtualRuntimeState,
+        self,
+        *,
+        sequence: int,
+        monotonic_ns: int,
+        state: VirtualRuntimeState,
     ) -> None:
         """Save a freshly-reconstructed state into the cache."""
         self._cache.put(
             SeekCacheEntry(
-                sequence=sequence, monotonic_ns=monotonic_ns, state=state,
+                sequence=sequence,
+                monotonic_ns=monotonic_ns,
+                state=state,
             ),
         )

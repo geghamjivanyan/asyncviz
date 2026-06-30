@@ -69,9 +69,7 @@ def inspect_chunk(chunk: ChunkRecord, path: Path) -> ChunkHealth:
             fh.seek(-1, 2)
             has_newline = fh.read(1) == b"\n"
     healthy = (
-        size > 0
-        and has_newline
-        and (chunk.event_count == 0 or line_count >= chunk.event_count)
+        size > 0 and has_newline and (chunk.event_count == 0 or line_count >= chunk.event_count)
     )
     return ChunkHealth(
         chunk_index=chunk.index,
@@ -93,7 +91,11 @@ class RecoveringChunkLoader:
     __slots__ = ("_adapter", "_chunk", "_dropped", "_path", "_recovered")
 
     def __init__(
-        self, chunk: ChunkRecord, path: Path, *, adapter: FrameAdapter,
+        self,
+        chunk: ChunkRecord,
+        path: Path,
+        *,
+        adapter: FrameAdapter,
     ) -> None:
         self._chunk = chunk
         self._path = path

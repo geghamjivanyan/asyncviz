@@ -61,10 +61,12 @@ def test_verdict_mapping() -> None:
 
 def test_survivability_score_re_exports_stress_formula() -> None:
     a = compute_survivability_score(
-        operations_completed=100, operations_failed=0,
+        operations_completed=100,
+        operations_failed=0,
     )
     b = compute_survivability_score(
-        operations_completed=50, operations_failed=50,
+        operations_completed=50,
+        operations_failed=50,
     )
     assert a == 1.0
     assert b < a

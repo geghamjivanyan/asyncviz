@@ -51,9 +51,7 @@ def test_validate_wheel_passes_on_complete_layout(tmp_path: Path) -> None:
 
 def test_validate_wheel_reports_missing_static(tmp_path: Path) -> None:
     static_prefix = "asyncviz/dashboard/static"
-    layout = {
-        k: v for k, v in REQUIRED_WHEEL_LAYOUT.items() if not k.startswith(static_prefix)
-    }
+    layout = {k: v for k, v in REQUIRED_WHEEL_LAYOUT.items() if not k.startswith(static_prefix)}
     wheel = _make_wheel(tmp_path / "asyncviz-0.0.0-py3-none-any.whl", layout)
     report = validate_wheel(wheel)
     assert not report.ok
@@ -63,9 +61,7 @@ def test_validate_wheel_reports_missing_static(tmp_path: Path) -> None:
 
 def test_validate_wheel_reports_missing_assets_dir(tmp_path: Path) -> None:
     assets_prefix = "asyncviz/dashboard/static/assets"
-    layout = {
-        k: v for k, v in REQUIRED_WHEEL_LAYOUT.items() if not k.startswith(assets_prefix)
-    }
+    layout = {k: v for k, v in REQUIRED_WHEEL_LAYOUT.items() if not k.startswith(assets_prefix)}
     wheel = _make_wheel(tmp_path / "asyncviz-0.0.0-py3-none-any.whl", layout)
     report = validate_wheel(wheel)
     assert not report.ok

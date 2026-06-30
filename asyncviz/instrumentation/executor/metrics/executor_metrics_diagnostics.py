@@ -35,7 +35,9 @@ class ExecutorMetricsDiagnostics:
 
 
 def build_executor_metrics_diagnostics(
-    snapshot: ExecutorMetricsSnapshot, *, tail: int = 16,
+    snapshot: ExecutorMetricsSnapshot,
+    *,
+    tail: int = 16,
 ) -> ExecutorMetricsDiagnostics:
     trace = get_executor_metrics_trace()
     return ExecutorMetricsDiagnostics(

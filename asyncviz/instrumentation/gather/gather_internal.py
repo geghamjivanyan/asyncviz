@@ -24,7 +24,8 @@ from collections.abc import Iterator
 from contextvars import ContextVar
 
 _in_internal_gather: ContextVar[bool] = ContextVar(
-    "_in_internal_gather", default=False,
+    "_in_internal_gather",
+    default=False,
 )
 
 

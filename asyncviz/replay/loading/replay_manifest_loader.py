@@ -71,11 +71,7 @@ def load_manifest_or_rebuild(session_dir: Path) -> ManifestLoadResult:
         return load_manifest(session_dir)
     except ManifestLoadError:
         events_directory = session_dir / EVENTS_DIRNAME
-        chunk_files = (
-            sorted(events_directory.glob("*.ndjson"))
-            if events_directory.exists()
-            else []
-        )
+        chunk_files = sorted(events_directory.glob("*.ndjson")) if events_directory.exists() else []
         metadata = RecordingMetadata(
             schema_version=1,
             recording_id=session_dir.name,
@@ -105,7 +101,9 @@ def load_manifest_or_rebuild(session_dir: Path) -> ManifestLoadResult:
 
 
 def _resolve_layout(
-    *, session_dir: Path, metadata: RecordingMetadata,
+    *,
+    session_dir: Path,
+    metadata: RecordingMetadata,
 ) -> ManifestLoadResult:
     chunk_paths: list[Path] = []
     missing_chunks: list[Path] = []

@@ -229,9 +229,7 @@ class EventLoopLagMonitor:
             try:
                 loop.create_task(self.start(loop=loop), name="asyncviz-lag-bootstrap")
             except Exception:
-                logger.exception(
-                    "failed to schedule lag monitor start on target loop"
-                )
+                logger.exception("failed to schedule lag monitor start on target loop")
 
         loop.call_soon_threadsafe(_enqueue_start)
 

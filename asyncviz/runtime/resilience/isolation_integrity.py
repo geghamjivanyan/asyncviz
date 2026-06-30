@@ -45,10 +45,7 @@ def check_domain(snapshot: FailureDomainSnapshot) -> tuple[IntegrityFinding, ...
                     detail=f"{snapshot.name}.{name}={value}",
                 ),
             )
-    if (
-        snapshot.breaker.state == BreakerState.OPEN
-        and snapshot.breaker.trips == 0
-    ):
+    if snapshot.breaker.state == BreakerState.OPEN and snapshot.breaker.trips == 0:
         findings.append(
             IntegrityFinding(
                 kind="open-without-trip",

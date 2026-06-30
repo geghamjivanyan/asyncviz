@@ -29,7 +29,9 @@ def test_controller_detects_overload(
     controller: EventBackpressureController,
 ) -> None:
     channel = controller.register_channel(
-        "bus", capacity=4, policy="drop-newest",
+        "bus",
+        capacity=4,
+        policy="drop-newest",
     )
     for i in range(4):
         channel.offer(i)

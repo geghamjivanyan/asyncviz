@@ -91,10 +91,14 @@ async def test_runner_enforces_budget() -> None:
 async def test_runner_filters_by_category() -> None:
     reg = _make_registry()
     register_scenario(
-        StressScenarioSpec(name="t.task", category="task"), _ok, registry=reg,
+        StressScenarioSpec(name="t.task", category="task"),
+        _ok,
+        registry=reg,
     )
     register_scenario(
-        StressScenarioSpec(name="t.ws", category="websocket"), _ok, registry=reg,
+        StressScenarioSpec(name="t.ws", category="websocket"),
+        _ok,
+        registry=reg,
     )
     runner = StressRunner(config=lean_config(), registry=reg)
     outcomes = await runner.run(StressRunInputs(category="task"))
@@ -104,10 +108,14 @@ async def test_runner_filters_by_category() -> None:
 async def test_runner_filters_by_only() -> None:
     reg = _make_registry()
     register_scenario(
-        StressScenarioSpec(name="a", category="task"), _ok, registry=reg,
+        StressScenarioSpec(name="a", category="task"),
+        _ok,
+        registry=reg,
     )
     register_scenario(
-        StressScenarioSpec(name="b", category="task"), _ok, registry=reg,
+        StressScenarioSpec(name="b", category="task"),
+        _ok,
+        registry=reg,
     )
     runner = StressRunner(config=lean_config(), registry=reg)
     outcomes = await runner.run(StressRunInputs(only=("a",)))
@@ -117,10 +125,14 @@ async def test_runner_filters_by_only() -> None:
 async def test_runner_filters_by_skip() -> None:
     reg = _make_registry()
     register_scenario(
-        StressScenarioSpec(name="a", category="task"), _ok, registry=reg,
+        StressScenarioSpec(name="a", category="task"),
+        _ok,
+        registry=reg,
     )
     register_scenario(
-        StressScenarioSpec(name="b", category="task"), _ok, registry=reg,
+        StressScenarioSpec(name="b", category="task"),
+        _ok,
+        registry=reg,
     )
     runner = StressRunner(config=lean_config(), registry=reg)
     outcomes = await runner.run(StressRunInputs(skip=("a",)))
@@ -196,7 +208,9 @@ def test_runner_exposes_config_and_registry() -> None:
 async def test_runner_rejects_unknown_only_silently() -> None:
     reg = _make_registry()
     register_scenario(
-        StressScenarioSpec(name="known", category="task"), _ok, registry=reg,
+        StressScenarioSpec(name="known", category="task"),
+        _ok,
+        registry=reg,
     )
     runner = StressRunner(config=lean_config(), registry=reg)
     outcomes = await runner.run(StressRunInputs(only=("unknown",)))

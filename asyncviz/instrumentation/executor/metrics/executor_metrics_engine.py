@@ -123,7 +123,8 @@ class ExecutorMetricsEngine:
                 self._started = True
                 return
             self._bus_subscription = self._bus.subscribe(
-                self._on_bus_event, event_types=set(EXECUTOR_EVENT_TYPES),
+                self._on_bus_event,
+                event_types=set(EXECUTOR_EVENT_TYPES),
             )
             self._started = True
 
@@ -346,7 +347,8 @@ class ExecutorMetricsEngine:
 
         # Debounced periodic update.
         if self._config.emit_updated and self._should_emit_update(
-            state, monotonic_seconds,
+            state,
+            monotonic_seconds,
         ):
             self._self_metrics.record_update_emitted()
             state.mark_emitted(monotonic_seconds=monotonic_seconds)
@@ -386,7 +388,9 @@ class ExecutorMetricsEngine:
             record_executor_metrics_trace("updated-emitted", state.executor_id)
 
     def _should_emit_update(
-        self, state: ExecutorAggregateState, monotonic_seconds: float,
+        self,
+        state: ExecutorAggregateState,
+        monotonic_seconds: float,
     ) -> bool:
         if state.last_emit_monotonic == 0.0:
             return True

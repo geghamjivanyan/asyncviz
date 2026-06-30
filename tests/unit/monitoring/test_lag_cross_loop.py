@@ -10,6 +10,7 @@ dashboard server runs on its own daemon-thread loop.
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import threading
 import time
 
@@ -134,6 +135,7 @@ def test_blocking_the_dashboard_loop_does_not_emit_warnings_for_target_loop() ->
 
     try:
         monitor.bind_to_loop_threadsafe(target_loop)
+
         # Block the *noise* loop hard while the sampler runs on the
         # *target* loop.
         def _block_noise() -> None:
@@ -149,15 +151,12 @@ def test_blocking_the_dashboard_loop_does_not_emit_warnings_for_target_loop() ->
     finally:
         # Stop the monitor from the noise loop (some other loop) — the
         # monitor's stop handles the cross-loop case.
-        stop_future: list[asyncio.Future[None]] = []
         async def _stop() -> None:
             await monitor.stop()
 
         fut = asyncio.run_coroutine_threadsafe(_stop(), noise_loop)
-        try:
+        with contextlib.suppress(Exception):
             fut.result(timeout=2.0)
-        except Exception:
-            pass
         target_loop.call_soon_threadsafe(target_loop.stop)
         noise_loop.call_soon_threadsafe(noise_loop.stop)
         target_thread.join(timeout=2.0)
@@ -237,10 +236,8 @@ def test_blocking_the_target_loop_emits_critical_measurements() -> None:
         async def _stop_monitor() -> None:
             await monitor.stop()
 
-        try:
+        with contextlib.suppress(Exception):
             asyncio.run_coroutine_threadsafe(_stop_monitor(), helper_loop).result(timeout=2.0)
-        except Exception:
-            pass
 
         target_loop.call_soon_threadsafe(target_loop.stop)
         helper_loop.call_soon_threadsafe(helper_loop.stop)

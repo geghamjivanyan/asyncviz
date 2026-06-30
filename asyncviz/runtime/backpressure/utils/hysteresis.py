@@ -18,7 +18,9 @@ def needs_upgrade(current_ratio: float, threshold: float) -> bool:
 
 
 def needs_downgrade(
-    current_ratio: float, lower_band: float, dwell_satisfied: bool,
+    current_ratio: float,
+    lower_band: float,
+    dwell_satisfied: bool,
 ) -> bool:
     """Downgrade only when *both* the lower band is satisfied and
     the dwell time has elapsed."""

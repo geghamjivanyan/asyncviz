@@ -60,8 +60,7 @@ def _build_frontend() -> None:
 def _embed_frontend() -> None:
     if not (DIST_DIR / "index.html").is_file():
         raise SystemExit(
-            f"no frontend build at {DIST_DIR}; "
-            f"run the build before embedding.",
+            f"no frontend build at {DIST_DIR}; run the build before embedding.",
         )
     STATIC_DIR.mkdir(parents=True, exist_ok=True)
     # Wipe the previous embed but preserve the .gitkeep marker so the
@@ -102,13 +101,19 @@ def _verify() -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Build + embed the AsyncViz frontend.")
     parser.add_argument(
-        "--skip-build", action="store_true", help="Skip the vite build step (use existing dist).",
+        "--skip-build",
+        action="store_true",
+        help="Skip the vite build step (use existing dist).",
     )
     parser.add_argument(
-        "--skip-embed", action="store_true", help="Skip the copy-into-package step.",
+        "--skip-embed",
+        action="store_true",
+        help="Skip the copy-into-package step.",
     )
     parser.add_argument(
-        "--skip-verify", action="store_true", help="Skip the post-embed verification step.",
+        "--skip-verify",
+        action="store_true",
+        help="Skip the post-embed verification step.",
     )
     args = parser.parse_args()
 

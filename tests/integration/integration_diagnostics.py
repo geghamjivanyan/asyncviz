@@ -35,9 +35,7 @@ class IntegrationReport:
     trace: tuple[IntegrationTraceEntry, ...]
 
     def passed(self) -> bool:
-        return not any(
-            outcome.verdict in ("failed", "errored") for outcome in self.outcomes
-        )
+        return not any(outcome.verdict in ("failed", "errored") for outcome in self.outcomes)
 
     def render_text(self) -> str:
         lines = [

@@ -47,9 +47,7 @@ class ThroughputCounters:
         comp_rate = self.completion_rate.snapshot(
             monotonic_seconds=monotonic_seconds,
         ).rate_per_second
-        backlog = (
-            self.submissions - self.completions - self.failures - self.cancellations
-        )
+        backlog = self.submissions - self.completions - self.failures - self.cancellations
         return ExecutorThroughputSnapshot(
             submissions=self.submissions,
             completions=self.completions,

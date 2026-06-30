@@ -23,11 +23,7 @@ def compact_replay_frame(
 ) -> CompactReplayFrame:
     """Build a :class:`CompactReplayFrame` from a canonical
     :class:`ReplayFrame`."""
-    payload = (
-        _intern_payload(frame.payload, interner)
-        if intern_payload
-        else dict(frame.payload)
-    )
+    payload = _intern_payload(frame.payload, interner) if intern_payload else dict(frame.payload)
     return CompactReplayFrame(
         schema_version=frame.schema_version,
         frame_type=interner.intern(str(frame.frame_type)),
@@ -49,11 +45,7 @@ def compact_replay_dict(
 ) -> CompactReplayFrame:
     """Build a compact frame from a JSON-style frame dict."""
     payload_raw = data.get("payload") or {}
-    payload = (
-        _intern_payload(payload_raw, interner)
-        if intern_payload
-        else dict(payload_raw)
-    )
+    payload = _intern_payload(payload_raw, interner) if intern_payload else dict(payload_raw)
     return CompactReplayFrame(
         schema_version=int(data.get("schema_version", 1)),
         frame_type=interner.intern(str(data.get("frame_type", ""))),
@@ -62,14 +54,10 @@ def compact_replay_dict(
         payload_type=interner.intern(str(data.get("payload_type", ""))),
         payload=payload,
         runtime_id=(
-            interner.intern(str(data.get("runtime_id", "")))
-            if data.get("runtime_id")
-            else ""
+            interner.intern(str(data.get("runtime_id", ""))) if data.get("runtime_id") else ""
         ),
         recording_id=(
-            interner.intern(str(data.get("recording_id", "")))
-            if data.get("recording_id")
-            else ""
+            interner.intern(str(data.get("recording_id", ""))) if data.get("recording_id") else ""
         ),
         wall_time_ns=int(data.get("wall_time_ns", 0) or 0),
     )

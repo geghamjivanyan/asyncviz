@@ -80,7 +80,9 @@ class NdjsonFrameReader:
             except FrameDecodingError as exc:
                 self._report.discarded.append(
                     FrameRecoveryRecord(
-                        line_number=line_no, recovered=False, reason=str(exc),
+                        line_number=line_no,
+                        recovered=False,
+                        reason=str(exc),
                     ),
                 )
                 get_format_metrics().record_malformed_frame()

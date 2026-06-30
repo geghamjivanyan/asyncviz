@@ -77,11 +77,7 @@ class LoopTaskBridge:
         if not hasattr(loop, "set_task_factory"):
             return False
         with self._lock:
-            previous = (
-                loop.get_task_factory()
-                if hasattr(loop, "get_task_factory")
-                else None
-            )
+            previous = loop.get_task_factory() if hasattr(loop, "get_task_factory") else None
             self._previous_factory = previous
             self._loop_ref = loop
             self._factory = factory or self._default_factory

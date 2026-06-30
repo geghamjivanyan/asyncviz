@@ -171,13 +171,11 @@ class ExecutorAggregateState:
             completion_rate=throughput_snap.completion_rate,
             mean_submission_latency=latency_snap.mean_seconds,
         )
-        saturation_entered = (
-            prev_level != self.saturation.level
-            and self.saturation.level in {"warning", "critical"}
-        )
-        saturation_exited = (
-            prev_level != self.saturation.level and self.saturation.level == "calm"
-        )
+        saturation_entered = prev_level != self.saturation.level and self.saturation.level in {
+            "warning",
+            "critical",
+        }
+        saturation_exited = prev_level != self.saturation.level and self.saturation.level == "calm"
 
         return ApplyOutcome(
             accepted=True,

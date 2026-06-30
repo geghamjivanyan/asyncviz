@@ -97,7 +97,8 @@ class EventBackpressureController:
 
         get_backpressure_metrics().record_controller_started()
         record_backpressure_trace(
-            "controller-started", f"config_capacity={cfg.bus_capacity}",
+            "controller-started",
+            f"config_capacity={cfg.bus_capacity}",
         )
         # Wire the action listener into our own metrics layer.
         self._unsubscribe_actions = self._adaptive.subscribe_actions(
@@ -126,7 +127,9 @@ class EventBackpressureController:
         # Register as a pressure source so the controller's tick
         # samples its depth.
         self._adaptive.register_source(
-            name, lambda c=channel: c.depth, capacity=channel.capacity,
+            name,
+            lambda c=channel: c.depth,
+            capacity=channel.capacity,
         )
         return channel
 
@@ -148,7 +151,8 @@ class EventBackpressureController:
         with self._lock:
             if self._websocket_registry is None:
                 self._websocket_registry = WebsocketBackpressureRegistry(
-                    self._config, policy=policy,
+                    self._config,
+                    policy=policy,
                 )
                 # Aggregate websocket-side pressure as max across all
                 # subscribers.
@@ -161,12 +165,15 @@ class EventBackpressureController:
             return self._websocket_registry
 
     def attach_recorder_adapter(
-        self, *, policy: DropPolicy | None = None,
+        self,
+        *,
+        policy: DropPolicy | None = None,
     ) -> ReplayBackpressureAdapter:
         with self._lock:
             if self._recorder_adapter is None:
                 self._recorder_adapter = ReplayBackpressureAdapter(
-                    self._config, policy=policy,
+                    self._config,
+                    policy=policy,
                 )
                 adapter = self._recorder_adapter
                 self._adaptive.register_source(
@@ -188,7 +195,10 @@ class EventBackpressureController:
             if adapter is not None:
                 return adapter
             adapter = ReducerBackpressureAdapter(
-                name, self._config, capacity=capacity, policy=policy,
+                name,
+                self._config,
+                capacity=capacity,
+                policy=policy,
             )
             self._reducer_adapters[name] = adapter
         self._adaptive.register_source(
@@ -199,7 +209,9 @@ class EventBackpressureController:
         return adapter
 
     def attach_topology_view(
-        self, *, capacity: int = 65_536,
+        self,
+        *,
+        capacity: int = 65_536,
     ) -> BoundedTopologyView:
         with self._lock:
             if self._topology_view is None:
@@ -216,14 +228,18 @@ class EventBackpressureController:
         return self._adaptive.state
 
     def subscribe_actions(
-        self, listener: ActionListener,
+        self,
+        listener: ActionListener,
     ) -> Callable[[], None]:
         return self._adaptive.subscribe_actions(listener)
 
     # ── recording helpers ────────────────────────────────────────
 
     def record_event_outcome(
-        self, *, accepted: bool, evicted: bool,
+        self,
+        *,
+        accepted: bool,
+        evicted: bool,
     ) -> None:
         metrics = get_backpressure_metrics()
         if accepted:
@@ -233,22 +249,22 @@ class EventBackpressureController:
                 self._budget.record_overflowed()
                 metrics.record_event_evicted()
                 record_backpressure_trace(
-                    "event-evicted", f"state={self.state.name}",
+                    "event-evicted",
+                    f"state={self.state.name}",
                 )
         else:
             self._budget.record_rejected()
             metrics.record_event_rejected()
             record_backpressure_trace(
-                "event-rejected", f"state={self.state.name}",
+                "event-rejected",
+                f"state={self.state.name}",
             )
 
     # ── diagnostics ──────────────────────────────────────────────
 
     def diagnostics(self, *, trace_limit: int = 32) -> BackpressureDiagnostics:
         snap = self._adaptive.detector.snapshot()
-        channel_stats: list[ChannelStats] = [
-            ch.stats() for ch in self.channels()
-        ]
+        channel_stats: list[ChannelStats] = [ch.stats() for ch in self.channels()]
         if self._websocket_registry is not None:
             for ch in self._websocket_registry.all():
                 channel_stats.append(ch.channel.stats())
@@ -293,21 +309,21 @@ class EventBackpressureController:
     # ── internals ────────────────────────────────────────────────
 
     def _on_action(
-        self, action: DegradationAction, snapshot: OverloadSnapshot,
+        self,
+        action: DegradationAction,
+        snapshot: OverloadSnapshot,
     ) -> None:
         metrics = get_backpressure_metrics()
         metrics.record_action_dispatched()
         record_backpressure_trace(
-            "action-dispatched", f"kind={action.kind} state={snapshot.state.name}",
+            "action-dispatched",
+            f"kind={action.kind} state={snapshot.state.name}",
         )
         # State-transition bookkeeping.
         emergency = snapshot.state == OverloadState.EMERGENCY
         metrics.record_state_transition(emergency=emergency)
         # When emergency action is "disconnect-slow-clients", apply it.
-        if (
-            action.kind == "disconnect-slow-clients"
-            and self._websocket_registry is not None
-        ):
+        if action.kind == "disconnect-slow-clients" and self._websocket_registry is not None:
             disconnected = self._websocket_registry.disconnect_slow_clients()
             for _ in range(disconnected):
                 metrics.record_websocket_disconnect()

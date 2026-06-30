@@ -107,10 +107,12 @@ class ReplayEventLoader:
         self._load_result = load_result
         self._session = load_result.session
         self._sequence_index = ReplayIndex.from_session_dir(
-            config.session_dir, self._session.metadata,
+            config.session_dir,
+            self._session.metadata,
         )
         self._snapshot_index = ReplaySnapshotIndex.from_records(
-            self._session.snapshots, self._session.snapshot_paths,
+            self._session.snapshots,
+            self._session.snapshot_paths,
         )
         self._adapter: FrameAdapter = self._resolve_adapter()
         self._cursor = ReplayCursor.at_start()
@@ -138,7 +140,8 @@ class ReplayEventLoader:
         loader = ReplayEventLoader(cfg, result)
         if cfg.verify_integrity:
             loader._integrity = verify_session(
-                loader._session.chunks, loader._session.chunk_paths,
+                loader._session.chunks,
+                loader._session.chunk_paths,
             )
         return loader
 
@@ -206,9 +209,7 @@ class ReplayEventLoader:
             finalized=metadata.finalized,
             detected_format=self._adapter.format_name,
             chunk_paths_missing=tuple(str(p) for p in self._load_result.missing_chunk_paths),
-            snapshot_paths_missing=tuple(
-                str(p) for p in self._load_result.missing_snapshot_paths
-            ),
+            snapshot_paths_missing=tuple(str(p) for p in self._load_result.missing_snapshot_paths),
         )
 
     # ── iteration ─────────────────────────────────────────────────
@@ -228,9 +229,7 @@ class ReplayEventLoader:
         after ``cursor.last_sequence`` — the cursor's window bound is
         merged with the caller's window, so passing both works."""
         self._ensure_open()
-        cursor_start = (
-            from_cursor.last_sequence + 1 if from_cursor is not None else 0
-        )
+        cursor_start = from_cursor.last_sequence + 1 if from_cursor is not None else 0
         merged_window = _merge_cursor_window(window, cursor_start)
         chunks = self._build_chunk_loaders()
         stream = ReplayStream(
@@ -321,7 +320,9 @@ class ReplayEventLoader:
         return tuple(
             inspect_chunk(record, path)
             for record, path in zip(
-                self._session.chunks, self._session.chunk_paths, strict=True,
+                self._session.chunks,
+                self._session.chunk_paths,
+                strict=True,
             )
         )
 
@@ -335,10 +336,15 @@ class ReplayEventLoader:
     def _build_chunk_loaders(self) -> list[ReplayChunkLoader]:
         return [
             ReplayChunkLoader(
-                record, path, adapter=self._adapter, strict=self._config.strict_mode,
+                record,
+                path,
+                adapter=self._adapter,
+                strict=self._config.strict_mode,
             )
             for record, path in zip(
-                self._session.chunks, self._session.chunk_paths, strict=True,
+                self._session.chunks,
+                self._session.chunk_paths,
+                strict=True,
             )
         ]
 

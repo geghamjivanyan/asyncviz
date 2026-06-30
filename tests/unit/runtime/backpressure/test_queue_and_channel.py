@@ -12,7 +12,8 @@ from asyncviz.runtime.backpressure import (
 
 def test_drop_newest_refuses_overflow() -> None:
     q: PriorityBoundedQueue[int] = PriorityBoundedQueue(
-        capacity=2, policy="drop-newest",
+        capacity=2,
+        policy="drop-newest",
     )
     assert q.offer(1).accepted
     assert q.offer(2).accepted
@@ -23,7 +24,8 @@ def test_drop_newest_refuses_overflow() -> None:
 
 def test_drop_oldest_evicts_head() -> None:
     q: PriorityBoundedQueue[int] = PriorityBoundedQueue(
-        capacity=2, policy="drop-oldest",
+        capacity=2,
+        policy="drop-oldest",
     )
     q.offer(1)
     q.offer(2)
@@ -37,7 +39,8 @@ def test_drop_oldest_evicts_head() -> None:
 
 def test_drop_low_priority_evicts_lowest() -> None:
     q: PriorityBoundedQueue[str] = PriorityBoundedQueue(
-        capacity=2, policy="drop-low-priority",
+        capacity=2,
+        policy="drop-low-priority",
     )
     q.offer("low", priority=0)
     q.offer("mid", priority=5)
@@ -51,7 +54,8 @@ def test_drop_low_priority_evicts_lowest() -> None:
 
 def test_drop_low_priority_refuses_lower_incoming() -> None:
     q: PriorityBoundedQueue[str] = PriorityBoundedQueue(
-        capacity=2, policy="drop-low-priority",
+        capacity=2,
+        policy="drop-low-priority",
     )
     q.offer("mid", priority=5)
     q.offer("high", priority=10)
@@ -62,7 +66,8 @@ def test_drop_low_priority_refuses_lower_incoming() -> None:
 
 def test_block_policy_refuses_overflow() -> None:
     q: PriorityBoundedQueue[int] = PriorityBoundedQueue(
-        capacity=1, policy="block",
+        capacity=1,
+        policy="block",
     )
     q.offer(1)
     verdict = q.offer(2)
@@ -72,7 +77,9 @@ def test_block_policy_refuses_overflow() -> None:
 
 def test_channel_tracks_overflow_count() -> None:
     ch: BoundedEventChannel = BoundedEventChannel(
-        "test", capacity=2, policy="drop-oldest",
+        "test",
+        capacity=2,
+        policy="drop-oldest",
     )
     for i in range(5):
         ch.offer(i)
@@ -84,7 +91,9 @@ def test_channel_tracks_overflow_count() -> None:
 
 def test_channel_pressure_ratio_caps_at_capacity() -> None:
     ch: BoundedEventChannel = BoundedEventChannel(
-        "test", capacity=4, policy="drop-newest",
+        "test",
+        capacity=4,
+        policy="drop-newest",
     )
     ch.offer(1)
     ch.offer(2)

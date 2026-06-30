@@ -54,7 +54,7 @@ def build_loop_compat_diagnostics(
 ) -> LoopCompatDiagnostics:
     trace = get_loop_compat_trace()
     if inputs.trace_limit > 0 and len(trace) > inputs.trace_limit:
-        trace = trace[-inputs.trace_limit:]
+        trace = trace[-inputs.trace_limit :]
     return LoopCompatDiagnostics(
         state=inputs.state,
         metrics=inputs.metrics,

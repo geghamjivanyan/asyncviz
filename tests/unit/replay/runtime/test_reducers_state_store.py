@@ -12,7 +12,9 @@ from asyncviz.replay.runtime import (
 
 
 def _frame(
-    seq: int, payload_type: str = "asyncio.task.created", task_id: str = "t-1",
+    seq: int,
+    payload_type: str = "asyncio.task.created",
+    task_id: str = "t-1",
 ) -> ReplayFrame:
     return ReplayFrame.for_runtime_event(
         sequence=seq,
@@ -37,7 +39,8 @@ def test_registered_reducer_applies_after_default() -> None:
         return domain
 
     registry.register(
-        "asyncio.task.created", domain_reducer("tasks", apply=task_reducer),
+        "asyncio.task.created",
+        domain_reducer("tasks", apply=task_reducer),
     )
     state = registry.apply(VirtualRuntimeState.empty(), _frame(1, task_id="t-1"))
     state = registry.apply(state, _frame(2, task_id="t-2"))

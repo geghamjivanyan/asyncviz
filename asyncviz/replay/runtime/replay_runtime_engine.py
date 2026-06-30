@@ -120,7 +120,8 @@ class ReplayRuntimeEngine:
         self._bridge = ReplayWebsocketBridge(active_sink)
         self._checkpoints = CheckpointRuntime()
         self._snapshot_runtime = SnapshotRuntime(
-            loader.snapshot_index, self._state_store,
+            loader.snapshot_index,
+            self._state_store,
         )
         self._cursor = CursorRuntime()
         self._dispatch = ReplayDispatch(

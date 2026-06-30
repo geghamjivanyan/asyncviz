@@ -91,7 +91,8 @@ class OverloadDetector:
 
     def _maybe_transition_locked(self) -> OverloadSnapshot:
         proposed = state_for_ratio(
-            self._smoothed_ratio, config=self._config,
+            self._smoothed_ratio,
+            config=self._config,
         )
         previous = self._state
         next_state = previous
@@ -174,7 +175,8 @@ class OverloadDetector:
             )
 
     def subscribe(
-        self, listener: StateTransitionListener,
+        self,
+        listener: StateTransitionListener,
     ) -> Callable[[], None]:
         with self._lock:
             self._listeners.append(listener)

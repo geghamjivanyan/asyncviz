@@ -148,20 +148,32 @@ def test_saturation_calm_to_warning_to_critical(
 ) -> None:
     s = SaturationScorer(config=hysteretic_config)
     calm = s.evaluate(
-        utilization_ratio=0.1, max_workers=4, backlog=0,
-        submission_rate=1.0, completion_rate=1.0, mean_submission_latency=0.0,
+        utilization_ratio=0.1,
+        max_workers=4,
+        backlog=0,
+        submission_rate=1.0,
+        completion_rate=1.0,
+        mean_submission_latency=0.0,
     )
     assert calm.level == "calm"
 
     warning = s.evaluate(
-        utilization_ratio=0.8, max_workers=4, backlog=4,
-        submission_rate=10.0, completion_rate=2.0, mean_submission_latency=0.05,
+        utilization_ratio=0.8,
+        max_workers=4,
+        backlog=4,
+        submission_rate=10.0,
+        completion_rate=2.0,
+        mean_submission_latency=0.05,
     )
     assert warning.level == "warning"
 
     critical = s.evaluate(
-        utilization_ratio=0.95, max_workers=4, backlog=16,
-        submission_rate=20.0, completion_rate=1.0, mean_submission_latency=0.5,
+        utilization_ratio=0.95,
+        max_workers=4,
+        backlog=16,
+        submission_rate=20.0,
+        completion_rate=1.0,
+        mean_submission_latency=0.5,
     )
     assert critical.level == "critical"
 
@@ -171,20 +183,32 @@ def test_saturation_hysteresis_no_flicker(
 ) -> None:
     s = SaturationScorer(config=hysteretic_config)
     s.evaluate(
-        utilization_ratio=1.0, max_workers=4, backlog=20,
-        submission_rate=20.0, completion_rate=0.0, mean_submission_latency=1.0,
+        utilization_ratio=1.0,
+        max_workers=4,
+        backlog=20,
+        submission_rate=20.0,
+        completion_rate=0.0,
+        mean_submission_latency=1.0,
     )
     assert s.level == "critical"
     # Score drops slightly below the critical line but above the hysteresis
     # margin (0.85 - 0.05 = 0.80) — should stay critical.
     s.evaluate(
-        utilization_ratio=1.0, max_workers=4, backlog=8,
-        submission_rate=2.0, completion_rate=2.0, mean_submission_latency=0.1,
+        utilization_ratio=1.0,
+        max_workers=4,
+        backlog=8,
+        submission_rate=2.0,
+        completion_rate=2.0,
+        mean_submission_latency=0.1,
     )
     assert s.level == "critical"
     # Drop well below — now can de-escalate.
     cooled = s.evaluate(
-        utilization_ratio=0.1, max_workers=4, backlog=0,
-        submission_rate=0.5, completion_rate=0.5, mean_submission_latency=0.0,
+        utilization_ratio=0.1,
+        max_workers=4,
+        backlog=0,
+        submission_rate=0.5,
+        completion_rate=0.5,
+        mean_submission_latency=0.0,
     )
     assert cooled.level in {"warning", "calm"}

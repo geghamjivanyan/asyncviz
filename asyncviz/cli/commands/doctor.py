@@ -133,8 +133,7 @@ def run(args: argparse.Namespace, **_: object) -> int:
     info(f"platform         {report.python['platform']}")
     info(f"asyncviz version {report.packaging['version']}")
     info(
-        f"bundle           {report.packaging['bundle_dir']} "
-        f"({report.packaging['install_shape']})",
+        f"bundle           {report.packaging['bundle_dir']} ({report.packaging['install_shape']})",
     )
     info(f"manifest source  {report.packaging['manifest_source']}")
     print("", flush=True)

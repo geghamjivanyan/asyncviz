@@ -93,9 +93,7 @@ def reconstruct_state(
     if snapshot is not None:
         sink.state = load_snapshot_payload(snapshot)
 
-    start_sequence = (
-        snapshot.sequence_at_capture + 1 if snapshot is not None else 1
-    )
+    start_sequence = snapshot.sequence_at_capture + 1 if snapshot is not None else 1
     seek_result = seek_to_sequence(
         start_sequence,
         sequence_index=sequence_index,

@@ -103,9 +103,7 @@ def validate_wheel(path: Path) -> WheelValidationReport:
             artifact_kind="wheel",
             total_files=0,
             static_files=0,
-            issues=(
-                WheelValidationIssue("error", "corrupt", f"wheel is not a valid zip: {exc}"),
-            ),
+            issues=(WheelValidationIssue("error", "corrupt", f"wheel is not a valid zip: {exc}"),),
         )
 
     name_set = set(names)

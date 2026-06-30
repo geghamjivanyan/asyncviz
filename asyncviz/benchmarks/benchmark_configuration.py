@@ -84,8 +84,7 @@ class BenchmarkConfig:
             raise ValueError("min_samples must be >= 1")
         if not (0.0 < self.regression_threshold < 10.0):
             raise ValueError(
-                f"regression_threshold {self.regression_threshold} "
-                "must be in (0, 10)",
+                f"regression_threshold {self.regression_threshold} must be in (0, 10)",
             )
         if self.outlier_policy == "mad" and self.mad_threshold <= 0:
             raise ValueError("mad_threshold must be > 0")

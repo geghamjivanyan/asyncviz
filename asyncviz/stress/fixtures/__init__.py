@@ -29,8 +29,13 @@ def build_test_context(
     seed: int | None = None,
 ) -> ScenarioContext:
     """Construct a fully-wired :class:`ScenarioContext` for tests."""
-    resolved_seed = seed if seed is not None else derive_scenario_seed(
-        config.failure_injection.seed, spec.name,
+    resolved_seed = (
+        seed
+        if seed is not None
+        else derive_scenario_seed(
+            config.failure_injection.seed,
+            spec.name,
+        )
     )
     return ScenarioContext(
         spec=spec,

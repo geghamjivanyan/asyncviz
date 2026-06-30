@@ -13,7 +13,14 @@ from dataclasses import dataclass, field
 from typing import Final, Literal
 
 DEFAULT_PRESETS: Final[tuple[float, ...]] = (
-    0.1, 0.25, 0.5, 1.0, 2.0, 4.0, 8.0, 16.0,
+    0.1,
+    0.25,
+    0.5,
+    1.0,
+    2.0,
+    4.0,
+    8.0,
+    16.0,
 )
 """Canonical speed presets. ``1.0`` must always be present (it's
 treated as the "default" preset by :func:`SpeedController.restore_default`)."""
@@ -81,8 +88,7 @@ class ReplaySpeedConfig:
             raise ValueError("max_speed must be > min_speed")
         if not (self.min_speed <= self.default_speed <= self.max_speed):
             raise ValueError(
-                f"default_speed {self.default_speed} outside "
-                f"[{self.min_speed}, {self.max_speed}]",
+                f"default_speed {self.default_speed} outside [{self.min_speed}, {self.max_speed}]",
             )
         if self.queue_capacity < 1:
             raise ValueError("queue_capacity must be >= 1")

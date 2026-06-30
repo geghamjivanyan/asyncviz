@@ -119,7 +119,4 @@ async def test_aggregated_event_round_trips_through_bus(
         await bus.join()
     finally:
         pool.shutdown(wait=True)
-    assert any(
-        getattr(e, "event_type", None) == "asyncio.executor.metrics.updated"
-        for e in seen
-    )
+    assert any(getattr(e, "event_type", None) == "asyncio.executor.metrics.updated" for e in seen)

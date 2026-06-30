@@ -371,9 +371,7 @@ class RuntimeFailureManager:
     def diagnostics(self, *, trace_limit: int = 64) -> IsolationDiagnostics:
         with self._lock:
             domains = tuple(entry.domain.snapshot() for entry in self._subsystems.values())
-            supervisors = tuple(
-                entry.supervisor.snapshot() for entry in self._subsystems.values()
-            )
+            supervisors = tuple(entry.supervisor.snapshot() for entry in self._subsystems.values())
             mode = self._mode
         findings: list[IntegrityFinding] = []
         for snapshot in domains:
@@ -443,10 +441,7 @@ class RuntimeFailureManager:
 
     def _reevaluate_mode(self) -> None:
         with self._lock:
-            states = {
-                name: entry.domain.breaker.state
-                for name, entry in self._subsystems.items()
-            }
+            states = {name: entry.domain.breaker.state for name, entry in self._subsystems.items()}
             new_mode = derive_runtime_mode(
                 states=states,
                 halt_on_critical=self._config.halt_on_critical_subsystem,
@@ -469,13 +464,9 @@ class RuntimeFailureManager:
 
 def _domain_snapshots(manager: RuntimeFailureManager) -> tuple[FailureDomainSnapshot, ...]:
     """Test helper — returns every domain snapshot in a stable order."""
-    return tuple(
-        entry.domain.snapshot() for entry in manager._subsystems.values()
-    )
+    return tuple(entry.domain.snapshot() for entry in manager._subsystems.values())
 
 
 def _supervisor_snapshots(manager: RuntimeFailureManager) -> tuple[SupervisorSnapshot, ...]:
     """Test helper — returns every supervisor snapshot."""
-    return tuple(
-        entry.supervisor.snapshot() for entry in manager._subsystems.values()
-    )
+    return tuple(entry.supervisor.snapshot() for entry in manager._subsystems.values())

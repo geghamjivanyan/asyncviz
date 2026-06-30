@@ -55,7 +55,13 @@ class DashboardReplaySink:
     package's type plumbing (the duck-typed contract is enough).
     """
 
-    __slots__ = ("_dashboard_loop", "_frames_pushed", "_frames_skipped", "_manager", "_states_pushed")
+    __slots__ = (
+        "_dashboard_loop",
+        "_frames_pushed",
+        "_frames_skipped",
+        "_manager",
+        "_states_pushed",
+    )
 
     def __init__(
         self,

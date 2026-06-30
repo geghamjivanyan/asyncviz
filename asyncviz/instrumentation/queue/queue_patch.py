@@ -165,11 +165,11 @@ class QueueInstrumentationEngine:
                 if is_queue_internal(self_queue):
                     return await original_put(self_queue, item)
                 snapshot_before = snapshot_queue(
-                    self_queue, queue_id=engine._safe_queue_id(self_queue),
+                    self_queue,
+                    queue_id=engine._safe_queue_id(self_queue),
                 )
                 full = (
-                    snapshot_before.maxsize > 0
-                    and snapshot_before.size >= snapshot_before.maxsize
+                    snapshot_before.maxsize > 0 and snapshot_before.size >= snapshot_before.maxsize
                 )
                 if full:
                     engine._emit_full_wait(self_queue)
@@ -191,7 +191,10 @@ class QueueInstrumentationEngine:
                         )
                     else:
                         engine._emit_put(
-                            self_queue, nowait=False, blocked=False, wait_seconds=None,
+                            self_queue,
+                            nowait=False,
+                            blocked=False,
+                            wait_seconds=None,
                         )
 
             def patched_put_nowait(self_queue: asyncio.Queue, item):
@@ -205,14 +208,18 @@ class QueueInstrumentationEngine:
                     return original_put_nowait(self_queue, item)
                 finally:
                     engine._emit_put(
-                        self_queue, nowait=True, blocked=False, wait_seconds=None,
+                        self_queue,
+                        nowait=True,
+                        blocked=False,
+                        wait_seconds=None,
                     )
 
             async def patched_get(self_queue: asyncio.Queue):
                 if is_queue_internal(self_queue):
                     return await original_get(self_queue)
                 snapshot_before = snapshot_queue(
-                    self_queue, queue_id=engine._safe_queue_id(self_queue),
+                    self_queue,
+                    queue_id=engine._safe_queue_id(self_queue),
                 )
                 empty = snapshot_before.size == 0
                 if empty:
@@ -235,7 +242,10 @@ class QueueInstrumentationEngine:
                     )
                 else:
                     engine._emit_get(
-                        self_queue, nowait=False, blocked=False, wait_seconds=None,
+                        self_queue,
+                        nowait=False,
+                        blocked=False,
+                        wait_seconds=None,
                     )
                 return result
 
@@ -246,7 +256,10 @@ class QueueInstrumentationEngine:
                     return original_get_nowait(self_queue)
                 result = original_get_nowait(self_queue)
                 engine._emit_get(
-                    self_queue, nowait=True, blocked=False, wait_seconds=None,
+                    self_queue,
+                    nowait=True,
+                    blocked=False,
+                    wait_seconds=None,
                 )
                 return result
 
@@ -466,7 +479,10 @@ class QueueInstrumentationEngine:
             _end_instrumented()
 
     def _emit_cancelled(
-        self, queue: asyncio.Queue, operation: str, started: float,
+        self,
+        queue: asyncio.Queue,
+        operation: str,
+        started: float,
     ) -> None:
         if not self._config.emit_cancelled:
             return

@@ -90,7 +90,8 @@ class CoordinationDispatch:
     def submit_pause(self, request: PauseRequest) -> PauseBarrier:
         """Submit a pause request; returns the awaitable barrier."""
         if self._coalesce and self._state.phase in (
-            PlaybackPhase.PAUSED, PlaybackPhase.PAUSING,
+            PlaybackPhase.PAUSED,
+            PlaybackPhase.PAUSING,
         ):
             # Already pausing / paused; the pause controller will
             # resolve the barrier immediately, but we still enqueue

@@ -28,15 +28,18 @@ def _canonical_line() -> str:
 
 
 def _legacy_line() -> str:
-    return json.dumps(
-        {
-            "sequence": 1,
-            "event_id": "id-1",
-            "event_type": "asyncio.task.created",
-            "monotonic_ns": 10,
-            "payload": {"task_id": "t-1", "task_name": "n"},
-        },
-    ) + "\n"
+    return (
+        json.dumps(
+            {
+                "sequence": 1,
+                "event_id": "id-1",
+                "event_type": "asyncio.task.created",
+                "monotonic_ns": 10,
+                "payload": {"task_id": "t-1", "task_name": "n"},
+            },
+        )
+        + "\n"
+    )
 
 
 def test_canonical_adapter_decodes_canonical_lines() -> None:

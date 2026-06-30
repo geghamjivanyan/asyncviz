@@ -48,24 +48,30 @@ def test_boundary_records_failure_and_suppresses() -> None:
 
 def test_boundary_propagates_do_not_retry_exceptions() -> None:
     domain = _make_domain()
-    with pytest.raises(AssertionError), SubsystemBoundary(
-        domain,
-        payload_kind="",
-        suppress=True,
-        on_failure=None,
-        swallow_unavailable=True,
+    with (
+        pytest.raises(AssertionError),
+        SubsystemBoundary(
+            domain,
+            payload_kind="",
+            suppress=True,
+            on_failure=None,
+            swallow_unavailable=True,
+        ),
     ):
         raise AssertionError("logic bug")
 
 
 def test_boundary_propagates_corruption() -> None:
     domain = _make_domain(quarantine_payload_kind=True)
-    with pytest.raises(ValueError), SubsystemBoundary(
-        domain,
-        payload_kind="frame-1",
-        suppress=True,
-        on_failure=None,
-        swallow_unavailable=True,
+    with (
+        pytest.raises(ValueError),
+        SubsystemBoundary(
+            domain,
+            payload_kind="frame-1",
+            suppress=True,
+            on_failure=None,
+            swallow_unavailable=True,
+        ),
     ):
         raise ValueError("corrupted-frame: bad checksum")
     assert "frame-1" in domain.quarantined()
@@ -93,24 +99,30 @@ def test_boundary_skips_silently_when_open_and_swallow() -> None:
 def test_boundary_raises_unavailable_when_strict() -> None:
     domain = _make_domain(failure_threshold=1)
     domain.breaker.force_open()
-    with pytest.raises(SubsystemUnavailable), SubsystemBoundary(
-        domain,
-        payload_kind="",
-        suppress=True,
-        on_failure=None,
-        swallow_unavailable=False,
+    with (
+        pytest.raises(SubsystemUnavailable),
+        SubsystemBoundary(
+            domain,
+            payload_kind="",
+            suppress=True,
+            on_failure=None,
+            swallow_unavailable=False,
+        ),
     ):
         pass
 
 
 def test_boundary_does_not_treat_cancelled_as_failure_by_default() -> None:
     domain = _make_domain()
-    with pytest.raises(asyncio.CancelledError), SubsystemBoundary(
-        domain,
-        payload_kind="",
-        suppress=True,
-        on_failure=None,
-        swallow_unavailable=True,
+    with (
+        pytest.raises(asyncio.CancelledError),
+        SubsystemBoundary(
+            domain,
+            payload_kind="",
+            suppress=True,
+            on_failure=None,
+            swallow_unavailable=True,
+        ),
     ):
         raise asyncio.CancelledError()
     assert domain.snapshot().total_failures == 0
@@ -118,12 +130,15 @@ def test_boundary_does_not_treat_cancelled_as_failure_by_default() -> None:
 
 def test_boundary_treats_cancelled_as_failure_when_configured() -> None:
     domain = _make_domain(treat_cancelled_as_failure=True)
-    with pytest.raises(asyncio.CancelledError), SubsystemBoundary(
-        domain,
-        payload_kind="",
-        suppress=False,
-        on_failure=None,
-        swallow_unavailable=True,
+    with (
+        pytest.raises(asyncio.CancelledError),
+        SubsystemBoundary(
+            domain,
+            payload_kind="",
+            suppress=False,
+            on_failure=None,
+            swallow_unavailable=True,
+        ),
     ):
         raise asyncio.CancelledError()
     assert domain.snapshot().total_failures == 1

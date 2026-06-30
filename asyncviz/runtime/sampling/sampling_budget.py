@@ -38,7 +38,10 @@ class SamplingBudget:
     )
 
     def __init__(
-        self, *, target_events: int, window_ns: int,
+        self,
+        *,
+        target_events: int,
+        window_ns: int,
     ) -> None:
         if target_events < 1:
             raise ValueError("target_events must be >= 1")

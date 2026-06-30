@@ -33,7 +33,8 @@ def scheduler(clock: ReplayClock) -> ReplayScheduler:
 
 @pytest.fixture
 def controller(
-    clock: ReplayClock, scheduler: ReplayScheduler,
+    clock: ReplayClock,
+    scheduler: ReplayScheduler,
 ) -> ReplaySpeedController:
     return ReplaySpeedController(
         clock=clock,

@@ -13,7 +13,6 @@ from __future__ import annotations
 
 import asyncio
 import logging
-from types import SimpleNamespace
 from typing import Any
 
 import pytest
@@ -23,7 +22,6 @@ from asyncviz.dashboard.websocket.shutdown_filter import (
     install_shutdown_exception_filter,
     is_expected_websocket_close,
 )
-
 
 # ── classification ───────────────────────────────────────────────────────
 
@@ -176,7 +174,10 @@ async def test_filter_handles_exception_via_task_slot() -> None:
     flt = WebSocketShutdownExceptionFilter(previous_handler=previous)
     flt(
         asyncio.get_event_loop(),
-        {"message": "Task exception was never retrieved", "task": _FakeTask(_LocalConnectionClosedError())},
+        {
+            "message": "Task exception was never retrieved",
+            "task": _FakeTask(_LocalConnectionClosedError()),
+        },
     )
     assert flt.suppressed == 1
     assert flt.forwarded == 0
@@ -333,13 +334,15 @@ async def test_websocket_client_close_swallows_expected_close_only() -> None:
 
     # Expected — should NOT raise.
     expected = WebSocketClient(
-        id="x", socket=_RaisingSocket(_LocalConnectionClosedError())  # type: ignore[arg-type]
+        id="x",
+        socket=_RaisingSocket(_LocalConnectionClosedError()),  # type: ignore[arg-type]
     )
     await expected.close()
 
     # Unexpected — must propagate.
     bad = WebSocketClient(
-        id="x", socket=_RaisingSocket(ValueError("real bug"))  # type: ignore[arg-type]
+        id="x",
+        socket=_RaisingSocket(ValueError("real bug")),  # type: ignore[arg-type]
     )
     with pytest.raises(ValueError, match="real bug"):
         await bad.close()

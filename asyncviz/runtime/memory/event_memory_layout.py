@@ -42,16 +42,15 @@ def categorize_event_type(event_type: str) -> CompactEventCategory:
 
 
 def _intern_payload(
-    payload: dict[str, Any], interner: StringInterner,
+    payload: dict[str, Any],
+    interner: StringInterner,
 ) -> dict[str, Any]:
     """Intern keys + scalar string values; leave nested
     structures (lists, dicts) alone."""
     out: dict[str, Any] = {}
     for key, value in payload.items():
         interned_key = interner.intern(key) if isinstance(key, str) else key
-        interned_value = (
-            interner.intern(value) if isinstance(value, str) else value
-        )
+        interned_value = interner.intern(value) if isinstance(value, str) else value
         out[interned_key] = interned_value
     return out
 
@@ -111,9 +110,7 @@ def compact_dict_event(
         if k not in {"event_type", "event_id", "monotonic_ns", "wall_time_ns", "runtime_id"}
     }
     inner_payload = (
-        _intern_payload(inner_payload_raw, interner)
-        if intern_payload
-        else inner_payload_raw
+        _intern_payload(inner_payload_raw, interner) if intern_payload else inner_payload_raw
     )
     return CompactEvent(
         event_type=event_type,
@@ -122,9 +119,7 @@ def compact_dict_event(
         category=categorize_event_type(event_type),
         payload=inner_payload,
         runtime_id=(
-            interner.intern(str(data.get("runtime_id", "")))
-            if data.get("runtime_id")
-            else ""
+            interner.intern(str(data.get("runtime_id", ""))) if data.get("runtime_id") else ""
         ),
         wall_time_ns=int(data.get("wall_time_ns", 0) or 0),
     )

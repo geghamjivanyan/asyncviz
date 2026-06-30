@@ -44,7 +44,10 @@ class WebsocketBufferPool:
     )
 
     def __init__(
-        self, *, capacity_buffers: int = 16, default_bytes: int = 64 * 1024,
+        self,
+        *,
+        capacity_buffers: int = 16,
+        default_bytes: int = 64 * 1024,
     ) -> None:
         if capacity_buffers < 1:
             raise ValueError("capacity_buffers must be >= 1")

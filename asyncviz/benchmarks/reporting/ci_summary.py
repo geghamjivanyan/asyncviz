@@ -38,23 +38,15 @@ def emit_ci_summary(suite: BenchmarkSuiteResult) -> Iterator[str]:
     for result in suite.results:
         outcome = result.outcome
         stats = outcome.statistics
-        verdict = (
-            label_for(result.comparison.verdict)
-            if result.comparison is not None
-            else "—"
-        )
+        verdict = label_for(result.comparison.verdict) if result.comparison is not None else "—"
         if stats is None:
-            detail = (
-                f" — {outcome.error_detail}"
-                if outcome.error_detail
-                else ""
-            )
+            detail = f" — {outcome.error_detail}" if outcome.error_detail else ""
             yield f"  · {outcome.spec_name}: {outcome.status}{detail} {verdict}"
             continue
         yield (
             f"  · {outcome.spec_name}: "
-            f"p50={stats.median_ns/1000:.1f}µs "
-            f"p95={stats.p95_ns/1000:.1f}µs "
-            f"p99={stats.p99_ns/1000:.1f}µs "
+            f"p50={stats.median_ns / 1000:.1f}µs "
+            f"p95={stats.p95_ns / 1000:.1f}µs "
+            f"p99={stats.p99_ns / 1000:.1f}µs "
             f"n={stats.sample_count} {verdict}"
         )

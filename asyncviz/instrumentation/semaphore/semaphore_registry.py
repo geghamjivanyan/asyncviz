@@ -81,6 +81,7 @@ class SemaphoreRegistry:
             with self._lock:
                 if self._by_object.pop(obj_id, None) is not None:
                     self._finalized += 1
+
         return _finalize
 
     # ── lookups ───────────────────────────────────────────────────

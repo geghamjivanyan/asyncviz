@@ -39,18 +39,26 @@ class WebbrowserBackend:
             opened = webbrowser.open(url, new=2, autoraise=True)
         except webbrowser.Error as exc:
             return ProcessLaunchOutcome(
-                success=False, detail=f"webbrowser.Error: {exc}", backend="webbrowser",
+                success=False,
+                detail=f"webbrowser.Error: {exc}",
+                backend="webbrowser",
             )
         except Exception as exc:  # pragma: no cover — defensive
             return ProcessLaunchOutcome(
-                success=False, detail=f"unexpected: {exc}", backend="webbrowser",
+                success=False,
+                detail=f"unexpected: {exc}",
+                backend="webbrowser",
             )
         if opened:
             return ProcessLaunchOutcome(
-                success=True, detail="opened via stdlib webbrowser", backend="webbrowser",
+                success=True,
+                detail="opened via stdlib webbrowser",
+                backend="webbrowser",
             )
         return ProcessLaunchOutcome(
-            success=False, detail="webbrowser.open returned False", backend="webbrowser",
+            success=False,
+            detail="webbrowser.open returned False",
+            backend="webbrowser",
         )
 
 

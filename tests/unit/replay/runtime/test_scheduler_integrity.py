@@ -18,8 +18,10 @@ from asyncviz.replay.runtime import (
 
 def _frame(seq: int, monotonic_ns: int) -> ReplayFrame:
     return ReplayFrame.for_runtime_event(
-        sequence=seq, monotonic_ns=monotonic_ns,
-        payload_type="asyncio.task.created", payload={"task_id": "t"},
+        sequence=seq,
+        monotonic_ns=monotonic_ns,
+        payload_type="asyncio.task.created",
+        payload={"task_id": "t"},
     )
 
 

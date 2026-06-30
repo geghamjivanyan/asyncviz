@@ -1,11 +1,11 @@
 """Canonical replay-speed controller (top-level façade).
 
-    controller = ReplaySpeedController(clock=engine.clock, scheduler=engine.scheduler)
-    controller.set_speed(2.0)
-    controller.increase_speed()
-    controller.decrease_speed()
-    controller.restore_default()
-    controller.snap_to_preset(controller.current_speed)
+controller = ReplaySpeedController(clock=engine.clock, scheduler=engine.scheduler)
+controller.set_speed(2.0)
+controller.increase_speed()
+controller.decrease_speed()
+controller.restore_default()
+controller.snap_to_preset(controller.current_speed)
 """
 
 from __future__ import annotations
@@ -101,7 +101,8 @@ class ReplaySpeedController:
             history_capacity=cfg.history_capacity,
         )
         transition_engine = SpeedTransitionEngine(
-            clock=self._clock, scheduler=self._scheduler,
+            clock=self._clock,
+            scheduler=self._scheduler,
         )
         dispatch = SpeedDispatch(
             clock=self._clock,
@@ -114,7 +115,9 @@ class ReplaySpeedController:
             invalid_policy=cfg.invalid_speed_policy,
         )
         self._coord = SpeedCoordination(
-            dispatch=dispatch, clock=self._clock, state=self._state,
+            dispatch=dispatch,
+            clock=self._clock,
+            state=self._state,
         )
         self._last_drift: DriftSample | None = None
 
@@ -189,7 +192,8 @@ class ReplaySpeedController:
     # ── listeners ─────────────────────────────────────────────────
 
     def subscribe_change(
-        self, listener: SpeedChangeListener,
+        self,
+        listener: SpeedChangeListener,
     ) -> Callable[[], None]:
         return self._coord.subscribe_change(listener)
 

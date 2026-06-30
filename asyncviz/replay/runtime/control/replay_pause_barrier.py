@@ -57,7 +57,10 @@ class PauseBarrier:
         return self._resolution
 
     def resolve(
-        self, *, paused_at_sequence: int, paused_at_monotonic_ns: int,
+        self,
+        *,
+        paused_at_sequence: int,
+        paused_at_monotonic_ns: int,
     ) -> PauseBarrierResolution:
         """Coordinator-only — fires the barrier."""
         if self._resolution is not None:

@@ -106,7 +106,9 @@ class ReplayPlaybackCoordinator:
         self._scheduler = SchedulerCoordinator(scheduler=scheduler)
         self._state = ReplayPlaybackStateHolder(
             initial=PlaybackPhaseSnapshot(
-                phase=initial_phase, last_sequence=0, last_monotonic_ns=0,
+                phase=initial_phase,
+                last_sequence=0,
+                last_monotonic_ns=0,
             ),
         )
         self._pause = PauseController(
@@ -195,7 +197,8 @@ class ReplayPlaybackCoordinator:
         request = StepRequest(request_id=rid, frame_count=frames, reason=reason)
         self._dispatch.submit_step(request)
         record_coordination_trace(
-            "step-requested", f"id={rid} frames={frames}",
+            "step-requested",
+            f"id={rid} frames={frames}",
         )
         get_coordination_metrics().record_step_requested()
         # Stepping needs the gate open + the scheduler in step mode.
@@ -241,16 +244,19 @@ class ReplayPlaybackCoordinator:
             self._scheduler.end_step()
             get_coordination_metrics().record_step_completed()
             record_coordination_trace(
-                "step-completed", f"seq={sequence}",
+                "step-completed",
+                f"seq={sequence}",
             )
             return self._finalize_to_paused(
-                sequence=sequence, monotonic_ns=monotonic_ns,
+                sequence=sequence,
+                monotonic_ns=monotonic_ns,
             )
         # Regular pause-request check. The pause controller fires
         # its own observability hooks when barriers resolve, so we
         # only record the trace at this layer.
         if self._pause.on_frame_dispatched(
-            last_sequence=sequence, last_monotonic_ns=monotonic_ns,
+            last_sequence=sequence,
+            last_monotonic_ns=monotonic_ns,
         ):
             record_coordination_trace("pause-completed", f"seq={sequence}")
             return True
@@ -287,12 +293,16 @@ class ReplayPlaybackCoordinator:
         return max(0, time.monotonic_ns() - anchor.paused_at_wall_ns)
 
     def update_position(
-        self, *, sequence: int, monotonic_ns: int,
+        self,
+        *,
+        sequence: int,
+        monotonic_ns: int,
     ) -> PlaybackPhaseSnapshot:
         """Engine loop's "we advanced" notification — updates the
         cursor without changing the phase."""
         return self._state.update_position(
-            last_sequence=sequence, last_monotonic_ns=monotonic_ns,
+            last_sequence=sequence,
+            last_monotonic_ns=monotonic_ns,
         )
 
     def mark_started(self) -> None:

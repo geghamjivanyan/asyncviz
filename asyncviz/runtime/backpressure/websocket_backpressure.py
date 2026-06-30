@@ -55,7 +55,9 @@ class WebsocketSubscriberChannel:
     ) -> None:
         self._subscriber_id = subscriber_id
         self._channel: BoundedEventChannel = BoundedEventChannel(
-            f"ws:{subscriber_id}", capacity=capacity, policy=policy,
+            f"ws:{subscriber_id}",
+            capacity=capacity,
+            policy=policy,
         )
         self._slow_client = False
         self._disconnect_count = 0

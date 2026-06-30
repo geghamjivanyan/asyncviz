@@ -83,6 +83,7 @@ class GatherRegistry:
             with self._lock:
                 if self._entries.pop(gid, None) is not None:
                     self._finalized += 1
+
         return _finalize
 
     # ── updates from the engine ───────────────────────────────────
@@ -99,7 +100,11 @@ class GatherRegistry:
             return entry.completed_count, entry.identity.child_count
 
     def mark_terminal(
-        self, gather_id: str, *, cancelled: bool = False, failed: bool = False,
+        self,
+        gather_id: str,
+        *,
+        cancelled: bool = False,
+        failed: bool = False,
     ) -> None:
         with self._lock:
             entry = self._entries.get(gather_id)

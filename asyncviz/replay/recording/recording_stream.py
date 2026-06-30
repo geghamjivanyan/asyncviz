@@ -65,7 +65,10 @@ class RecordingStream:
                 yield frame
 
     def events_in_range(
-        self, *, start_sequence: int, end_sequence: int,
+        self,
+        *,
+        start_sequence: int,
+        end_sequence: int,
     ) -> Iterator[RecordedFrame]:
         for frame in self:
             if frame.sequence < start_sequence:

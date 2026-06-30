@@ -64,7 +64,8 @@ class BoundedReducerCache[K, V]:
                 self._buf.popitem(last=False)
                 get_memory_metrics().record_reducer_eviction()
                 record_memory_trace(
-                    "reducer-evicted", f"cache={self._name}",
+                    "reducer-evicted",
+                    f"cache={self._name}",
                 )
 
     def discard(self, key: K) -> None:

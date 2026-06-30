@@ -65,9 +65,8 @@ class ReplayLoopBridge:
     def attach(self, capabilities: LoopCapabilities) -> None:
         """Bind the bridge to a probed loop. Idempotent."""
         with self._lock:
-            self._loop_supports_replay = (
-                capabilities.replay_safe
-                and loop_kind_supports_replay(capabilities.kind)
+            self._loop_supports_replay = capabilities.replay_safe and loop_kind_supports_replay(
+                capabilities.kind
             )
 
     def start_session(

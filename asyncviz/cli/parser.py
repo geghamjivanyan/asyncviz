@@ -235,8 +235,7 @@ def _build_record_parser(subparsers: argparse._SubParsersAction) -> None:  # typ
         dest="output",
         type=Path,
         help=(
-            "Destination bundle directory (default: ./asyncviz-recordings/"
-            "session-<timestamp>.avz)."
+            "Destination bundle directory (default: ./asyncviz-recordings/session-<timestamp>.avz)."
         ),
     )
     p.add_argument(
@@ -626,9 +625,7 @@ def _record_namespace_to_config(args: argparse.Namespace) -> RunCliConfig:
         chunk_bytes=int(args.chunk_bytes),
         queue_capacity=int(args.queue_capacity),
         flush_interval_seconds=float(args.flush_interval),
-        include_event_types=(
-            tuple(args.include_event) if args.include_event else None
-        ),
+        include_event_types=(tuple(args.include_event) if args.include_event else None),
         exclude_event_types=tuple(args.exclude_event or ()),
         metadata_overrides=tuple(_parse_meta_pairs(args.meta)),
         capture_runtime_snapshot=not args.no_runtime_snapshot,

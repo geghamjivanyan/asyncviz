@@ -196,7 +196,9 @@ class BrowserLauncher:
                 self.backpressure.release()
 
         thread = threading.Thread(
-            target=_worker, name="asyncviz-cli-browser", daemon=True,
+            target=_worker,
+            name="asyncviz-cli-browser",
+            daemon=True,
         )
         thread.start()
         return provisional

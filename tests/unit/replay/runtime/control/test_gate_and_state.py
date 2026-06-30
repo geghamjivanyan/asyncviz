@@ -48,12 +48,16 @@ def test_state_holder_swaps_atomically_and_notifies() -> None:
     holder.subscribe(lambda prev, nxt: received.append((prev.phase, nxt.phase)))
     holder.transition_to(
         PlaybackPhaseSnapshot(
-            phase=PlaybackPhase.PLAYING, last_sequence=0, last_monotonic_ns=0,
+            phase=PlaybackPhase.PLAYING,
+            last_sequence=0,
+            last_monotonic_ns=0,
         ),
     )
     holder.transition_to(
         PlaybackPhaseSnapshot(
-            phase=PlaybackPhase.PAUSED, last_sequence=10, last_monotonic_ns=100,
+            phase=PlaybackPhase.PAUSED,
+            last_sequence=10,
+            last_monotonic_ns=100,
         ),
     )
     assert received == [
@@ -67,7 +71,9 @@ def test_state_holder_update_position_does_not_change_phase() -> None:
     holder = ReplayPlaybackStateHolder()
     holder.transition_to(
         PlaybackPhaseSnapshot(
-            phase=PlaybackPhase.PLAYING, last_sequence=0, last_monotonic_ns=0,
+            phase=PlaybackPhase.PLAYING,
+            last_sequence=0,
+            last_monotonic_ns=0,
         ),
     )
     holder.update_position(last_sequence=42, last_monotonic_ns=420)
@@ -82,7 +88,9 @@ def test_listener_exception_does_not_kill_holder() -> None:
     # Should not raise.
     holder.transition_to(
         PlaybackPhaseSnapshot(
-            phase=PlaybackPhase.PLAYING, last_sequence=0, last_monotonic_ns=0,
+            phase=PlaybackPhase.PLAYING,
+            last_sequence=0,
+            last_monotonic_ns=0,
         ),
     )
     assert holder.phase == PlaybackPhase.PLAYING

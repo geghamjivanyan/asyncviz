@@ -31,10 +31,7 @@ def test_iter_frames_advances_cursor(canonical_session: Path) -> None:
 
 def test_iter_frames_respects_window_upper_bound(canonical_session: Path) -> None:
     with ReplayEventLoader.open(canonical_session) as loader:
-        seqs = [
-            f.sequence
-            for f in loader.iter_frames(window=ReplayWindow.for_sequences(3, 6))
-        ]
+        seqs = [f.sequence for f in loader.iter_frames(window=ReplayWindow.for_sequences(3, 6))]
     assert seqs == [3, 4, 5, 6]
 
 

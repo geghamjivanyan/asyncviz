@@ -49,7 +49,10 @@ class ResumeBarrier:
         return self._resolution
 
     def resolve(
-        self, *, resumed_at_sequence: int, resumed_at_monotonic_ns: int,
+        self,
+        *,
+        resumed_at_sequence: int,
+        resumed_at_monotonic_ns: int,
     ) -> ResumeBarrierResolution:
         if self._resolution is not None:
             return self._resolution

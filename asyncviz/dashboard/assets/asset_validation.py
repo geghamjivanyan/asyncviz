@@ -123,10 +123,7 @@ def validate_published_bundle(static_dir: Path) -> AssetValidationReport:
                     AssetValidationIssue(
                         "error",
                         "size-mismatch",
-                        (
-                            f"{entry.file}: manifest size {entry.size_bytes} "
-                            f"!= actual {actual_size}"
-                        ),
+                        (f"{entry.file}: manifest size {entry.size_bytes} != actual {actual_size}"),
                     ),
                 )
             digest = sha256_file(path)

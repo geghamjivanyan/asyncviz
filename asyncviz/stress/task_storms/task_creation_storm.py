@@ -32,7 +32,8 @@ async def run_task_creation_storm(context: ScenarioContext) -> None:
     for descriptor in iterator:
         try:
             context.failure_injection.raise_if_triggered(
-                "task.create", detail=descriptor.task_id,
+                "task.create",
+                detail=descriptor.task_id,
             )
         except StressInjectedFailure:
             context.record_signal("failure", f"task.create:{descriptor.task_id}")

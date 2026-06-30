@@ -69,7 +69,9 @@ def _put(
         queue_kind="Queue",
         maxsize=maxsize,
         snapshot=_snapshot(
-            size=size_after, maxsize=maxsize, blocked_putters=blocked_putters,
+            size=size_after,
+            maxsize=maxsize,
+            blocked_putters=blocked_putters,
         ),
         nowait=False,
         blocked=blocked,
@@ -91,7 +93,9 @@ def _get(
         queue_kind="Queue",
         maxsize=maxsize,
         snapshot=_snapshot(
-            size=size_after, maxsize=maxsize, blocked_getters=blocked_getters,
+            size=size_after,
+            maxsize=maxsize,
+            blocked_getters=blocked_getters,
         ),
         nowait=False,
         blocked=blocked,
@@ -162,13 +166,17 @@ def test_full_wait_and_empty_wait_counters(
     engine_unbound.apply_event(_created(maxsize=2))
     engine_unbound.apply_event(
         QueueFullWaitEvent(
-            queue_id="q-1", queue_kind="Queue", maxsize=2,
+            queue_id="q-1",
+            queue_kind="Queue",
+            maxsize=2,
             snapshot=_snapshot(size=2, maxsize=2),
         ),
     )
     engine_unbound.apply_event(
         QueueEmptyWaitEvent(
-            queue_id="q-1", queue_kind="Queue", maxsize=2,
+            queue_id="q-1",
+            queue_kind="Queue",
+            maxsize=2,
             snapshot=_snapshot(size=0, maxsize=2),
         ),
     )
@@ -184,15 +192,20 @@ def test_task_done_and_cancellation_counters(
     engine_unbound.apply_event(_created())
     engine_unbound.apply_event(
         QueueTaskDoneEvent(
-            queue_id="q-1", queue_kind="Queue", maxsize=4,
+            queue_id="q-1",
+            queue_kind="Queue",
+            maxsize=4,
             snapshot=_snapshot(size=0, maxsize=4),
         ),
     )
     engine_unbound.apply_event(
         QueueCancelledEvent(
-            queue_id="q-1", queue_kind="Queue", maxsize=4,
+            queue_id="q-1",
+            queue_kind="Queue",
+            maxsize=4,
             snapshot=_snapshot(size=0, maxsize=4),
-            operation="put", wait_seconds=0.2,
+            operation="put",
+            wait_seconds=0.2,
         ),
     )
     record = engine_unbound.snapshot_queue("q-1")
@@ -348,7 +361,8 @@ def test_max_tracked_queues_evicts_new_queues() -> None:
 
 @pytest.mark.asyncio
 async def test_engine_subscribes_to_bus_queue_events(
-    bus: EventBus, fast_emit_config: QueueMetricsConfig,
+    bus: EventBus,
+    fast_emit_config: QueueMetricsConfig,
 ) -> None:
     engine = QueueMetricsEngine(bus=bus, config=fast_emit_config)
     engine.start()

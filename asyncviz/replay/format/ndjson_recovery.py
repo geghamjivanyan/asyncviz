@@ -61,7 +61,9 @@ def recover_frames(lines: Iterable[str | bytes]) -> RecoveryOutcome:
         except FrameDecodingError as exc:
             outcome.discarded.append(
                 FrameRecoveryRecord(
-                    line_number=line_number, recovered=False, reason=str(exc),
+                    line_number=line_number,
+                    recovered=False,
+                    reason=str(exc),
                 ),
             )
             record_ndjson_trace("recovery-discarded", f"line={line_number}")
@@ -99,7 +101,9 @@ class RecoveringDecoder:
             except FrameDecodingError as exc:
                 self._discarded.append(
                     FrameRecoveryRecord(
-                        line_number=line_number, recovered=False, reason=str(exc),
+                        line_number=line_number,
+                        recovered=False,
+                        reason=str(exc),
                     ),
                 )
                 get_format_metrics().record_malformed_frame()

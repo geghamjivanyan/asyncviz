@@ -106,7 +106,9 @@ class ResumeController:
         self._resolve(request.request_id, playing_snapshot)
 
     def _resolve(
-        self, request_id: int, snapshot: PlaybackPhaseSnapshot,
+        self,
+        request_id: int,
+        snapshot: PlaybackPhaseSnapshot,
     ) -> None:
         with self._lock:
             entry = self._pending.pop(request_id, None)
@@ -120,7 +122,8 @@ class ResumeController:
         metrics.record_resume_completed(resolution.latency_ns)
         metrics.record_resume_barrier_resolved()
         record_coordination_trace(
-            "resume-completed", f"id={request_id} seq={snapshot.last_sequence}",
+            "resume-completed",
+            f"id={request_id} seq={snapshot.last_sequence}",
         )
 
     @property

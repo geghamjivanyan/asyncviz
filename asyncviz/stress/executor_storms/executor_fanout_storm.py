@@ -18,9 +18,7 @@ async def run_executor_fanout_storm(context: ScenarioContext) -> None:
     fanout = cfg.executor_fanout
     if fanout < 1:
         raise ValueError(f"executor_fanout must be >= 1 (got {fanout})")
-    futures = [
-        asyncio.get_running_loop().create_future() for _ in range(fanout)
-    ]
+    futures = [asyncio.get_running_loop().create_future() for _ in range(fanout)]
     for future in futures:
         asyncio.get_running_loop().call_soon(_resolve, future)
     await asyncio.gather(*futures)

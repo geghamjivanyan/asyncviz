@@ -33,7 +33,8 @@ def scheduler(clock: ReplayClock) -> ReplayScheduler:
 
 @pytest.fixture
 def coordinator(
-    clock: ReplayClock, scheduler: ReplayScheduler,
+    clock: ReplayClock,
+    scheduler: ReplayScheduler,
 ) -> ReplayPlaybackCoordinator:
     coord = ReplayPlaybackCoordinator(
         clock=clock,

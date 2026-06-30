@@ -109,16 +109,15 @@ def benchmark(
     def _decorator(
         fn: SyncBenchmarkFn | AsyncBenchmarkFn,
     ) -> SyncBenchmarkFn | AsyncBenchmarkFn:
-        kind: BenchmarkKind = (
-            "async" if inspect.iscoroutinefunction(fn) else "sync"
-        )
+        kind: BenchmarkKind = "async" if inspect.iscoroutinefunction(fn) else "sync"
         spec = BenchmarkSpec(
             name=name,
             category=category,
             kind=kind,
             fn=fn,
             description=description or (fn.__doc__ or "").strip().splitlines()[0]
-            if fn.__doc__ else "",
+            if fn.__doc__
+            else "",
             measured_iterations=measured_iterations,
             warmup_iterations=warmup_iterations,
             regression_threshold=regression_threshold,

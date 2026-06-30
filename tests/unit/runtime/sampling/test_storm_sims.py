@@ -15,11 +15,11 @@ def test_event_storm_preserves_all_critical_and_structural() -> None:
     structural + critical event must still be retained."""
     sampler = EventSampler(aggressive_config())
     types = [
-        "asyncio.task.created",       # structural
+        "asyncio.task.created",  # structural
         "asyncio.queue.metrics.updated",  # delta
         "asyncio.queue.metrics.updated",
-        "runtime.warning",            # critical
-        "asyncio.task.waiting",       # state
+        "runtime.warning",  # critical
+        "asyncio.task.waiting",  # state
     ] * 1_000
     structural_seen = 0
     critical_seen = 0
@@ -70,8 +70,7 @@ def test_overload_floor_preserves_some_retention() -> None:
         sampler.evaluate("asyncio.queue.metrics.updated")
     assert sampler.budget_snapshot().over_budget
     retained = sum(
-        1 for _ in range(2000)
-        if sampler.evaluate("asyncio.queue.metrics.updated").retain
+        1 for _ in range(2000) if sampler.evaluate("asyncio.queue.metrics.updated").retain
     )
     assert retained > 0
     # And the constraint is real — well below the unconstrained

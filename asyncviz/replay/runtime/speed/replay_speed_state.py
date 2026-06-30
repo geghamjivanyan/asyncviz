@@ -46,7 +46,8 @@ class SpeedStateHolder:
             return self._state.phase
 
     def transition_to(
-        self, next_snapshot: SpeedPhaseSnapshot,
+        self,
+        next_snapshot: SpeedPhaseSnapshot,
     ) -> SpeedPhaseSnapshot:
         with self._lock:
             previous = self._state

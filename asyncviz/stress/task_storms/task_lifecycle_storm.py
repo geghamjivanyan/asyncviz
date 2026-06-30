@@ -41,7 +41,8 @@ async def run_task_lifecycle_storm(
                 context.record_signal("operation", "task-completed")
         try:
             context.failure_injection.raise_if_triggered(
-                "task.lifecycle.batch", detail=f"batch-{batch_index}",
+                "task.lifecycle.batch",
+                detail=f"batch-{batch_index}",
             )
         except StressInjectedFailure:
             context.record_signal("failure", f"lifecycle-batch:{batch_index}")

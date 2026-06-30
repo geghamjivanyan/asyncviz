@@ -24,7 +24,8 @@ async def run_queue_saturation_storm(context: ScenarioContext) -> None:
     for index in range(cfg.queue_depth):
         try:
             context.failure_injection.raise_if_triggered(
-                "queue.saturation", detail=str(index),
+                "queue.saturation",
+                detail=str(index),
             )
         except StressInjectedFailure:
             drops += 1

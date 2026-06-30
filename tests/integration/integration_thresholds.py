@@ -27,10 +27,7 @@ def evaluate_violations(
     violations: list[IntegrationViolation] = []
     total = max(1, operations_completed + operations_failed)
     failure_ratio = operations_failed / total
-    if (
-        thresholds.max_failure_ratio is not None
-        and failure_ratio > thresholds.max_failure_ratio
-    ):
+    if thresholds.max_failure_ratio is not None and failure_ratio > thresholds.max_failure_ratio:
         violations.append(
             IntegrationViolation(
                 metric="failure_ratio",

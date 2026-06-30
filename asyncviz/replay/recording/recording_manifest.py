@@ -29,7 +29,9 @@ def write_manifest(session_dir: Path, metadata: RecordingMetadata) -> Path:
     # NamedTemporaryFile + atomic rename — same trick the queue/replay
     # bundle exporter uses elsewhere in the codebase.
     fd, tmp_path_str = tempfile.mkstemp(
-        prefix=".manifest.", suffix=".tmp", dir=str(target.parent),
+        prefix=".manifest.",
+        suffix=".tmp",
+        dir=str(target.parent),
     )
     tmp_path = Path(tmp_path_str)
     try:

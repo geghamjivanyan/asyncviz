@@ -87,22 +87,30 @@ def seek_session(tmp_path: Path) -> Path:
 
     chunks = (
         ChunkRecord(
-            index=1, filename=chunk1_path.name,
-            event_count=10, byte_size=chunk1_path.stat().st_size,
-            first_sequence=1, last_sequence=10,
+            index=1,
+            filename=chunk1_path.name,
+            event_count=10,
+            byte_size=chunk1_path.stat().st_size,
+            first_sequence=1,
+            last_sequence=10,
             sha256=compute_chunk_hash(chunk1_path),
         ),
         ChunkRecord(
-            index=2, filename=chunk2_path.name,
-            event_count=10, byte_size=chunk2_path.stat().st_size,
-            first_sequence=11, last_sequence=20,
+            index=2,
+            filename=chunk2_path.name,
+            event_count=10,
+            byte_size=chunk2_path.stat().st_size,
+            first_sequence=11,
+            last_sequence=20,
             sha256=compute_chunk_hash(chunk2_path),
         ),
     )
     snapshots = (
         SnapshotRecord(
-            index=1, filename=snap_path.name,
-            sequence_at_capture=10, kind="full",
+            index=1,
+            filename=snap_path.name,
+            sequence_at_capture=10,
+            kind="full",
             byte_size=snap_path.stat().st_size,
         ),
     )

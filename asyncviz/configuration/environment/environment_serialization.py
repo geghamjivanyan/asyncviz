@@ -37,11 +37,7 @@ def loader_result_to_dict(result: LoaderResult) -> dict[str, Any]:
                 "env_name": item.env_name,
                 "target": item.spec.target,
                 "kind": item.outcome.kind.value,
-                "value": (
-                    REDACTED_VALUE
-                    if item.spec.secret
-                    else _normalize(item.outcome.value)
-                ),
+                "value": (REDACTED_VALUE if item.spec.secret else _normalize(item.outcome.value)),
                 "raw": REDACTED_VALUE if item.spec.secret else item.outcome.raw,
             }
             for item in result.successes

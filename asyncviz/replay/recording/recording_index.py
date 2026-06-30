@@ -85,7 +85,9 @@ def write_index(session_dir: Path, index: RecordingIndex) -> Path:
     import tempfile
 
     fd, tmp_path_str = tempfile.mkstemp(
-        prefix=".index.", suffix=".tmp", dir=str(target.parent),
+        prefix=".index.",
+        suffix=".tmp",
+        dir=str(target.parent),
     )
     tmp_path = Path(tmp_path_str)
     try:
