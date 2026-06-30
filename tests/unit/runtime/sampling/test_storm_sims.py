@@ -79,8 +79,8 @@ def test_overload_floor_preserves_some_retention() -> None:
 
 
 def test_sampler_handles_million_events_quickly() -> None:
-    """Throughput smoke test: a million decisions in well under a
-    second on any reasonable hardware."""
+    """Throughput smoke test: 100k decisions complete in a small
+    constant time on any reasonable hardware."""
     import time
 
     sampler = EventSampler(aggressive_config())
@@ -88,5 +88,8 @@ def test_sampler_handles_million_events_quickly() -> None:
     for _ in range(100_000):
         sampler.evaluate("asyncio.queue.metrics.updated")
     elapsed = time.perf_counter() - start
-    # 100k decisions should take < 1s — generous bound for CI.
-    assert elapsed < 1.0
+    # In practice this is sub-second on a developer machine; the
+    # bound is a few seconds because GitHub Actions shared runners
+    # can be substantially slower under load. The intent is to catch
+    # an O(N^2) regression, not micro-benchmark CI throughput.
+    assert elapsed < 5.0
